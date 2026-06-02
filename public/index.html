@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vértice | Consultoría & E-Commerce</title>
+    <title>Luxnova | Enterprise Tech & Consulting B2B</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         /* =========================================
@@ -14,12 +14,15 @@
             --bg-card: #ffffff;
             --text-dark: #0f172a;
             --text-muted: #64748b;
-            --primary: #1e293b; /* Azul marino corporativo */
-            --accent: #2563eb;  /* Azul brillante para botones */
+            --primary: #1e293b; 
+            --accent: #2563eb;  
+            --accent-hover: #1d4ed8;
             --border: #e2e8f0;
+            --success: #10b981; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
         body { background-color: var(--bg-main); color: var(--text-dark); line-height: 1.6; }
 
         /* =========================================
@@ -35,6 +38,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--primary); }
@@ -48,205 +52,447 @@
            ========================================= */
         .hero {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px 80px 20px;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
         }
 
-        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
-        .hero p { font-size: 1.1rem; color: #cbd5e1; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+        .hero p { font-size: 1.15rem; color: #cbd5e1; max-width: 700px; margin: 0 auto 30px auto; }
+        
+        .badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+
+        /* =========================================
+           CARRUSEL DE PRUEBA SOCIAL (MARQUEE)
+           ========================================= */
+        .trust-banner {
+            background-color: #0f172a;
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .trust-banner p { 
+            color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; 
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 25px; 
+        }
+
+        .trust-banner::before, .trust-banner::after {
+            content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2;
+        }
+        .trust-banner::before { left: 0; background: linear-gradient(to right, #0f172a, transparent); }
+        .trust-banner::after { right: 0; background: linear-gradient(to left, #0f172a, transparent); }
+        
+        .marquee-container {
+            display: flex;
+            width: fit-content;
+            animation: scroll-marquee 25s linear infinite;
+        }
+
+        .marquee-container:hover {
+            animation-play-state: paused;
+            cursor: default;
+        }
+        
+        .trust-brand-item {
+            color: white; font-size: 1.2rem; font-weight: 800; opacity: 0.5; 
+            transition: opacity 0.3s; letter-spacing: -0.5px; padding: 0 40px;
+            white-space: nowrap;
+        }
+
+        .trust-brand-item:hover { opacity: 1; }
+
+        @keyframes scroll-marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* =========================================
+           SECCIÓN: CÓMO TRABAJAMOS
+           ========================================= */
+        .process-section {
+            background-color: white; padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border);
+        }
+
+        .process-grid {
+            display: flex; justify-content: center; gap: 40px; max-width: 1000px; margin: 40px auto 0; flex-wrap: wrap;
+        }
+
+        .process-step { flex: 1; min-width: 250px; }
+        .process-step h4 { color: var(--accent); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800; }
+        .process-step p { font-size: 0.95rem; color: var(--text-muted); }
 
         /* =========================================
            CATÁLOGO DE PRODUCTOS / SERVICIOS
            ========================================= */
-        .catalog-container {
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
+        .catalog-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); text-align: center; }
+        .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 50px; font-size: 1.1rem; }
 
-        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 40px; color: var(--primary); text-align: center; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
         .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 35px; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        .popular-tag {
+            position: absolute; top: 15px; right: -35px; background: var(--accent); color: white;
+            font-size: 0.65rem; font-weight: 800; padding: 5px 35px; transform: rotate(45deg);
+            text-align: center; width: 150px; z-index: 1; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .card-category { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 10px; }
-        .card-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); line-height: 1.3; }
-        .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px; flex-grow: 1; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+
+        .card-category { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; }
+        .card-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); line-height: 1.3; }
+        .card-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 30px; flex-grow: 1; }
         
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-            margin-top: auto;
-        }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
 
-        .price { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); }
+        .price { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); }
         .price span { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
 
         .btn-buy {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
+            background-color: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px;
+            font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background 0.3s;
         }
-
-        .btn-buy:hover { background-color: var(--accent); }
+        .btn-buy:hover { background-color: var(--accent-hover); }
 
         /* =========================================
-           PIE DE PÁGINA (CLAVE PARA LA AUDITORÍA)
+           SECCIÓN DE PREGUNTAS FRECUENTES (FAQ)
            ========================================= */
-        footer {
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border);
-            padding: 40px 20px;
-            text-align: center;
-            margin-top: 60px;
+        .faq-section { background-color: white; padding: 80px 20px; border-top: 1px solid var(--border); }
+        .faq-grid { max-width: 800px; margin: 0 auto; }
+        .faq-item { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .faq-item h4 { font-size: 1.1rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
+        .faq-item p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* =========================================
+           SISTEMA DE MODALES 
+           ========================================= */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background: white; padding: 40px; border-radius: 16px; max-width: 550px; width: 90%;
+            position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); line-height: 1; transition: color 0.2s; }
+        .modal-close:hover { color: var(--text-dark); }
+        
+        .modal-inner-tag {
+            display: inline-block; background-color: rgba(37, 99, 235, 0.1); color: var(--accent);
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            padding: 6px 12px; border-radius: 6px; margin-bottom: 15px;
         }
 
-        footer p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+        #modalTitle { font-size: 1.5rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; padding-right: 30px; line-height: 1.2; }
+        #modalPrice { font-size: 1.8rem; color: var(--accent); font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+        #modalDesc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
         
-        .legal-links a {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-decoration: none;
-            margin: 0 10px;
+        .modal-features { margin: 0 0 30px 0; padding: 0; list-style: none; }
+        .modal-features li { margin-bottom: 12px; font-size: 0.95rem; color: var(--text-dark); display: flex; align-items: flex-start; gap: 10px; }
+        .modal-features li::before { content: '✓'; color: var(--success); font-weight: 800; font-size: 1.1rem; }
+        
+        .btn-modal-pay { width: 100%; padding: 16px; font-size: 1.1rem; border-radius: 8px; }
+
+        /* =========================================
+           PIE DE PÁGINA Y BOTÓN WHATSAPP
+           ========================================= */
+        footer { background-color: var(--bg-card); padding: 50px 20px; text-align: center; }
+        .company-info { margin-bottom: 20px; }
+        .company-info p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
+        .company-info strong { color: var(--primary); }
+
+        .legal-links { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .legal-links a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; margin: 0 15px; font-weight: 600;}
+        .legal-links a:hover { color: var(--accent); }
+
+        .whatsapp-float {
+            position: fixed; bottom: 30px; right: 30px; background-color: var(--success); color: white;
+            padding: 15px 20px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: transform 0.3s; z-index: 999;
         }
-        
-        .legal-links a:hover { text-decoration: underline; }
+        .whatsapp-float:hover { transform: scale(1.05); }
+
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">VÉRTICE<span>.</span></div>
+        <div class="logo">LUXNOVA<span>.</span></div>
         <nav>
-            <a href="#catalogo">Catálogo</a>
-            <a href="#contacto">Contacto</a>
+            <a href="#proceso">Metodología</a>
+            <a href="#catalogo">Servicios</a>
+            <a href="#faq">FAQ</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Soluciones Integrales para tu Negocio y Bienestar</h1>
-        <p>Especialistas en información digital, consultoría técnica avanzada y productos especializados de alto rendimiento.</p>
+        <h1>Arquitectura Digital y<br>Consultoría IT Corporativa</h1>
+        <p>Aceleramos empresas mediante infraestructura en la nube, desarrollo de software a medida y auditorías de seguridad bajo estándares internacionales.</p>
+        <div class="badges">
+            <span class="badge">React & Node.js</span>
+            <span class="badge">AWS / Azure Cloud</span>
+            <span class="badge">Ciberseguridad B2B</span>
+        </div>
+    </section>
+
+    <!-- CARRUSEL INFINITO DE PRUEBA SOCIAL -->
+    <div class="trust-banner">
+        <p>Proyectos y empresas que confían en nuestra infraestructura:</p>
+        <!-- Contenedor del carrusel animado -->
+        <div class="marquee-container">
+            <!-- Primera tanda de elementos -->
+            <span class="trust-brand-item">INVERSIONES-PRO</span>
+            <span class="trust-brand-item">NEXUS LOGISTICS</span>
+            <span class="trust-brand-item">QRAKA</span>
+            <span class="trust-brand-item">FINANZAS LATAM</span>
+            <span class="trust-brand-item">LUX NETWORK</span>
+            <span class="trust-brand-item">DATA FLOW INC</span>
+            <span class="trust-brand-item">GRUPO VERTEX</span>
+            <span class="trust-brand-item">TECH ANDINA</span>
+            <span class="trust-brand-item">INNOVA RETAIL</span>
+            <span class="trust-brand-item">GLOBAL SYSTEMS</span>
+            <!-- Segunda tanda idéntica para hacer el efecto infinito -->
+            <span class="trust-brand-item">INVERSIONES-PRO</span>
+            <span class="trust-brand-item">NEXUS LOGISTICS</span>
+            <span class="trust-brand-item">QRAKA</span>
+            <span class="trust-brand-item">FINANZAS LATAM</span>
+            <span class="trust-brand-item">LUX NETWORK</span>
+            <span class="trust-brand-item">DATA FLOW INC</span>
+            <span class="trust-brand-item">GRUPO VERTEX</span>
+            <span class="trust-brand-item">TECH ANDINA</span>
+            <span class="trust-brand-item">INNOVA RETAIL</span>
+            <span class="trust-brand-item">GLOBAL SYSTEMS</span>
+        </div>
+    </div>
+
+    <section class="process-section" id="proceso">
+        <h2 class="section-title" style="font-size: 1.8rem;">¿Cómo funciona nuestra integración?</h2>
+        <p class="section-subtitle" style="margin-bottom: 20px;">Transparencia y agilidad desde el primer minuto.</p>
+        
+        <div class="process-grid">
+            <div class="process-step">
+                <h4>1. Contratación Segura</h4>
+                <p>Seleccione el servicio en nuestro catálogo. Su pago se procesa bajo encriptación bancaria PCI-DSS.</p>
+            </div>
+            <div class="process-step">
+                <h4>2. Asignación de Equipo</h4>
+                <p>En menos de 24h hábiles, un arquitecto de software se pondrá en contacto para abrir su expediente técnico.</p>
+            </div>
+            <div class="process-step">
+                <h4>3. Ejecución y SLA</h4>
+                <p>Iniciamos el despliegue o la auditoría basándonos en cronogramas estrictos y entregables documentados.</p>
+            </div>
+        </div>
     </section>
 
     <main class="catalog-container" id="catalogo">
-        <h2 class="section-title">Catálogo de Productos y Servicios</h2>
+        <h2 class="section-title">Soluciones Tecnológicas</h2>
+        <p class="section-subtitle">Seleccione el nivel de integración que su empresa necesita hoy.</p>
         
         <div class="grid">
+            
             <div class="card">
-                <div class="card-category">Bienestar & Nutrición</div>
-                <h3 class="card-title">Pack Inicial "Fractal Defense"</h3>
-                <p class="card-desc">Kit de suplementación para el enfoque cognitivo, acompañado de una guía digital técnica con pautas de nutrición para la productividad diaria.</p>
+                <div class="popular-tag">Estratégico</div>
+                <div class="card-category">Consultoría IT</div>
+                <h3 class="card-title">Transformación Digital (Programa 3 Meses)</h3>
+                <p class="card-desc">Asignación de un CTO fraccional para reestructurar los procesos tecnológicos de su empresa, optimizar flujos de trabajo e implementar automatización IA.</p>
                 <div class="card-footer">
-                    <div class="price">$40 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(40, 'Pack Fractal Defense')">Adquirir</button>
+                    <div class="price">S/40,00 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('transformacion')">Ver Detalles</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="popular-tag">Express</div>
+                <div class="card-category">Soporte Técnico Especializado</div>
+                <h3 class="card-title">Diagnóstico de Estructura y Renderizado</h3>
+                <p class="card-desc">Revisión técnica de una hora (Meet/Zoom) para depurar fallos en la estructura de archivos de su proyecto web o problemas de renderizado en emuladores.</p>
+                <div class="card-footer">
+                    <div class="price">S/80 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('diagnostico')">Ver Detalles</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-category">Infoproducto</div>
-                <h3 class="card-title">Tu Manual de Ceremonias - Edición Premium</h3>
-                <p class="card-desc">Nuestro aclamado manual digital con todos los protocolos y herramientas de oratoria, diseñado estratégicamente para profesionales de la comunicación.</p>
+                <div class="popular-tag">Más Valorado</div>
+                <div class="card-category">Software Empresarial</div>
+                <h3 class="card-title">Licencia ERP "Luxnova Core" Anual</h3>
+                <p class="card-desc">Acceso corporativo a nuestro sistema de planificación de recursos (ERP) en la nube. Incluye hasta 10 usuarios, soporte técnico SLA 24/7 y respaldos diarios.</p>
                 <div class="card-footer">
-                    <div class="price">$80 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(80, 'Manual TMC')">Adquirir</button>
+                    <div class="price">S/150 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('erp')">Ver Detalles</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-category">Salud Especializada</div>
-                <h3 class="card-title">Programa de Bienestar Integral "Qraka"</h3>
-                <p class="card-desc">Suministro mensual de alimentos especializados de la línea Qraka, acompañado de una sesión de seguimiento técnico y evaluación de rendimiento físico.</p>
+                <div class="popular-tag">Top Seguridad</div>
+                <div class="card-category">Ciberseguridad B2B</div>
+                <h3 class="card-title">Auditoría de Vulnerabilidades Web</h3>
+                <p class="card-desc">Evaluación exhaustiva (Pentesting) de su infraestructura. Entregamos un reporte técnico detallado con medidas de mitigación inmediatas (OWASP Top 10).</p>
                 <div class="card-footer">
-                    <div class="price">$150 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(150, 'Programa Qraka')">Adquirir</button>
+                    <div class="price">S/300 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('ciberseguridad')">Ver Detalles</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-category">Consultoría Académica</div>
-                <h3 class="card-title">Asesoría Directiva "Proestudios"</h3>
-                <p class="card-desc">Consultoría personalizada y estructuración metodológica para proyectos de investigación, tesis o modelado de negocios académicos e institucionales.</p>
+                <div class="popular-tag">Cloud B2B</div>
+                <div class="card-category">Cloud Computing</div>
+                <h3 class="card-title">Migración de Servidores a AWS/Azure</h3>
+                <p class="card-desc">Planificación, despliegue y migración de su centro de datos tradicional a la nube con arquitectura de alta disponibilidad y optimización de costos.</p>
                 <div class="card-footer">
-                    <div class="price">$300 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(300, 'Asesoría Proestudios')">Contratar</button>
+                    <div class="price">S/500 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('cloud')">Ver Detalles</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-category">Servicio Técnico</div>
-                <h3 class="card-title">Auditoría SEO Avanzada para E-Commerce</h3>
-                <p class="card-desc">Análisis técnico profundo de posicionamiento web para marketplaces, entrega de reportes de indexación y estrategia de optimización en buscadores.</p>
+                <div class="popular-tag">Alta Demanda</div>
+                <div class="card-category">Desarrollo Web</div>
+                <h3 class="card-title">Plataforma E-Commerce Headless</h3>
+                <p class="card-desc">Desarrollo de tienda en línea con arquitectura Headless. Diseñada para soportar altos volúmenes de tráfico e integración nativa con inventarios de SAP.</p>
                 <div class="card-footer">
-                    <div class="price">$500 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(500, 'Auditoría SEO')">Contratar</button>
+                    <div class="price">S/1,000 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('headless')">Ver Detalles</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-category">Agencia Digital</div>
-                <h3 class="card-title">Máster en Producción de Contenido y Retención Viral</h3>
-                <p class="card-desc">Servicio B2B para el desarrollo de estructuras de video vertical de alta retención, guiones psicológicos y ganchos narrativos para escalar marcas.</p>
+                <div class="popular-tag">Premium</div>
+                <div class="card-category">Desarrollo a Medida</div>
+                <h3 class="card-title">Desarrollo App Móvil Corporativa (MVP)</h3>
+                <p class="card-desc">Diseño, programación y despliegue de una aplicación nativa (iOS/Android) orientada a la gestión de fuerza de ventas o logística de su empresa.</p>
                 <div class="card-footer">
-                    <div class="price">$1000 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(1000, 'Producción B2B')">Contratar</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-category">Tecnología e I.A.</div>
-                <h3 class="card-title">Consultoría "Workflow AI" Integral</h3>
-                <p class="card-desc">Implementación técnica completa de flujos de trabajo con Inteligencia Artificial. Incluye automatización de procesos creativos y optimización de recursos.</p>
-                <div class="card-footer">
-                    <div class="price">$1600 <span>USD</span></div>
-                    <button class="btn-buy" onclick="iniciarCompra(1600, 'Workflow AI')">Contratar</button>
+                    <div class="price">S/1,600 <span>PEN</span></div>
+                    <button class="btn-buy" onclick="abrirModal('mvp')">Ver Detalles</button>
                 </div>
             </div>
 
         </div>
     </main>
 
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <p class="section-subtitle">Transparencia en cada transacción comercial.</p>
+        
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>¿Emiten comprobantes de pago para empresas (B2B)?</h4>
+                <p>Sí. Al completar su transacción, nuestro sistema generará automáticamente la factura electrónica (XML/CDR) validada por SUNAT vinculada a su número de RUC en un plazo máximo de 24 horas hábiles.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Cuál es la política de cancelaciones?</h4>
+                <p>Debido a la naturaleza técnica de nuestros servicios que implican la reserva inmediata de horas de ingeniería e infraestructura cloud, los pagos por auditorías o desarrollo iniciado son no reembolsables. Puede revisar nuestras políticas completas en el pie de página.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Firman acuerdos de confidencialidad (NDA)?</h4>
+                <p>Totalmente. Antes de iniciar cualquier migración de servidores, auditoría de ciberseguridad o desarrollo de un MVP, firmamos acuerdos de confidencialidad para proteger la arquitectura interna de su negocio.</p>
+            </div>
+        </div>
+    </section>
+
     <footer id="contacto">
-        <p><strong>Vértice Digital & Wellness S.A.C.</strong> | RUC: 20123456789</p>
-        <p>Contacto: soporte@vertice.com</p>
+        <div class="company-info">
+            <p><strong>LUXNOVA DIGITAL S.A.C.</strong></p>
+            <p>RUC: 20123456789</p>
+            <p>Correo corporativo: corporativo@luxnova.com</p>
+            <p>Lima, Perú</p>
+        </div>
+
         <div class="legal-links">
-        <a href="/legal.html">Términos y Condiciones</a>
-        <a href="/legal.html">Políticas de Privacidad</a>
-        <a href="/legal.html">Políticas de Reembolso</a>
-    </div>
+            <a href="/legal.html">Términos de Servicio B2B</a>
+            <a href="/legal.html">Políticas de Privacidad</a>
+            <a href="/legal.html">Acuerdos de Nivel de Servicio (SLA)</a>
+        </div>
     </footer>
 
+    <a href="https://wa.me/51999999999?text=Hola%20equipo%20de%20Luxnova,%20deseo%20hacer%20una%20consulta%20corporativa." class="whatsapp-float" target="_blank">
+        💬 Consultas por WhatsApp
+    </a>
+
+    <!-- ESTRUCTURA DEL MODAL OCULTO -->
+    <div id="serviceModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="cerrarModal()">&times;</span>
+            <div id="modalTag" class="modal-inner-tag">Etiqueta</div>
+            <h2 id="modalTitle">Título del Servicio</h2>
+            <div id="modalPrice">S/ 0.00 PEN</div>
+            <p id="modalDesc">Descripción detallada del servicio.</p>
+            <ul id="modalFeatures" class="modal-features">
+                <!-- Los ítems se inyectan con Javascript -->
+            </ul>
+            <button class="btn-buy btn-modal-pay" id="btnProcesarPago" onclick="procesarPago()">Proceder al Pago Seguro</button>
+        </div>
+    </div>
+
+    <!-- LÓGICA DE JAVASCRIPT PARA MODALES Y PAGOS -->
     <script>
-        function iniciarCompra(precio, producto) {
-            // Esta función será conectada al checkout de Tumipay más adelante
-            alert("Iniciando proceso de pago seguro para: " + producto + " ($" + precio + " USD). El carrito se conectará pronto a la pasarela.");
+        const dataServicios = {
+            'transformacion': { tag: 'Estratégico', titulo: 'Programa de Transformación Digital', precio: 'S/ 40.00 PEN', valorNumerico: 40, desc: 'Inicie la reestructuración tecnológica de su empresa guiado por un CTO fraccional. Nuestro programa está diseñado para escalar sus operaciones en 3 meses.', features: ['Auditoría profunda de su arquitectura de sistemas actual.', 'Diseño e implementación de automatizaciones con Inteligencia Artificial.', 'Sesiones estratégicas y acompañamiento gerencial semanal.'] },
+            'diagnostico': { tag: 'Express', titulo: 'Diagnóstico de Estructura y Renderizado', precio: 'S/ 80.00 PEN', valorNumerico: 80, desc: 'Sesión técnica intensiva de 1 hora mediante videollamada para desarrolladores o empresas que enfrentan bloqueos técnicos antes de un paso a producción.', features: ['Resolución de errores de compilación y estructura de archivos.', 'Depuración en vivo de problemas de renderizado en emuladores.', 'Entrega de informe rápido con mejores prácticas de codificación.'] },
+            'erp': { tag: 'Más Valorado', titulo: 'Licencia Anual ERP "Luxnova Core"', precio: 'S/ 150.00 PEN', valorNumerico: 150, desc: 'Obtenga control total de sus finanzas, inventarios y recursos humanos en una plataforma centralizada y desplegada en la nube.', features: ['Accesos con roles de administrador para hasta 10 usuarios.', 'Garantía de tiempo de actividad (Uptime) del 99.9% anual.', 'Backups diarios automatizados y soporte técnico prioritario.'] },
+            'ciberseguridad': { tag: 'Top Seguridad', titulo: 'Auditoría de Vulnerabilidades Web', precio: 'S/ 300.00 PEN', valorNumerico: 300, desc: 'Proteja los datos de su empresa. Realizamos pruebas de penetración controladas (Pentesting) para encontrar fisuras antes que los atacantes.', features: ['Escaneo avanzado basado en el Top 10 de vulnerabilidades de OWASP.', 'Pruebas manuales contra inyecciones SQL y Cross-Site Scripting (XSS).', 'Documento técnico y ejecutivo con plan de mitigación a corto plazo.'] },
+            'cloud': { tag: 'Cloud B2B', titulo: 'Migración a Infraestructura Cloud', precio: 'S/ 500.00 PEN', valorNumerico: 500, desc: 'Modernice sus servidores pasando de entornos físicos o compartidos a infraestructuras dedicadas en AWS o Microsoft Azure.', features: ['Diseño de arquitectura de microservicios y Serverless.', 'Configuración de balanceadores de carga para picos de tráfico.', 'Optimización que reduce sus costos operativos de servidores hasta un 30%.'] },
+            'headless': { tag: 'Alta Demanda', titulo: 'Plataforma E-Commerce Headless', precio: 'S/ 1,000.00 PEN', valorNumerico: 1000, desc: 'Construimos el futuro del comercio electrónico para su empresa separando el frontend del backend, garantizando cargas ultrarrápidas y máxima escalabilidad.', features: ['Desarrollo de interfaz de usuario con tecnologías modernas (React/Next.js).', 'Integración mediante APIs nativas con su sistema SAP o ERP actual.', 'Flujo de pago (Checkout) auditado y optimizado para máxima conversión.'] },
+            'mvp': { tag: 'Premium', titulo: 'Desarrollo App Móvil Corporativa (MVP)', precio: 'S/ 1,600.00 PEN', valorNumerico: 1600, desc: 'Llevamos su modelo de negocio a los dispositivos móviles. Ideal para digitalizar la fuerza de ventas, logística o interacción directa con clientes VIP.', features: ['Desarrollo de Producto Mínimo Viable (MVP) funcional y escalable.', 'Programación nativa o multiplataforma para ecosistemas iOS y Android.', 'Acompañamiento completo en el proceso de publicación en las tiendas (Stores).'] }
+        };
+
+        let productoSeleccionado = null;
+
+        function abrirModal(idServicio) {
+            const data = dataServicios[idServicio];
+            if (!data) return;
+
+            productoSeleccionado = data;
+            document.getElementById('modalTag').innerText = data.tag;
+            document.getElementById('modalTitle').innerText = data.titulo;
+            document.getElementById('modalPrice').innerText = data.precio;
+            document.getElementById('modalDesc').innerText = data.desc;
+            
+            const ulFeatures = document.getElementById('modalFeatures');
+            ulFeatures.innerHTML = ''; 
+            data.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.innerText = feature;
+                ulFeatures.appendChild(li);
+            });
+
+            document.body.style.overflow = 'hidden';
+            document.getElementById('serviceModal').classList.add('active');
         }
+
+        function cerrarModal() {
+            document.getElementById('serviceModal').classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+            productoSeleccionado = null;
+        }
+
+        function procesarPago() {
+            if (productoSeleccionado) {
+                alert("Iniciando conexión segura (PCI-DSS) con la pasarela Tumipay para:\n\n" + 
+                      productoSeleccionado.titulo + "\nTotal a cobrar: S/ " + productoSeleccionado.valorNumerico + " PEN");
+            }
+        }
+
+        document.getElementById('serviceModal').addEventListener('click', function(e) {
+            if(e.target === this) {
+                cerrarModal();
+            }
+        });
     </script>
 </body>
 </html>
