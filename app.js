@@ -12,10 +12,10 @@ app.use(express.json()); // Vital para que Tumipay nos pueda enviar información
 // 1. Mostrar la Vitrina Corporativa al público
 app.use(express.static('public'));
 
-// 2. Ruta de Diagnóstico
+// 2. Ruta de Diagnóstico (Actualizada para Auditoría)
 app.get('/status', (req, res) => {
     res.json({ 
-        empresa: "Vértice Digital & Wellness S.A.C.",
+        empresa: "LUXNOVA DIGITAL S.A.C.",
         estado: "Operativo",
         pasarela: "Esperando credenciales de Tumipay"
     });
@@ -32,9 +32,9 @@ app.post('/procesar-pago', async (req, res) => {
     // Aquí programaremos la llamada a Tumipay usando tus credenciales del .env
     // Tumipay nos devolverá un link seguro y nosotros se lo daremos al cliente.
     
-    console.log(`Iniciando compra de: ${producto} por $${precio} USD`);
+    console.log(`Iniciando compra corporativa de: ${producto} por S/ ${precio} PEN`);
     res.json({ 
-        mensaje: "Simulación: Conectando con el banco...",
+        mensaje: "Simulación: Conectando con el entorno seguro...",
         checkout_url: "https://link-de-pago-simulado.com"
     });
 });
@@ -43,15 +43,15 @@ app.post('/procesar-pago', async (req, res) => {
 app.post('/webhook-tumipay', (req, res) => {
     const notificacion = req.body;
     
-    // Aquí leeremos si el pago fue exitoso para enviarle el PDF o producto al cliente
-    console.log("¡Tumipay informa un cambio de estado en una compra!", notificacion);
+    // Aquí leeremos si el pago fue exitoso para activar el servicio B2B
+    console.log("¡Tumipay informa un cambio de estado en una transacción!", notificacion);
     
-    res.status(200).send("Notificación recibida");
+    res.status(200).send("Notificación recibida exitosamente");
 });
 
 // ==========================================
 // ENCENDIDO DEL MOTOR
 // ==========================================
 app.listen(port, () => {
-    console.log(`Servidor de la Firma Vértice corriendo en http://localhost:${port}`);
+    console.log(`Servidor corporativo de LUXNOVA corriendo en http://localhost:${port}`);
 });

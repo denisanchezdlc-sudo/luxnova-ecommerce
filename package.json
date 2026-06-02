@@ -1,13 +1,19 @@
 {
-  "name": "vertice-ecommerce",
+  "name": "luxnova-b2b-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Servidor backend para la plataforma corporativa de Luxnova Digital S.A.C.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "b2b",
+    "luxnova",
+    "ecommerce",
+    "api"
+  ],
+  "author": "Luxnova Digital S.A.C.",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
