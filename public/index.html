@@ -3,201 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxnova | Enterprise Tech & Consulting B2B</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Luxnova Digital | Accesorios Tecnológicos Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        /* =========================================
-           PALETA CORPORATIVA Y TIPOGRAFÍA
-           ========================================= */
+        /* ==========================================================================
+           1. VARIABLES GLOBALES Y RESET
+           ========================================================================== */
         :root {
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --primary: #1e293b; 
-            --accent: #2563eb;  
-            --accent-hover: #1d4ed8;
-            --border: #e2e8f0;
-            --success: #10b981; 
+            --bg-main: #f8fafc; --bg-card: #ffffff; --bg-dark: #0f172a;
+            --text-dark: #0f172a; --text-muted: #64748b; --text-light: #f1f5f9;
+            --primary: #1e293b; --accent: #2563eb; --accent-hover: #1d4ed8;
+            --promo: #f59e0b; --danger: #ef4444; --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1); --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --radius: 12px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background-color: var(--bg-main); color: var(--text-dark); line-height: 1.6; }
+        body { background-color: var(--bg-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
 
-        /* =========================================
-           CABECERA (HEADER)
-           ========================================= */
+        /* ==========================================================================
+           2. TOP BAR & NAVEGACIÓN
+           ========================================================================== */
+        .top-bar {
+            background-color: var(--accent); color: white; text-align: center;
+            padding: 8px 15px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
+        }
+        .top-bar span { color: #fde047; font-weight: 800; }
+
         header {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background-color: var(--bg-card); border-bottom: 1px solid var(--border);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm);
         }
 
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--primary); }
-        .logo span { color: var(--accent); }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .logo svg { width: 28px; height: 28px; fill: var(--accent); }
         
-        nav a { margin-left: 20px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: color 0.3s; }
+        nav { display: flex; align-items: center; gap: 25px; }
+        nav a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; }
         nav a:hover { color: var(--accent); }
 
-        /* =========================================
-           SECCIÓN HERO (BIENVENIDA)
-           ========================================= */
+        .cart-toggle {
+            background: none; border: none; cursor: pointer; position: relative;
+            display: flex; align-items: center; justify-content: center; padding: 8px;
+        }
+        .cart-toggle svg { width: 24px; height: 24px; stroke: var(--primary); stroke-width: 2; fill: none; }
+        .cart-badge {
+            position: absolute; top: 0; right: 0; background-color: var(--danger); color: white;
+            font-size: 0.7rem; font-weight: 800; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transform: translate(25%, -25%); border: 2px solid white;
+        }
+
+        /* ==========================================================================
+           3. HERO SECTION & PROMO BANNER
+           ========================================================================== */
         .hero {
-            text-align: center;
-            padding: 100px 20px 80px 20px;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
+            color: white; padding: 100px 5% 80px 5%; display: flex; flex-direction: column; align-items: center; text-align: center;
         }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { font-size: 1.1rem; color: #cbd5e1; max-width: 700px; margin-bottom: 30px; }
 
-        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
-        .hero p { font-size: 1.15rem; color: #cbd5e1; max-width: 700px; margin: 0 auto 30px auto; }
-        
-        .badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-        .badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .promo-card {
+            background: linear-gradient(45deg, #2563eb, #3b82f6); border-radius: var(--radius);
+            padding: 30px; max-width: 800px; margin: -40px auto 40px; position: relative;
+            box-shadow: var(--shadow-lg); color: white; display: flex; align-items: center; justify-content: space-between;
+            gap: 20px; z-index: 10;
+        }
+        .promo-content h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; color: #fde047; }
+        .promo-content p { font-size: 0.95rem; opacity: 0.9; line-height: 1.5; }
+        .promo-icon svg { width: 80px; height: 80px; fill: white; opacity: 0.8; }
 
-        /* =========================================
-           CARRUSEL DE PRUEBA SOCIAL (MARQUEE)
-           ========================================= */
+        /* ==========================================================================
+           4. CARRUSEL LOGÍSTICO
+           ========================================================================== */
         .trust-banner {
-            background-color: #0f172a;
-            padding: 40px 0;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            overflow: hidden;
-            position: relative;
+            background-color: var(--bg-dark); padding: 40px 0; text-align: center;
+            border-bottom: 1px solid var(--border); overflow: hidden; position: relative;
         }
-        
-        .trust-banner p { 
-            color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; 
-            letter-spacing: 1px; font-weight: 600; margin-bottom: 25px; 
-        }
-
-        .trust-banner::before, .trust-banner::after {
-            content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2;
-        }
+        .trust-banner p { color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 25px; }
+        .trust-banner::before, .trust-banner::after { content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2; }
         .trust-banner::before { left: 0; background: linear-gradient(to right, #0f172a, transparent); }
         .trust-banner::after { right: 0; background: linear-gradient(to left, #0f172a, transparent); }
         
-        .marquee-container {
-            display: flex;
-            width: fit-content;
-            animation: scroll-marquee 25s linear infinite;
-        }
-
-        .marquee-container:hover {
-            animation-play-state: paused;
-            cursor: default;
-        }
-        
-        .trust-brand-item {
-            color: white; font-size: 1.2rem; font-weight: 800; opacity: 0.5; 
-            transition: opacity 0.3s; letter-spacing: -0.5px; padding: 0 40px;
-            white-space: nowrap;
-        }
-
+        .marquee-container { display: flex; width: fit-content; animation: scroll-marquee 25s linear infinite; }
+        .marquee-container:hover { animation-play-state: paused; cursor: default; }
+        .trust-brand-item { color: white; font-size: 1.2rem; font-weight: 800; opacity: 0.5; transition: opacity 0.3s; letter-spacing: -0.5px; padding: 0 40px; white-space: nowrap; }
         .trust-brand-item:hover { opacity: 1; }
+        @keyframes scroll-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        @keyframes scroll-marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* =========================================
-           SECCIÓN: CÓMO TRABAJAMOS
-           ========================================= */
-        .process-section {
-            background-color: white; padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border);
-        }
-
-        .process-grid {
-            display: flex; justify-content: center; gap: 40px; max-width: 1000px; margin: 40px auto 0; flex-wrap: wrap;
-        }
-
+        /* ==========================================================================
+           5. PROCESO DE COMPRA
+           ========================================================================== */
+        .process-section { background-color: white; padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+        .process-grid { display: flex; justify-content: center; gap: 40px; max-width: 1000px; margin: 40px auto 0; flex-wrap: wrap; }
         .process-step { flex: 1; min-width: 250px; }
         .process-step h4 { color: var(--accent); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800; }
         .process-step p { font-size: 0.95rem; color: var(--text-muted); }
 
-        /* =========================================
-           CATÁLOGO DE PRODUCTOS / SERVICIOS
-           ========================================= */
-        .catalog-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
-        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); text-align: center; }
-        .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 50px; font-size: 1.1rem; }
+        /* ==========================================================================
+           6. CATÁLOGO DE PRODUCTOS
+           ========================================================================== */
+        .catalog { padding: 80px 5%; max-width: 1300px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 
         .card {
-            background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-            padding: 35px; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative; overflow: hidden;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column; position: relative;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+
+        .card-img {
+            background: #f1f5f9; height: 250px; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid var(--border); overflow: hidden; position: relative;
+        }
+        
+        .card-img img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img img { transform: scale(1.05); }
+
+        .card-img::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 40%);
+            pointer-events: none;
         }
 
+        .tag-sale {
+            position: absolute; top: 15px; right: -35px; background: var(--danger); color: white;
+            font-size: 0.65rem; font-weight: 800; padding: 5px 35px; transform: rotate(45deg);
+            text-align: center; width: 150px; z-index: 3; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        
         .popular-tag {
             position: absolute; top: 15px; right: -35px; background: var(--accent); color: white;
             font-size: 0.65rem; font-weight: 800; padding: 5px 35px; transform: rotate(45deg);
-            text-align: center; width: 150px; z-index: 1; text-transform: uppercase; letter-spacing: 0.5px;
+            text-align: center; width: 150px; z-index: 3; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+        .card-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-cat { font-size: 0.75rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .card-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; line-height: 1.3; }
+        .card-desc { font-size: 0.9rem; color: var(--text-muted); flex-grow: 1; margin-bottom: 20px; }
 
-        .card-category { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; }
-        .card-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); line-height: 1.3; }
-        .card-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 30px; flex-grow: 1; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { font-size: 1.4rem; font-weight: 800; color: var(--text-dark); }
+        .price span { font-size: 0.8rem; color: var(--text-muted); }
         
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
-
-        .price { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); }
-        .price span { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
-
-        .btn-buy {
-            background-color: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px;
-            font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background 0.3s;
+        .btn-add {
+            background: var(--primary); color: white; border: none; width: 40px; height: 40px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: background 0.3s;
         }
-        .btn-buy:hover { background-color: var(--accent-hover); }
+        .btn-add:hover { background: var(--accent); }
+        .btn-add svg { width: 20px; height: 20px; fill: white; }
 
-        /* =========================================
-           SECCIÓN DE PREGUNTAS FRECUENTES (FAQ)
-           ========================================= */
+        .card.gift-card { border: 2px solid var(--accent); }
+        .card.gift-card .card-img { background: linear-gradient(135deg, #dbeafe, #eff6ff); }
+        .card.gift-card .card-img img { object-fit: contain; width: 60%; }
+
+        /* ==========================================================================
+           7. TESTIMONIOS
+           ========================================================================== */
+        .reviews { background: #f8fafc; padding: 80px 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .review-card { background: white; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+        .stars { color: #fbbf24; font-size: 1.2rem; margin-bottom: 15px; }
+        .review-text { font-style: italic; color: var(--text-dark); margin-bottom: 20px; font-size: 0.95rem; }
+        .review-author { display: flex; align-items: center; gap: 15px; }
+        .author-avatar { width: 40px; height: 40px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .author-info h5 { font-size: 0.9rem; color: var(--primary); }
+        .author-info span { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           8. CARRITO DE COMPRAS
+           ========================================================================== */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5); z-index: 999; backdrop-filter: blur(3px);
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
+            background: white; z-index: 1000; box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; transition: right 0.3s ease;
+        }
+        .cart-sidebar.active { right: 0; }
+
+        .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+        .close-cart { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+        
+        .cart-body { padding: 20px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 15px; }
+        .empty-cart-msg { text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 0.95rem; }
+        
+        .cart-item { display: flex; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .cart-item-img { width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; overflow: hidden;}
+        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-title { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; line-height: 1.2;}
+        .cart-item-price { font-size: 0.9rem; color: var(--accent); font-weight: 700; }
+        .cart-item-remove { font-size: 0.75rem; color: var(--danger); cursor: pointer; border: none; background: none; margin-top: 5px; text-decoration: underline; }
+
+        .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: #f8fafc; }
+        .cart-total { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+        .btn-checkout {
+            width: 100%; padding: 15px; background: var(--success); color: white; border: none;
+            border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.3s;
+        }
+        .btn-checkout:hover { background: #059669; }
+
+        /* ==========================================================================
+           9. TOAST NOTIFICATIONS
+           ========================================================================== */
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--primary); color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; box-shadow: var(--shadow-md); transform: translateX(-150%); transition: transform 0.3s ease; display: flex; align-items: center; gap: 10px;}
+        .toast.show { transform: translateX(0); }
+        .toast svg { width: 18px; height: 18px; fill: var(--success); }
+
+        /* ==========================================================================
+           10. FAQ & FOOTER
+           ========================================================================== */
         .faq-section { background-color: white; padding: 80px 20px; border-top: 1px solid var(--border); }
         .faq-grid { max-width: 800px; margin: 0 auto; }
         .faq-item { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
         .faq-item h4 { font-size: 1.1rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
         .faq-item p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-        /* =========================================
-           SISTEMA DE MODALES 
-           ========================================= */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease;
-        }
+        footer { background: var(--bg-dark); color: white; padding: 60px 5% 30px; margin-top: 0; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; }
+        .footer-col h4 { font-size: 1.1rem; color: white; margin-bottom: 20px; font-weight: 700; }
+        .footer-col p, .footer-col a { color: #94a3b8; font-size: 0.9rem; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer-col a:hover { color: white; }
+        .footer-bottom { border-top: 1px solid #1e293b; padding-top: 20px; text-align: center; color: #64748b; font-size: 0.85rem; }
+
+        /* SISTEMA DE MODALES CON IMÁGENES */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; }
         .modal-overlay.active { display: flex; opacity: 1; }
         
-        .modal-content {
-            background: white; padding: 40px; border-radius: 16px; max-width: 550px; width: 90%;
+        .modal-content { 
+            background: white; border-radius: 16px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto;
             position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex; flex-direction: column;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        @media (min-width: 768px) { .modal-content { flex-direction: row; } }
         
-        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); line-height: 1; transition: color 0.2s; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); line-height: 1; transition: color 0.2s; z-index: 10; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);}
         .modal-close:hover { color: var(--text-dark); }
         
-        .modal-inner-tag {
-            display: inline-block; background-color: rgba(37, 99, 235, 0.1); color: var(--accent);
-            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            padding: 6px 12px; border-radius: 6px; margin-bottom: 15px;
-        }
-
-        #modalTitle { font-size: 1.5rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; padding-right: 30px; line-height: 1.2; }
+        .modal-img-container { flex: 1; background: #f1f5f9; }
+        .modal-img-container img { width: 100%; height: 100%; object-fit: cover; min-height: 300px; }
+        
+        .modal-info { flex: 1; padding: 40px; display: flex; flex-direction: column; }
+        .modal-inner-tag { display: inline-block; background-color: rgba(37, 99, 235, 0.1); color: var(--accent); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 6px 12px; border-radius: 6px; margin-bottom: 15px; width: fit-content;}
+        #modalTitle { font-size: 1.5rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
         #modalPrice { font-size: 1.8rem; color: var(--accent); font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
         #modalDesc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
         
@@ -205,259 +274,440 @@
         .modal-features li { margin-bottom: 12px; font-size: 0.95rem; color: var(--text-dark); display: flex; align-items: flex-start; gap: 10px; }
         .modal-features li::before { content: '✓'; color: var(--success); font-weight: 800; font-size: 1.1rem; }
         
-        .btn-modal-pay { width: 100%; padding: 16px; font-size: 1.1rem; border-radius: 8px; }
-
-        /* =========================================
-           PIE DE PÁGINA Y BOTÓN WHATSAPP
-           ========================================= */
-        footer { background-color: var(--bg-card); padding: 50px 20px; text-align: center; }
-        .company-info { margin-bottom: 20px; }
-        .company-info p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
-        .company-info strong { color: var(--primary); }
-
-        .legal-links { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .legal-links a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; margin: 0 15px; font-weight: 600;}
-        .legal-links a:hover { color: var(--accent); }
-
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px; background-color: var(--success); color: white;
-            padding: 15px 20px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.9rem;
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: transform 0.3s; z-index: 999;
-        }
-        .whatsapp-float:hover { transform: scale(1.05); }
+        .btn-modal-pay { width: 100%; padding: 16px; font-size: 1.1rem; border-radius: 8px; margin-top: auto; }
 
     </style>
 </head>
 <body>
 
+    <div class="top-bar">
+        ⚡ Promoción de Temporada: ¡Obtén <span>Envío Express Gratis + Kit de Limpieza</span> en todas tus compras mayores a S/ 150!
+    </div>
+
     <header>
-        <div class="logo">LUXNOVA<span>.</span></div>
+        <div class="logo">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            LUXNOVA
+        </div>
         <nav>
-            <a href="#proceso">Metodología</a>
-            <a href="#catalogo">Servicios</a>
-            <a href="#faq">FAQ</a>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#testimonios">Reseñas</a>
+            <a href="#faq">Políticas</a>
         </nav>
+        <button class="cart-toggle" onclick="toggleCart()">
+            <svg viewBox="0 0 24 24"><path d="M9 20a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2zm-9.8-2h11.6l2.1-9H5.2L4 3H1v2h1.8l2 9z"/></svg>
+            <span class="cart-badge" id="cart-count">0</span>
+        </button>
     </header>
 
     <section class="hero">
-        <h1>Arquitectura Digital y<br>Consultoría IT Corporativa</h1>
-        <p>Aceleramos empresas mediante infraestructura en la nube, desarrollo de software a medida y auditorías de seguridad bajo estándares internacionales.</p>
+        <h1>Tecnología de Vanguardia y<br>Accesorios Premium</h1>
+        <p>Equipa tu espacio de trabajo o setup con dispositivos de alta gama. Envíos seguros y rápidos a todo el territorio nacional.</p>
         <div class="badges">
-            <span class="badge">React & Node.js</span>
-            <span class="badge">AWS / Azure Cloud</span>
-            <span class="badge">Ciberseguridad B2B</span>
+            <span class="badge">Garantía Local</span>
+            <span class="badge">Envíos Asegurados</span>
+            <span class="badge">Soporte Técnico</span>
         </div>
     </section>
 
-    <!-- CARRUSEL INFINITO DE PRUEBA SOCIAL -->
-    <div class="trust-banner">
-        <p>Proyectos y empresas que confían en nuestra infraestructura:</p>
-        <!-- Contenedor del carrusel animado -->
-        <div class="marquee-container">
-            <!-- Primera tanda de elementos -->
-            <span class="trust-brand-item">INVERSIONES-PRO</span>
-            <span class="trust-brand-item">NEXUS LOGISTICS</span>
-            <span class="trust-brand-item">QRAKA</span>
-            <span class="trust-brand-item">FINANZAS LATAM</span>
-            <span class="trust-brand-item">LUX NETWORK</span>
-            <span class="trust-brand-item">DATA FLOW INC</span>
-            <span class="trust-brand-item">GRUPO VERTEX</span>
-            <span class="trust-brand-item">TECH ANDINA</span>
-            <span class="trust-brand-item">INNOVA RETAIL</span>
-            <span class="trust-brand-item">GLOBAL SYSTEMS</span>
-            <!-- Segunda tanda idéntica para hacer el efecto infinito -->
-            <span class="trust-brand-item">INVERSIONES-PRO</span>
-            <span class="trust-brand-item">NEXUS LOGISTICS</span>
-            <span class="trust-brand-item">QRAKA</span>
-            <span class="trust-brand-item">FINANZAS LATAM</span>
-            <span class="trust-brand-item">LUX NETWORK</span>
-            <span class="trust-brand-item">DATA FLOW INC</span>
-            <span class="trust-brand-item">GRUPO VERTEX</span>
-            <span class="trust-brand-item">TECH ANDINA</span>
-            <span class="trust-brand-item">INNOVA RETAIL</span>
-            <span class="trust-brand-item">GLOBAL SYSTEMS</span>
+    <div class="promo-card">
+        <div class="promo-content">
+            <h3>Envío Gratis + Kit de Limpieza Tech</h3>
+            <p>Queremos que tus equipos duren más. Por eso, en todas las compras superiores a S/ 150 a través de nuestra pasarela, el envío a tu domicilio es completamente gratis y añadimos un kit profesional de limpieza de pantallas y teclados.</p>
+        </div>
+        <div class="promo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M16 8v-2a4 4 0 0 0 -8 0v2"/><circle cx="12" cy="14" r="2"/></svg>
         </div>
     </div>
 
-    <section class="process-section" id="proceso">
-        <h2 class="section-title" style="font-size: 1.8rem;">¿Cómo funciona nuestra integración?</h2>
-        <p class="section-subtitle" style="margin-bottom: 20px;">Transparencia y agilidad desde el primer minuto.</p>
-        
+    <div class="trust-banner">
+        <p>Llegamos a todo el Perú de forma rápida y segura a través de:</p>
+        <div class="marquee-container">
+            <span class="trust-brand-item">OLVA COURIER</span>
+            <span class="trust-brand-item">SHALOM LOGÍSTICA</span>
+            <span class="trust-brand-item">URBANO EXPRESS</span>
+            <span class="trust-brand-item">DHL PERÚ</span>
+            <span class="trust-brand-item">MOTORIZADO EXPRESS LIMA</span>
+            <span class="trust-brand-item">OLVA COURIER</span>
+            <span class="trust-brand-item">SHALOM LOGÍSTICA</span>
+            <span class="trust-brand-item">URBANO EXPRESS</span>
+            <span class="trust-brand-item">DHL PERÚ</span>
+            <span class="trust-brand-item">MOTORIZADO EXPRESS LIMA</span>
+        </div>
+    </div>
+
+    <section class="process-section">
+        <h2 class="section-title" style="font-size: 1.8rem;">Proceso de Compra Simple y Seguro</h2>
+        <p class="section-subtitle" style="margin-bottom: 20px;">Desde nuestra tienda hasta la puerta de tu casa.</p>
         <div class="process-grid">
             <div class="process-step">
-                <h4>1. Contratación Segura</h4>
-                <p>Seleccione el servicio en nuestro catálogo. Su pago se procesa bajo encriptación bancaria PCI-DSS.</p>
+                <h4>1. Pago Protegido</h4>
+                <p>Elige tu producto y procesa tu pago mediante nuestra pasarela encriptada PCI-DSS con cualquier tarjeta.</p>
             </div>
             <div class="process-step">
-                <h4>2. Asignación de Equipo</h4>
-                <p>En menos de 24h hábiles, un arquitecto de software se pondrá en contacto para abrir su expediente técnico.</p>
+                <h4>2. Despacho Rápido</h4>
+                <p>Tu pedido se empaca y entrega a la agencia logística en un máximo de 24 horas hábiles.</p>
             </div>
             <div class="process-step">
-                <h4>3. Ejecución y SLA</h4>
-                <p>Iniciamos el despliegue o la auditoría basándonos en cronogramas estrictos y entregables documentados.</p>
+                <h4>3. Recepción y Garantía</h4>
+                <p>Recibes tu producto con número de tracking en tiempo real, respaldado por nuestra garantía.</p>
             </div>
         </div>
     </section>
 
-    <main class="catalog-container" id="catalogo">
-        <h2 class="section-title">Soluciones Tecnológicas</h2>
-        <p class="section-subtitle">Seleccione el nivel de integración que su empresa necesita hoy.</p>
-        
+    <main class="catalog" id="catalogo">
+        <div class="section-header">
+            <h2>Catálogo de Hardware y Accesorios</h2>
+            <p>Dispositivos seleccionados para máxima productividad y rendimiento.</p>
+        </div>
+
         <div class="grid">
             
             <div class="card">
-                <div class="popular-tag">Estratégico</div>
-                <div class="card-category">Consultoría IT</div>
-                <h3 class="card-title">Transformación Digital (Programa 3 Meses)</h3>
-                <p class="card-desc">Asignación de un CTO fraccional para reestructurar los procesos tecnológicos de su empresa, optimizar flujos de trabajo e implementar automatización IA.</p>
-                <div class="card-footer">
-                    <div class="price">S/40,00 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('transformacion')">Ver Detalles</button>
+                <div class="tag-sale">Básico</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mini Trípode Flexible">
                 </div>
-            </div>
-            
-            <div class="card">
-                <div class="popular-tag">Express</div>
-                <div class="card-category">Soporte Técnico Especializado</div>
-                <h3 class="card-title">Diagnóstico de Estructura y Renderizado</h3>
-                <p class="card-desc">Revisión técnica de una hora (Meet/Zoom) para depurar fallos en la estructura de archivos de su proyecto web o problemas de renderizado en emuladores.</p>
-                <div class="card-footer">
-                    <div class="price">S/80 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('diagnostico')">Ver Detalles</button>
+                <div class="card-body">
+                    <div class="card-cat">Accesorios Móviles</div>
+                    <h3 class="card-title">Mini Trípode Flexible Smartphone</h3>
+                    <p class="card-desc">Construido en aluminio y goma de alta resistencia. Ideal para creadores de contenido.</p>
+                    <div class="card-footer">
+                        <div class="price">S/40 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('tripode', 'Mini Trípode Flexible', 40, 'https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')" aria-label="Añadir">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="popular-tag">Más Valorado</div>
-                <div class="card-category">Software Empresarial</div>
-                <h3 class="card-title">Licencia ERP "Luxnova Core" Anual</h3>
-                <p class="card-desc">Acceso corporativo a nuestro sistema de planificación de recursos (ERP) en la nube. Incluye hasta 10 usuarios, soporte técnico SLA 24/7 y respaldos diarios.</p>
-                <div class="card-footer">
-                    <div class="price">S/150 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('erp')">Ver Detalles</button>
+                <div class="popular-tag">Top Ventas</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cargador Carga Rápida">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Energía</div>
+                    <h3 class="card-title">Cargador Carga Rápida GaN 65W</h3>
+                    <p class="card-desc">Tecnología de Nitruro de Galio (GaN) con multipuertos USB-C y USB-A. Carga rápida.</p>
+                    <div class="card-footer">
+                        <div class="price">S/80 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('cargador', 'Cargador GaN 65W', 80, 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="popular-tag">Top Seguridad</div>
-                <div class="card-category">Ciberseguridad B2B</div>
-                <h3 class="card-title">Auditoría de Vulnerabilidades Web</h3>
-                <p class="card-desc">Evaluación exhaustiva (Pentesting) de su infraestructura. Entregamos un reporte técnico detallado con medidas de mitigación inmediatas (OWASP Top 10).</p>
-                <div class="card-footer">
-                    <div class="price">S/300 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('ciberseguridad')">Ver Detalles</button>
+                <div class="tag-sale">Premium</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Audífonos Inalámbricos">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Audio Profesional</div>
+                    <h3 class="card-title">Audífonos Inalámbricos ANC</h3>
+                    <p class="card-desc">Aislamiento acústico avanzado con Cancelación de Ruido Activa. Batería de 40 horas.</p>
+                    <div class="card-footer">
+                        <div class="price">S/300 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('audio', 'Audífonos ANC', 300, 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="popular-tag">Cloud B2B</div>
-                <div class="card-category">Cloud Computing</div>
-                <h3 class="card-title">Migración de Servidores a AWS/Azure</h3>
-                <p class="card-desc">Planificación, despliegue y migración de su centro de datos tradicional a la nube con arquitectura de alta disponibilidad y optimización de costos.</p>
-                <div class="card-footer">
-                    <div class="price">S/500 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('cloud')">Ver Detalles</button>
+                <div class="popular-tag">Oficina</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Monitor Portátil">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Pantallas</div>
+                    <h3 class="card-title">Monitor Portátil Full HD 15.6"</h3>
+                    <p class="card-desc">Expande tu estación de trabajo en cualquier lugar. Conexión directa mediante USB-C.</p>
+                    <div class="card-footer">
+                        <div class="price">S/500 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('monitor', 'Monitor Portátil 15.6', 500, 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="popular-tag">Alta Demanda</div>
-                <div class="card-category">Desarrollo Web</div>
-                <h3 class="card-title">Plataforma E-Commerce Headless</h3>
-                <p class="card-desc">Desarrollo de tienda en línea con arquitectura Headless. Diseñada para soportar altos volúmenes de tráfico e integración nativa con inventarios de SAP.</p>
-                <div class="card-footer">
-                    <div class="price">S/1,000 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('headless')">Ver Detalles</button>
+                <div class="tag-sale">Pro Setup</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Docking Station">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Conectividad</div>
+                    <h3 class="card-title">Docking Station Thunderbolt 4</h3>
+                    <p class="card-desc">Hub profesional para expandir tu laptop. Soporte para dos monitores 4K y carga passthrough.</p>
+                    <div class="card-footer">
+                        <div class="price">S/800 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('dock', 'Docking Thunderbolt 4', 800, 'https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="popular-tag">Premium</div>
-                <div class="card-category">Desarrollo a Medida</div>
-                <h3 class="card-title">Desarrollo App Móvil Corporativa (MVP)</h3>
-                <p class="card-desc">Diseño, programación y despliegue de una aplicación nativa (iOS/Android) orientada a la gestión de fuerza de ventas o logística de su empresa.</p>
-                <div class="card-footer">
-                    <div class="price">S/1,600 <span>PEN</span></div>
-                    <button class="btn-buy" onclick="abrirModal('mvp')">Ver Detalles</button>
+                <div class="popular-tag">Blindado</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Disco SSD Externo">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Almacenamiento</div>
+                    <h3 class="card-title">Disco SSD NVMe 4TB Rugerizado</h3>
+                    <p class="card-desc">Almacenamiento masivo ultrarrápido. Carcasa con certificación militar y resistencia IP68.</p>
+                    <div class="card-footer">
+                        <div class="price">S/1,000 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('ssd', 'SSD NVMe 4TB Rugerizado', 1000, 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag-sale">Innovación</div>
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gafas VR">
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Realidad Virtual</div>
+                    <h3 class="card-title">Gafas VR Autónomas (Gama Alta)</h3>
+                    <p class="card-desc">Explora sin cables ni PC. Pantallas 4K por ojo, seguimiento de manos y procesador XR2.</p>
+                    <div class="card-footer">
+                        <div class="price">S/1,600 <span>PEN</span></div>
+                        <button class="btn-add" onclick="agregarAlCarrito('vr', 'Gafas VR Autónomas', 1600, 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card gift-card">
+                <div class="popular-tag">Monto Libre</div>
+                <div class="card-img">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h.01M11 15h2"/></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-cat">Prepago / Saldo</div>
+                    <h3 class="card-title">Tarjeta de Regalo Luxnova</h3>
+                    <p class="card-desc">La mejor opción para regalar tecnología. Compra saldo a favor y elige el monto exacto.</p>
+                    <div class="card-footer">
+                        <div class="price">Variable</div>
+                        <button class="btn-add" onclick="agregarGiftCard()" style="width: auto; padding: 0 15px; font-weight: bold; font-size: 0.9rem;">Definir Monto</button>
+                    </div>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <section class="faq-section" id="faq">
-        <h2 class="section-title">Preguntas Frecuentes</h2>
-        <p class="section-subtitle">Transparencia en cada transacción comercial.</p>
-        
-        <div class="faq-grid">
-            <div class="faq-item">
-                <h4>¿Emiten comprobantes de pago para empresas (B2B)?</h4>
-                <p>Sí. Al completar su transacción, nuestro sistema generará automáticamente la factura electrónica (XML/CDR) validada por SUNAT vinculada a su número de RUC en un plazo máximo de 24 horas hábiles.</p>
+    <section class="reviews" id="testimonios">
+        <div class="section-header">
+            <h2>Lo que dicen nuestros clientes</h2>
+            <p>Empresas y profesionales en todo el Perú ya mejoraron su productividad.</p>
+        </div>
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"El Monitor Portátil me salvó la vida en mis viajes de negocios. La entrega por Olva Courier llegó a Arequipa en solo 2 días en perfecto estado."</p>
+                <div class="review-author">
+                    <div class="author-avatar">M</div>
+                    <div class="author-info">
+                        <h5>Mateo V.</h5>
+                        <span>Programador Independiente</span>
+                    </div>
+                </div>
             </div>
-            <div class="faq-item">
-                <h4>¿Cuál es la política de cancelaciones?</h4>
-                <p>Debido a la naturaleza técnica de nuestros servicios que implican la reserva inmediata de horas de ingeniería e infraestructura cloud, los pagos por auditorías o desarrollo iniciado son no reembolsables. Puede revisar nuestras políticas completas en el pie de página.</p>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Equipamos toda nuestra oficina con los Dockings Thunderbolt. La calidad de construcción es premium y la factura electrónica llegó de inmediato."</p>
+                <div class="review-author">
+                    <div class="author-avatar">C</div>
+                    <div class="author-info">
+                        <h5>Carolina S.</h5>
+                        <span>Gerente de IT, Lima</span>
+                    </div>
+                </div>
             </div>
-            <div class="faq-item">
-                <h4>¿Firman acuerdos de confidencialidad (NDA)?</h4>
-                <p>Totalmente. Antes de iniciar cualquier migración de servidores, auditoría de ciberseguridad o desarrollo de un MVP, firmamos acuerdos de confidencialidad para proteger la arquitectura interna de su negocio.</p>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Compré el SSD de 4TB. Increíblemente rápido. Tuvieron un problema de stock pero el equipo de Luxnova me lo solucionó por WhatsApp al instante."</p>
+                <div class="review-author">
+                    <div class="author-avatar">R</div>
+                    <div class="author-info">
+                        <h5>Renzo P.</h5>
+                        <span>Productor Audiovisual</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer id="contacto">
-        <div class="company-info">
-            <p><strong>LUXNOVA DIGITAL S.A.C.</strong></p>
-            <p>RUC: 20123456789</p>
-            <p>Correo corporativo: corporativo@luxnova.com</p>
-            <p>Lima, Perú</p>
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">Preguntas Frecuentes sobre Envíos</h2>
+        <p class="section-subtitle">Respuestas claras para tu tranquilidad.</p>
+        
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>¿Cuánto tiempo tarda en llegar mi producto?</h4>
+                <p>Para Lima Metropolitana realizamos envíos express (mismo día o 24 hrs). Para envíos a provincia a través de Olva Courier o Shalom, los tiempos de tránsito varían entre 48 a 72 horas hábiles tras la confirmación del pago.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Emiten boleta y factura electrónica?</h4>
+                <p>Sí, por supuesto. Todos nuestros productos incluyen IGV y se emite la boleta o factura electrónica validada por SUNAT según los datos comerciales que ingreses en la pasarela de pagos.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Qué cubre la garantía de los productos?</h4>
+                <p>Todos nuestros equipos cuentan con una garantía mínima de 6 meses contra defectos de fábrica. Si tu equipo presenta fallas de origen, gestionamos el cambio directo tras una rápida revisión técnica.</p>
+            </div>
         </div>
+    </section>
 
-        <div class="legal-links">
-            <a href="/legal.html">Términos de Servicio B2B</a>
-            <a href="/legal.html">Políticas de Privacidad</a>
-            <a href="/legal.html">Acuerdos de Nivel de Servicio (SLA)</a>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: white; margin-bottom: 15px;">
+                    <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    LUXNOVA
+                </div>
+                <p>RUC: 20123456789</p>
+                <p>Hardware Premium para profesionales exigentes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Atención al Cliente</h4>
+                <a href="#faq">Centro de Ayuda (FAQ)</a>
+                <a href="#">Seguimiento de Envío (Tracking)</a>
+                <a href="#">Garantías y Devoluciones</a>
+                <p style="margin-top: 15px;">Email: soporte@luxnova.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Políticas de Tienda</h4>
+                <a href="/legal.html">Términos y Condiciones</a>
+                <a href="/legal.html">Políticas de Privacidad</a>
+                <a href="/legal.html">Libro de Reclamaciones</a>
+            </div>
+            <div class="footer-col">
+                <h4>Pagos Seguros 100%</h4>
+                <p>Tus transacciones están encriptadas bajo normativa bancaria PCI-DSS.</p>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <span style="background: white; color: black; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">VISA</span>
+                    <span style="background: white; color: black; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">MASTERCARD</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Luxnova Digital S.A.C. Todos los derechos reservados.
         </div>
     </footer>
 
-    <a href="https://wa.me/51999999999?text=Hola%20equipo%20de%20Luxnova,%20deseo%20hacer%20una%20consulta%20corporativa." class="whatsapp-float" target="_blank">
-        💬 Consultas por WhatsApp
-    </a>
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito de Compras</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-body" id="cartItemsContainer">
+            <div class="empty-cart-msg">Tu carrito está vacío.<br>Agrega algunos productos tecnológicos.</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal:</span>
+                <span id="cartTotalVal">S/ 0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="procesarPago()">Proceder al Pago Seguro</button>
+            <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">
+                Tus datos de facturación y dirección de envío se pedirán en el siguiente paso.
+            </p>
+        </div>
+    </aside>
 
-    <!-- ESTRUCTURA DEL MODAL OCULTO -->
+    <div id="toast-container"></div>
     <div id="serviceModal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close" onclick="cerrarModal()">&times;</span>
-            <div id="modalTag" class="modal-inner-tag">Etiqueta</div>
-            <h2 id="modalTitle">Título del Servicio</h2>
-            <div id="modalPrice">S/ 0.00 PEN</div>
-            <p id="modalDesc">Descripción detallada del servicio.</p>
-            <ul id="modalFeatures" class="modal-features">
-                <!-- Los ítems se inyectan con Javascript -->
-            </ul>
-            <button class="btn-buy btn-modal-pay" id="btnProcesarPago" onclick="procesarPago()">Proceder al Pago Seguro</button>
+            
+            <div class="modal-img-container">
+                <img id="modalImage" src="" alt="Producto">
+            </div>
+            
+            <div class="modal-info">
+                <div id="modalTag" class="modal-inner-tag">Etiqueta</div>
+                <h2 id="modalTitle">Título</h2>
+                <div id="modalPrice">S/ 0.00 PEN</div>
+                <p id="modalDesc">Descripción</p>
+                <ul id="modalFeatures" class="modal-features"></ul>
+                <button class="btn-buy btn-modal-pay" id="btnProcesarPago" onclick="añadirDesdeModal()">Añadir al Carrito</button>
+            </div>
         </div>
     </div>
 
-    <!-- LÓGICA DE JAVASCRIPT PARA MODALES Y PAGOS -->
     <script>
+        let carrito = [];
+
         const dataServicios = {
-            'transformacion': { tag: 'Estratégico', titulo: 'Programa de Transformación Digital', precio: 'S/ 40.00 PEN', valorNumerico: 40, desc: 'Inicie la reestructuración tecnológica de su empresa guiado por un CTO fraccional. Nuestro programa está diseñado para escalar sus operaciones en 3 meses.', features: ['Auditoría profunda de su arquitectura de sistemas actual.', 'Diseño e implementación de automatizaciones con Inteligencia Artificial.', 'Sesiones estratégicas y acompañamiento gerencial semanal.'] },
-            'diagnostico': { tag: 'Express', titulo: 'Diagnóstico de Estructura y Renderizado', precio: 'S/ 80.00 PEN', valorNumerico: 80, desc: 'Sesión técnica intensiva de 1 hora mediante videollamada para desarrolladores o empresas que enfrentan bloqueos técnicos antes de un paso a producción.', features: ['Resolución de errores de compilación y estructura de archivos.', 'Depuración en vivo de problemas de renderizado en emuladores.', 'Entrega de informe rápido con mejores prácticas de codificación.'] },
-            'erp': { tag: 'Más Valorado', titulo: 'Licencia Anual ERP "Luxnova Core"', precio: 'S/ 150.00 PEN', valorNumerico: 150, desc: 'Obtenga control total de sus finanzas, inventarios y recursos humanos en una plataforma centralizada y desplegada en la nube.', features: ['Accesos con roles de administrador para hasta 10 usuarios.', 'Garantía de tiempo de actividad (Uptime) del 99.9% anual.', 'Backups diarios automatizados y soporte técnico prioritario.'] },
-            'ciberseguridad': { tag: 'Top Seguridad', titulo: 'Auditoría de Vulnerabilidades Web', precio: 'S/ 300.00 PEN', valorNumerico: 300, desc: 'Proteja los datos de su empresa. Realizamos pruebas de penetración controladas (Pentesting) para encontrar fisuras antes que los atacantes.', features: ['Escaneo avanzado basado en el Top 10 de vulnerabilidades de OWASP.', 'Pruebas manuales contra inyecciones SQL y Cross-Site Scripting (XSS).', 'Documento técnico y ejecutivo con plan de mitigación a corto plazo.'] },
-            'cloud': { tag: 'Cloud B2B', titulo: 'Migración a Infraestructura Cloud', precio: 'S/ 500.00 PEN', valorNumerico: 500, desc: 'Modernice sus servidores pasando de entornos físicos o compartidos a infraestructuras dedicadas en AWS o Microsoft Azure.', features: ['Diseño de arquitectura de microservicios y Serverless.', 'Configuración de balanceadores de carga para picos de tráfico.', 'Optimización que reduce sus costos operativos de servidores hasta un 30%.'] },
-            'headless': { tag: 'Alta Demanda', titulo: 'Plataforma E-Commerce Headless', precio: 'S/ 1,000.00 PEN', valorNumerico: 1000, desc: 'Construimos el futuro del comercio electrónico para su empresa separando el frontend del backend, garantizando cargas ultrarrápidas y máxima escalabilidad.', features: ['Desarrollo de interfaz de usuario con tecnologías modernas (React/Next.js).', 'Integración mediante APIs nativas con su sistema SAP o ERP actual.', 'Flujo de pago (Checkout) auditado y optimizado para máxima conversión.'] },
-            'mvp': { tag: 'Premium', titulo: 'Desarrollo App Móvil Corporativa (MVP)', precio: 'S/ 1,600.00 PEN', valorNumerico: 1600, desc: 'Llevamos su modelo de negocio a los dispositivos móviles. Ideal para digitalizar la fuerza de ventas, logística o interacción directa con clientes VIP.', features: ['Desarrollo de Producto Mínimo Viable (MVP) funcional y escalable.', 'Programación nativa o multiplataforma para ecosistemas iOS y Android.', 'Acompañamiento completo en el proceso de publicación en las tiendas (Stores).'] }
+            'tripode': { tag: 'Básico', titulo: 'Mini Trípode Flexible', precio: 'S/ 40.00 PEN', valorNumerico: 40, desc: 'Patas articuladas que se adaptan a cualquier terreno o superficie tubular.', imgUrl: 'https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Cuerpo central de aleación de aluminio.', 'Cabezal de bola giratorio 360 grados.', 'Incluye adaptador universal para cualquier smartphone.'] },
+            'cargador': { tag: 'Más Vendido', titulo: 'Cargador Carga Rápida GaN 65W', precio: 'S/ 80.00 PEN', valorNumerico: 80, desc: 'Olvídate de llevar múltiples cargadores. Este bloque es un 50% más pequeño que los tradicionales gracias al Nitruro de Galio.', imgUrl: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Potencia total de 65 Watts.', '2 puertos USB-C Power Delivery y 1 USB-A.', 'Protección integrada contra sobrevoltaje.'] },
+            'audifonos': { tag: 'Premium Audio', titulo: 'Audífonos Inalámbricos (ANC)', precio: 'S/ 300.00 PEN', valorNumerico: 300, desc: 'Aíslate del entorno en la oficina o durante tus viajes. Audio de alta fidelidad certificado.', imgUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Cancelación Activa de Ruido híbrida (hasta 35dB).', 'Conexión Multipunto (conecta PC y celular a la vez).', 'Autonomía de 40 horas con carga rápida USB-C.'] },
+            'monitor': { tag: 'Productividad', titulo: 'Monitor Portátil Full HD 15.6"', precio: 'S/ 500.00 PEN', valorNumerico: 500, desc: 'La pantalla secundaria perfecta para nómadas digitales o programadores.', imgUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Panel IPS anti-reflejo a 60Hz.', 'Plug & Play total: Un solo cable USB-C transmite video y energía.', 'Incluye funda magnética protectora que sirve de soporte.'] },
+            'docking': { tag: 'Pro Setup', titulo: 'Docking Station Thunderbolt 4', precio: 'S/ 800.00 PEN', valorNumerico: 800, desc: 'Convierte tu laptop delgada en una poderosa estación de trabajo de escritorio.', imgUrl: 'https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Ancho de banda extremo de 40Gbps.', 'Soporta hasta 2 monitores externos en resolución 4K a 60Hz.', 'Entrega 90W de potencia para cargar tu laptop conectada.'] },
+            'ssd': { tag: 'Storage Pro', titulo: 'Disco SSD NVMe 4TB Rugerizado', precio: 'S/ 1,000.00 PEN', valorNumerico: 1000, desc: 'Para editores de video y fotógrafos que manejan archivos pesados en terrenos hostiles.', imgUrl: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Velocidad de lectura súper rápida (2000 MB/s).', 'Carcasa de goma a prueba de caídas (2 metros).', 'Certificación IP68 (resistente a polvo y sumergible en agua).'] },
+            'vr': { tag: 'Innovación', titulo: 'Gafas VR Autónomas', precio: 'S/ 1,600.00 PEN', valorNumerico: 1600, desc: 'Realidad Virtual sin ataduras. Juega, trabaja o asiste a reuniones virtuales sin conectar la gafa a una PC.', imgUrl: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Almacenamiento interno de 128GB.', 'Resolución 4K por ojo con lentes pancake.', 'Seguimiento espacial de 6 grados de libertad (6DoF) sin sensores externos.'] },
+            'giftcard': { tag: 'Monto Libre', titulo: 'Tarjeta de Regalo Digital', precio: 'Monto a Elección', valorNumerico: 'variable', desc: 'Adquiere saldo prepago en Luxnova Digital. Ideal para regalos de empresa o para ajustar saldos pendientes.', imgUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Código canjeable sin fecha de caducidad.', 'El monto exacto se define al añadir al carrito.', 'Envío instantáneo por correo electrónico.'] }
         };
 
-        let productoSeleccionado = null;
+        function mostrarToast(mensaje) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" fill="none"/></svg> ${mensaje}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            document.getElementById('cartOverlay').classList.toggle('active');
+            renderizarCarrito();
+        }
+
+        function agregarAlCarrito(id, nombre, precio, imgUrl) {
+            carrito.push({ id, nombre, precio, imgUrl, idUnico: Date.now() });
+            actualizarBadge();
+            mostrarToast("Añadido al carrito con éxito");
+        }
+
+        function agregarGiftCard() {
+            let montoStr = prompt("Ingrese el monto en Soles (PEN) que desea cargar en su Tarjeta de Regalo:");
+            let monto = parseFloat(montoStr);
+            if (monto && monto > 0) {
+                const giftImgUrl = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232563eb" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M8 14h.01M12 14h4"/></svg>';
+                carrito.push({ id: 'giftcard', nombre: 'Tarjeta de Regalo Digital', precio: monto, imgUrl: giftImgUrl, idUnico: Date.now() });
+                actualizarBadge();
+                mostrarToast(`Tarjeta por S/ ${monto} añadida`);
+            } else if(montoStr !== null) {
+                alert("Monto inválido. Ingrese solo números mayores a cero.");
+            }
+        }
+
+        let productoModalActual = null;
+        
         function abrirModal(idServicio) {
             const data = dataServicios[idServicio];
             if (!data) return;
 
-            productoSeleccionado = data;
+            productoModalActual = idServicio;
+            document.getElementById('modalImage').src = data.imgUrl;
             document.getElementById('modalTag').innerText = data.tag;
             document.getElementById('modalTitle').innerText = data.titulo;
             document.getElementById('modalPrice').innerText = data.precio;
@@ -478,20 +728,78 @@
         function cerrarModal() {
             document.getElementById('serviceModal').classList.remove('active');
             document.body.style.overflow = 'auto'; 
-            productoSeleccionado = null;
+            productoModalActual = null;
+        }
+
+        function añadirDesdeModal() {
+            if(productoModalActual === 'giftcard') {
+                agregarGiftCard();
+            } else if(productoModalActual) {
+                const p = dataServicios[productoModalActual];
+                agregarAlCarrito(productoModalActual, p.titulo, p.valorNumerico, p.imgUrl);
+            }
+            cerrarModal();
+        }
+
+        function eliminarDelCarrito(idUnico) {
+            carrito = carrito.filter(item => item.idUnico !== idUnico);
+            actualizarBadge();
+            renderizarCarrito();
+        }
+
+        function actualizarBadge() {
+            document.getElementById('cart-count').innerText = carrito.length;
+        }
+
+        function renderizarCarrito() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalVal = document.getElementById('cartTotalVal');
+            container.innerHTML = '';
+            let total = 0;
+
+            if (carrito.length === 0) {
+                container.innerHTML = '<div class="empty-cart-msg">Tu carrito está vacío.<br>Agrega algunos productos tecnológicos.</div>';
+                totalVal.innerText = 'S/ 0.00';
+                return;
+            }
+
+            carrito.forEach(item => {
+                total += item.precio;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div class="cart-item-img"><img src="${item.imgUrl}" alt="${item.nombre}"></div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.nombre}</div>
+                        <div class="cart-item-price">S/ ${item.precio.toFixed(2)}</div>
+                        <button class="cart-item-remove" onclick="eliminarDelCarrito(${item.idUnico})">Quitar</button>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+            totalVal.innerText = `S/ ${total.toFixed(2)} PEN`;
         }
 
         function procesarPago() {
-            if (productoSeleccionado) {
-                alert("Iniciando conexión segura (PCI-DSS) con la pasarela Tumipay para:\n\n" + 
-                      productoSeleccionado.titulo + "\nTotal a cobrar: S/ " + productoSeleccionado.valorNumerico + " PEN");
+            if (carrito.length === 0) {
+                alert("Tu carrito está vacío. Añade productos antes de continuar.");
+                return;
             }
+            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+            
+            // Lógica de Promoción de Limpieza
+            let promoMsg = "";
+            if (total >= 150) {
+                promoMsg = "\n\n🎁 ¡Felicidades! Tu envío express es GRATIS y se ha añadido un Kit de Limpieza Tech a tu pedido.";
+            } else {
+                promoMsg = `\n\n💡 Agrega S/ ${(150 - total).toFixed(2)} más a tu carrito para obtener Envío Gratis + Kit de Limpieza.`;
+            }
+
+            alert(`Conectando con Tumipay (Entorno Seguro PCI-DSS)...\n\nMonto a Pagar: S/ ${total.toFixed(2)} PEN${promoMsg}`);
         }
 
         document.getElementById('serviceModal').addEventListener('click', function(e) {
-            if(e.target === this) {
-                cerrarModal();
-            }
+            if(e.target === this) cerrarModal();
         });
     </script>
 </body>
