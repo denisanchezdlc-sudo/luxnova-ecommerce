@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luxnova Digital | Accesorios Tecnológicos Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
            1. VARIABLES GLOBALES Y RESET
            ========================================================================== */
         :root {
             --bg-main: #f8fafc; --bg-card: #ffffff; --bg-dark: #0f172a;
-            --text-dark: #0f172a; --text-muted: #64748b; --text-light: #f1f5f9;
-            --primary: #1e293b; --accent: #2563eb; --accent-hover: #1d4ed8;
-            --promo: #f59e0b; --danger: #ef4444; --border: #e2e8f0;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1); --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --radius: 12px;
+            --text-dark: #1e293b; --text-muted: #64748b; --text-light: #f8fafc;
+            --primary: #0f172a; --accent: #2563eb; --accent-hover: #1d4ed8;
+            --success: #059669; --danger: #ef4444; --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px; --radius-lg: 12px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -23,265 +25,195 @@
         body { background-color: var(--bg-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
 
         /* ==========================================================================
-           2. TOP BAR & NAVEGACIÓN
+           2. TOP BAR & HEADER
            ========================================================================== */
-        .top-bar {
-            background-color: var(--accent); color: white; text-align: center;
-            padding: 8px 15px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
-        }
+        .top-bar { background-color: var(--accent); color: white; text-align: center; padding: 10px 15px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; }
         .top-bar span { color: #fde047; font-weight: 800; }
 
-        header {
-            background-color: var(--bg-card); border-bottom: 1px solid var(--border);
-            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm);
-        }
-
+        header { background-color: var(--bg-card); border-bottom: 1px solid var(--border); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
         .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; color: var(--primary); display: flex; align-items: center; gap: 8px;}
         .logo svg { width: 28px; height: 28px; fill: var(--accent); }
         
         nav { display: flex; align-items: center; gap: 25px; }
+        @media (max-width: 768px) { nav { display: none; } }
         nav a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; }
         nav a:hover { color: var(--accent); }
 
-        .cart-toggle {
-            background: none; border: none; cursor: pointer; position: relative;
-            display: flex; align-items: center; justify-content: center; padding: 8px;
-        }
-        .cart-toggle svg { width: 24px; height: 24px; stroke: var(--primary); stroke-width: 2; fill: none; }
-        .cart-badge {
-            position: absolute; top: 0; right: 0; background-color: var(--danger); color: white;
-            font-size: 0.7rem; font-weight: 800; width: 18px; height: 18px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            transform: translate(25%, -25%); border: 2px solid white;
-        }
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .cart-toggle { background: none; border: none; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; padding: 8px; }
+        .cart-toggle svg { width: 26px; height: 26px; stroke: var(--primary); stroke-width: 2; fill: none; }
+        .cart-badge { position: absolute; top: -2px; right: -2px; background-color: var(--danger); color: white; font-size: 0.7rem; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
         /* ==========================================================================
-           3. HERO SECTION & PROMO BANNER
+           3. HERO & TRUST BANNER
            ========================================================================== */
-        .hero {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white; padding: 100px 5% 80px 5%; display: flex; flex-direction: column; align-items: center; text-align: center;
-        }
-        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; padding: 80px 5% 60px 5%; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
         .hero p { font-size: 1.1rem; color: #cbd5e1; max-width: 700px; margin-bottom: 30px; }
-
-        .promo-card {
-            background: linear-gradient(45deg, #2563eb, #3b82f6); border-radius: var(--radius);
-            padding: 30px; max-width: 800px; margin: -40px auto 40px; position: relative;
-            box-shadow: var(--shadow-lg); color: white; display: flex; align-items: center; justify-content: space-between;
-            gap: 20px; z-index: 10;
-        }
-        .promo-content h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; color: #fde047; }
-        .promo-content p { font-size: 0.95rem; opacity: 0.9; line-height: 1.5; }
-        .promo-icon svg { width: 80px; height: 80px; fill: white; opacity: 0.8; }
-
-        /* ==========================================================================
-           4. CARRUSEL LOGÍSTICO
-           ========================================================================== */
-        .trust-banner {
-            background-color: var(--bg-dark); padding: 40px 0; text-align: center;
-            border-bottom: 1px solid var(--border); overflow: hidden; position: relative;
-        }
-        .trust-banner p { color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 25px; }
-        .trust-banner::before, .trust-banner::after { content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2; }
-        .trust-banner::before { left: 0; background: linear-gradient(to right, #0f172a, transparent); }
-        .trust-banner::after { right: 0; background: linear-gradient(to left, #0f172a, transparent); }
         
-        .marquee-container { display: flex; width: fit-content; animation: scroll-marquee 25s linear infinite; }
-        .marquee-container:hover { animation-play-state: paused; cursor: default; }
-        .trust-brand-item { color: white; font-size: 1.2rem; font-weight: 800; opacity: 0.5; transition: opacity 0.3s; letter-spacing: -0.5px; padding: 0 40px; white-space: nowrap; }
-        .trust-brand-item:hover { opacity: 1; }
+        .badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .badge { background: rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); }
+
+        .trust-banner { background-color: var(--bg-card); padding: 30px 0; text-align: center; border-bottom: 1px solid var(--border); overflow: hidden; position: relative; }
+        .trust-banner p { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 20px; }
+        .trust-banner::before, .trust-banner::after { content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2; }
+        .trust-banner::before { left: 0; background: linear-gradient(to right, #ffffff, transparent); }
+        .trust-banner::after { right: 0; background: linear-gradient(to left, #ffffff, transparent); }
+        
+        .marquee-container { display: flex; width: fit-content; animation: scroll-marquee 30s linear infinite; }
+        .marquee-container:hover { animation-play-state: paused; }
+        .trust-brand-item { color: var(--text-muted); font-size: 1.2rem; font-weight: 800; opacity: 0.6; padding: 0 40px; white-space: nowrap; }
         @keyframes scroll-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ==========================================================================
-           5. PROCESO DE COMPRA
+           4. CATÁLOGO GRID PRINCIPAL
            ========================================================================== */
-        .process-section { background-color: white; padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .process-grid { display: flex; justify-content: center; gap: 40px; max-width: 1000px; margin: 40px auto 0; flex-wrap: wrap; }
-        .process-step { flex: 1; min-width: 250px; }
-        .process-step h4 { color: var(--accent); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800; }
-        .process-step p { font-size: 0.95rem; color: var(--text-muted); }
-
-        /* ==========================================================================
-           6. CATÁLOGO DE PRODUCTOS
-           ========================================================================== */
-        .catalog { padding: 80px 5%; max-width: 1300px; margin: 0 auto; }
+        .catalog { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 50px; }
         .section-header h2 { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
         .section-header p { color: var(--text-muted); font-size: 1.1rem; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 
-        .card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-            overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column; position: relative;
-        }
-        .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; position: relative; }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: #cbd5e1; }
 
-        .card-img {
-            background: #f1f5f9; height: 250px; display: flex; align-items: center; justify-content: center;
-            border-bottom: 1px solid var(--border); overflow: hidden; position: relative;
-        }
-        
-        .card-img img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-        }
-        
-        .card:hover .card-img img { transform: scale(1.05); }
+        .card-img { height: 250px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); position: relative; background: white; }
+        .card-img img { width: 100%; height: 100%; object-fit: contain; padding: 20px; transition: transform 0.5s ease; }
+        .card:hover .card-img img { transform: scale(1.08); }
 
-        .card-img::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 40%);
-            pointer-events: none;
-        }
-
-        .tag-sale {
-            position: absolute; top: 15px; right: -35px; background: var(--danger); color: white;
-            font-size: 0.65rem; font-weight: 800; padding: 5px 35px; transform: rotate(45deg);
-            text-align: center; width: 150px; z-index: 3; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        
-        .popular-tag {
-            position: absolute; top: 15px; right: -35px; background: var(--accent); color: white;
-            font-size: 0.65rem; font-weight: 800; padding: 5px 35px; transform: rotate(45deg);
-            text-align: center; width: 150px; z-index: 3; text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        .tag-sale { position: absolute; top: 15px; left: 15px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 700; padding: 4px 12px; border-radius: 4px; z-index: 2; }
 
         .card-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-cat { font-size: 0.75rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .card-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; line-height: 1.3; }
-        .card-desc { font-size: 0.9rem; color: var(--text-muted); flex-grow: 1; margin-bottom: 20px; }
-
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .price { font-size: 1.4rem; font-weight: 800; color: var(--text-dark); }
-        .price span { font-size: 0.8rem; color: var(--text-muted); }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; line-height: 1.4; }
+        .card-price-container { display: flex; align-items: baseline; gap: 8px; margin-bottom: 15px; }
+        .card-price { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); }
+        .card-installments { font-size: 0.8rem; color: var(--success); font-weight: 600; }
+        .card-shipping { font-size: 0.8rem; color: var(--success); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 5px;}
         
-        .btn-add {
-            background: var(--primary); color: white; border: none; width: 40px; height: 40px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: background 0.3s;
-        }
-        .btn-add:hover { background: var(--accent); }
-        .btn-add svg { width: 20px; height: 20px; fill: white; }
-
-        .card.gift-card { border: 2px solid var(--accent); }
-        .card.gift-card .card-img { background: linear-gradient(135deg, #dbeafe, #eff6ff); }
-        .card.gift-card .card-img img { object-fit: contain; width: 60%; }
+        .card-footer { display: flex; gap: 10px; margin-top: auto; }
+        .btn-view { flex-grow: 1; background: var(--bg-main); color: var(--primary); border: 1px solid var(--border); padding: 12px; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .btn-view:hover { background: #e2e8f0; }
+        .btn-add { width: 48px; background: var(--accent); color: white; border: none; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s; }
+        .btn-add:hover { background: var(--accent-hover); }
 
         /* ==========================================================================
-           7. TESTIMONIOS
+           5. SISTEMA DE MODALES (FICHA CON ZOOM)
            ========================================================================== */
-        .reviews { background: #f8fafc; padding: 80px 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .review-card { background: white; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
-        .stars { color: #fbbf24; font-size: 1.2rem; margin-bottom: 15px; }
-        .review-text { font-style: italic; color: var(--text-dark); margin-bottom: 20px; font-size: 0.95rem; }
-        .review-author { display: flex; align-items: center; gap: 15px; }
-        .author-avatar { width: 40px; height: 40px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .author-info h5 { font-size: 0.9rem; color: var(--primary); }
-        .author-info span { font-size: 0.75rem; color: var(--text-muted); }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); width: 95%; max-width: 1100px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: var(--text-muted); line-height: 1; z-index: 10; }
+
+        .modal-top { display: flex; flex-direction: column; border-bottom: 1px solid var(--border); }
+        @media (min-width: 800px) { .modal-top { flex-direction: row; } }
+
+        /* --- NUEVO: ESTILOS PARA LA GALERÍA CON ZOOM --- */
+        .modal-gallery-container { flex: 1; display: flex; flex-direction: column; background: #ffffff; padding: 40px; border-right: 1px solid var(--border);}
+        
+        /* Contenedor de la imagen principal donde ocurre el zoom */
+        .modal-main-image { 
+            width: 100%; height: 400px; overflow: hidden; border-radius: 8px; 
+            border: 1px solid var(--border); cursor: zoom-in; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-main-image img { 
+            width: 100%; height: 100%; object-fit: contain; 
+            transition: transform 0.1s ease-out; /* Suaviza el movimiento del zoom */
+            transform-origin: center center; pointer-events: none; /* Para que el div capture el evento */
+        }
+
+        /* Fila de miniaturas */
+        .modal-thumbnails { display: flex; gap: 10px; margin-top: 20px; height: 70px; justify-content: center;}
+        .modal-thumb { flex: 0 0 70px; background: white; border: 2px solid var(--border); border-radius: 6px; padding: 5px; cursor: pointer; transition: 0.3s; }
+        .modal-thumb.active, .modal-thumb:hover { border-color: var(--accent); }
+        .modal-thumb img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* Buy Box (Right Side) */
+        .modal-buybox { flex: 1; padding: 40px; background: #f8fafc; }
+        .modal-condition { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+        .modal-title { font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
+        .modal-price { font-size: 2.5rem; color: var(--text-dark); font-weight: 400; margin-bottom: 5px; display: flex; align-items: flex-start; gap: 5px; }
+        .modal-price span { font-size: 1.2rem; margin-top: 5px;}
+        .modal-installments { color: var(--success); font-size: 0.9rem; margin-bottom: 25px; }
+        
+        .modal-shipping-box { display: flex; gap: 15px; margin-bottom: 25px; }
+        .modal-shipping-icon { fill: var(--success); width: 24px; height: 24px; }
+        .modal-shipping-text p { font-size: 0.9rem; margin: 0; }
+        .modal-shipping-text p.green { color: var(--success); font-weight: 600; }
+
+        .modal-seller { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; }
+        .modal-seller strong { color: var(--accent); cursor: pointer; }
+
+        .modal-buy-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+        .btn-checkout-modal { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .btn-checkout-modal:hover { background: var(--accent-hover); }
+        .btn-add-modal { background: #e0e7ff; color: var(--accent); border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .btn-add-modal:hover { background: #dbeafe; }
+
+        .modal-bullets { margin-bottom: 20px; }
+        .modal-bullets p { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
+        .modal-bullets ul { list-style: none; padding: 0; }
+        .modal-bullets li { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; padding-left: 20px; position: relative; }
+        .modal-bullets li::before { content: '•'; position: absolute; left: 0; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+
+        /* Modal Layout: Bottom Section (Specs) */
+        .modal-bottom { padding: 40px; background: white; }
+        .modal-bottom h2 { font-size: 1.5rem; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+        
+        .specs-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 800px) { .specs-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .spec-group h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: var(--primary); }
+        .spec-table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+        .spec-table tr:nth-child(even) { background-color: var(--bg-main); }
+        .spec-table th, .spec-table td { padding: 12px 15px; text-align: left; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+        .spec-table th { background-color: #f1f5f9; color: var(--text-dark); font-weight: 600; width: 40%; }
+        .spec-table td { color: var(--text-muted); width: 60%; }
+        .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
 
         /* ==========================================================================
-           8. CARRITO DE COMPRAS
+           6. CARRITO DE COMPRAS OFF-CANVAS
            ========================================================================== */
-        .cart-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.5); z-index: 999; backdrop-filter: blur(3px);
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
-        .cart-overlay.active { opacity: 1; visibility: visible; }
-        
-        .cart-sidebar {
-            position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
-            background: white; z-index: 1000; box-shadow: -5px 0 25px rgba(0,0,0,0.1);
-            display: flex; flex-direction: column; transition: right 0.3s ease;
-        }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%; background: white; z-index: 1000; box-shadow: -5px 0 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; transition: right 0.3s ease; }
         .cart-sidebar.active { right: 0; }
-
         .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .cart-header h3 { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-        .close-cart { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
-        
-        .cart-body { padding: 20px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 15px; }
+        .close-cart { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); }
+        .cart-body { padding: 20px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
         .empty-cart-msg { text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 0.95rem; }
-        
         .cart-item { display: flex; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-        .cart-item-img { width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; overflow: hidden;}
-        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
-        .cart-item-details { flex-grow: 1; }
-        .cart-item-title { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; line-height: 1.2;}
-        .cart-item-price { font-size: 0.9rem; color: var(--accent); font-weight: 700; }
-        .cart-item-remove { font-size: 0.75rem; color: var(--danger); cursor: pointer; border: none; background: none; margin-top: 5px; text-decoration: underline; }
-
+        .cart-item-img { width: 70px; height: 70px; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 5px; }
+        .cart-item-img img { width: 100%; height: 100%; object-fit: contain; }
+        .cart-item-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .cart-item-title { font-size: 0.9rem; font-weight: 600; color: var(--primary); line-height: 1.2;}
+        .cart-item-price { font-size: 1rem; color: var(--text-dark); font-weight: 700; }
+        .cart-item-remove { font-size: 0.8rem; color: var(--accent); cursor: pointer; border: none; background: none; text-align: left; }
         .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: #f8fafc; }
         .cart-total { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-        .btn-checkout {
-            width: 100%; padding: 15px; background: var(--success); color: white; border: none;
-            border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.3s;
-        }
-        .btn-checkout:hover { background: #059669; }
+        .btn-checkout { width: 100%; padding: 15px; background: var(--success); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.3s; }
 
         /* ==========================================================================
-           9. TOAST NOTIFICATIONS
+           7. TOASTS & FOOTER
            ========================================================================== */
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: var(--primary); color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; box-shadow: var(--shadow-md); transform: translateX(-150%); transition: transform 0.3s ease; display: flex; align-items: center; gap: 10px;}
         .toast.show { transform: translateX(0); }
-        .toast svg { width: 18px; height: 18px; fill: var(--success); }
-
-        /* ==========================================================================
-           10. FAQ & FOOTER
-           ========================================================================== */
-        .faq-section { background-color: white; padding: 80px 20px; border-top: 1px solid var(--border); }
-        .faq-grid { max-width: 800px; margin: 0 auto; }
-        .faq-item { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .faq-item h4 { font-size: 1.1rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
-        .faq-item p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
-
-        footer { background: var(--bg-dark); color: white; padding: 60px 5% 30px; margin-top: 0; }
+        
+        footer { background: var(--bg-dark); color: white; padding: 60px 5% 30px; margin-top: 60px; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; }
         .footer-col h4 { font-size: 1.1rem; color: white; margin-bottom: 20px; font-weight: 700; }
         .footer-col p, .footer-col a { color: #94a3b8; font-size: 0.9rem; text-decoration: none; display: block; margin-bottom: 10px; }
-        .footer-col a:hover { color: white; }
         .footer-bottom { border-top: 1px solid #1e293b; padding-top: 20px; text-align: center; color: #64748b; font-size: 0.85rem; }
-
-        /* SISTEMA DE MODALES CON IMÁGENES */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        
-        .modal-content { 
-            background: white; border-radius: 16px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto;
-            position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            display: flex; flex-direction: column;
-        }
-        @media (min-width: 768px) { .modal-content { flex-direction: row; } }
-        
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); line-height: 1; transition: color 0.2s; z-index: 10; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);}
-        .modal-close:hover { color: var(--text-dark); }
-        
-        .modal-img-container { flex: 1; background: #f1f5f9; }
-        .modal-img-container img { width: 100%; height: 100%; object-fit: cover; min-height: 300px; }
-        
-        .modal-info { flex: 1; padding: 40px; display: flex; flex-direction: column; }
-        .modal-inner-tag { display: inline-block; background-color: rgba(37, 99, 235, 0.1); color: var(--accent); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 6px 12px; border-radius: 6px; margin-bottom: 15px; width: fit-content;}
-        #modalTitle { font-size: 1.5rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
-        #modalPrice { font-size: 1.8rem; color: var(--accent); font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
-        #modalDesc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
-        
-        .modal-features { margin: 0 0 30px 0; padding: 0; list-style: none; }
-        .modal-features li { margin-bottom: 12px; font-size: 0.95rem; color: var(--text-dark); display: flex; align-items: flex-start; gap: 10px; }
-        .modal-features li::before { content: '✓'; color: var(--success); font-weight: 800; font-size: 1.1rem; }
-        
-        .btn-modal-pay { width: 100%; padding: 16px; font-size: 1.1rem; border-radius: 8px; margin-top: auto; }
-
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        ⚡ Promoción de Temporada: ¡Obtén <span>Envío Express Gratis + Kit de Limpieza</span> en todas tus compras mayores a S/ 150!
+        ⚡ Promoción de Temporada: ¡Obtén <span>Envío Express Gratis + Kit de Limpieza</span> en compras mayores a S/ 150!
     </div>
 
     <header>
@@ -291,34 +223,26 @@
         </div>
         <nav>
             <a href="#catalogo">Catálogo</a>
-            <a href="#testimonios">Reseñas</a>
-            <a href="#faq">Políticas</a>
+            <a href="#">Ofertas Especiales</a>
+            <a href="#">Políticas de Garantía</a>
         </nav>
-        <button class="cart-toggle" onclick="toggleCart()">
-            <svg viewBox="0 0 24 24"><path d="M9 20a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2zm-9.8-2h11.6l2.1-9H5.2L4 3H1v2h1.8l2 9z"/></svg>
-            <span class="cart-badge" id="cart-count">0</span>
-        </button>
+        <div class="header-actions">
+            <button class="cart-toggle" onclick="toggleCart()">
+                <svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.2 9.3a1 1 0 001 .7h12.4a1 1 0 001-.8L21 13M9 20a1 1 0 11-2 0 1 1 0 012 0zm10 0a1 1 0 11-2 0 1 1 0 012 0z"/></svg>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
     </header>
 
     <section class="hero">
         <h1>Tecnología de Vanguardia y<br>Accesorios Premium</h1>
-        <p>Equipa tu espacio de trabajo o setup con dispositivos de alta gama. Envíos seguros y rápidos a todo el territorio nacional.</p>
+        <p>Equipa tu espacio de trabajo o setup con dispositivos de alta gama. Envíos seguros, facturación B2B y soporte técnico especializado.</p>
         <div class="badges">
+            <span class="badge">Facturación Electrónica SUNAT</span>
             <span class="badge">Garantía Local</span>
             <span class="badge">Envíos Asegurados</span>
-            <span class="badge">Soporte Técnico</span>
         </div>
     </section>
-
-    <div class="promo-card">
-        <div class="promo-content">
-            <h3>Envío Gratis + Kit de Limpieza Tech</h3>
-            <p>Queremos que tus equipos duren más. Por eso, en todas las compras superiores a S/ 150 a través de nuestra pasarela, el envío a tu domicilio es completamente gratis y añadimos un kit profesional de limpieza de pantallas y teclados.</p>
-        </div>
-        <div class="promo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M16 8v-2a4 4 0 0 0 -8 0v2"/><circle cx="12" cy="14" r="2"/></svg>
-        </div>
-    </div>
 
     <div class="trust-banner">
         <p>Llegamos a todo el Perú de forma rápida y segura a través de:</p>
@@ -336,239 +260,14 @@
         </div>
     </div>
 
-    <section class="process-section">
-        <h2 class="section-title" style="font-size: 1.8rem;">Proceso de Compra Simple y Seguro</h2>
-        <p class="section-subtitle" style="margin-bottom: 20px;">Desde nuestra tienda hasta la puerta de tu casa.</p>
-        <div class="process-grid">
-            <div class="process-step">
-                <h4>1. Pago Protegido</h4>
-                <p>Elige tu producto y procesa tu pago mediante nuestra pasarela encriptada PCI-DSS con cualquier tarjeta.</p>
-            </div>
-            <div class="process-step">
-                <h4>2. Despacho Rápido</h4>
-                <p>Tu pedido se empaca y entrega a la agencia logística en un máximo de 24 horas hábiles.</p>
-            </div>
-            <div class="process-step">
-                <h4>3. Recepción y Garantía</h4>
-                <p>Recibes tu producto con número de tracking en tiempo real, respaldado por nuestra garantía.</p>
-            </div>
-        </div>
-    </section>
-
     <main class="catalog" id="catalogo">
         <div class="section-header">
             <h2>Catálogo de Hardware y Accesorios</h2>
-            <p>Dispositivos seleccionados para máxima productividad y rendimiento.</p>
+            <p>Dispositivos seleccionados para máxima productividad y rendimiento comercial.</p>
         </div>
-
-        <div class="grid">
-            
-            <div class="card">
-                <div class="tag-sale">Básico</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mini Trípode Flexible">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Accesorios Móviles</div>
-                    <h3 class="card-title">Mini Trípode Flexible Smartphone</h3>
-                    <p class="card-desc">Construido en aluminio y goma de alta resistencia. Ideal para creadores de contenido.</p>
-                    <div class="card-footer">
-                        <div class="price">S/40 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('tripode', 'Mini Trípode Flexible', 40, 'https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')" aria-label="Añadir">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
+        <div class="grid" id="productGrid">
             </div>
-
-            <div class="card">
-                <div class="popular-tag">Top Ventas</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cargador Carga Rápida">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Energía</div>
-                    <h3 class="card-title">Cargador Carga Rápida GaN 65W</h3>
-                    <p class="card-desc">Tecnología de Nitruro de Galio (GaN) con multipuertos USB-C y USB-A. Carga rápida.</p>
-                    <div class="card-footer">
-                        <div class="price">S/80 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('cargador', 'Cargador GaN 65W', 80, 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="tag-sale">Premium</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Audífonos Inalámbricos">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Audio Profesional</div>
-                    <h3 class="card-title">Audífonos Inalámbricos ANC</h3>
-                    <p class="card-desc">Aislamiento acústico avanzado con Cancelación de Ruido Activa. Batería de 40 horas.</p>
-                    <div class="card-footer">
-                        <div class="price">S/300 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('audio', 'Audífonos ANC', 300, 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="popular-tag">Oficina</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Monitor Portátil">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Pantallas</div>
-                    <h3 class="card-title">Monitor Portátil Full HD 15.6"</h3>
-                    <p class="card-desc">Expande tu estación de trabajo en cualquier lugar. Conexión directa mediante USB-C.</p>
-                    <div class="card-footer">
-                        <div class="price">S/500 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('monitor', 'Monitor Portátil 15.6', 500, 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="tag-sale">Pro Setup</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Docking Station">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Conectividad</div>
-                    <h3 class="card-title">Docking Station Thunderbolt 4</h3>
-                    <p class="card-desc">Hub profesional para expandir tu laptop. Soporte para dos monitores 4K y carga passthrough.</p>
-                    <div class="card-footer">
-                        <div class="price">S/800 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('dock', 'Docking Thunderbolt 4', 800, 'https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="popular-tag">Blindado</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Disco SSD Externo">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Almacenamiento</div>
-                    <h3 class="card-title">Disco SSD NVMe 4TB Rugerizado</h3>
-                    <p class="card-desc">Almacenamiento masivo ultrarrápido. Carcasa con certificación militar y resistencia IP68.</p>
-                    <div class="card-footer">
-                        <div class="price">S/1,000 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('ssd', 'SSD NVMe 4TB Rugerizado', 1000, 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="tag-sale">Innovación</div>
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gafas VR">
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Realidad Virtual</div>
-                    <h3 class="card-title">Gafas VR Autónomas (Gama Alta)</h3>
-                    <p class="card-desc">Explora sin cables ni PC. Pantallas 4K por ojo, seguimiento de manos y procesador XR2.</p>
-                    <div class="card-footer">
-                        <div class="price">S/1,600 <span>PEN</span></div>
-                        <button class="btn-add" onclick="agregarAlCarrito('vr', 'Gafas VR Autónomas', 1600, 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80')">
-                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card gift-card">
-                <div class="popular-tag">Monto Libre</div>
-                <div class="card-img">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h.01M11 15h2"/></svg>
-                </div>
-                <div class="card-body">
-                    <div class="card-cat">Prepago / Saldo</div>
-                    <h3 class="card-title">Tarjeta de Regalo Luxnova</h3>
-                    <p class="card-desc">La mejor opción para regalar tecnología. Compra saldo a favor y elige el monto exacto.</p>
-                    <div class="card-footer">
-                        <div class="price">Variable</div>
-                        <button class="btn-add" onclick="agregarGiftCard()" style="width: auto; padding: 0 15px; font-weight: bold; font-size: 0.9rem;">Definir Monto</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </main>
-
-    <section class="reviews" id="testimonios">
-        <div class="section-header">
-            <h2>Lo que dicen nuestros clientes</h2>
-            <p>Empresas y profesionales en todo el Perú ya mejoraron su productividad.</p>
-        </div>
-        <div class="review-grid">
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">"El Monitor Portátil me salvó la vida en mis viajes de negocios. La entrega por Olva Courier llegó a Arequipa en solo 2 días en perfecto estado."</p>
-                <div class="review-author">
-                    <div class="author-avatar">M</div>
-                    <div class="author-info">
-                        <h5>Mateo V.</h5>
-                        <span>Programador Independiente</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">"Equipamos toda nuestra oficina con los Dockings Thunderbolt. La calidad de construcción es premium y la factura electrónica llegó de inmediato."</p>
-                <div class="review-author">
-                    <div class="author-avatar">C</div>
-                    <div class="author-info">
-                        <h5>Carolina S.</h5>
-                        <span>Gerente de IT, Lima</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">"Compré el SSD de 4TB. Increíblemente rápido. Tuvieron un problema de stock pero el equipo de Luxnova me lo solucionó por WhatsApp al instante."</p>
-                <div class="review-author">
-                    <div class="author-avatar">R</div>
-                    <div class="author-info">
-                        <h5>Renzo P.</h5>
-                        <span>Productor Audiovisual</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq-section" id="faq">
-        <h2 class="section-title">Preguntas Frecuentes sobre Envíos</h2>
-        <p class="section-subtitle">Respuestas claras para tu tranquilidad.</p>
-        
-        <div class="faq-grid">
-            <div class="faq-item">
-                <h4>¿Cuánto tiempo tarda en llegar mi producto?</h4>
-                <p>Para Lima Metropolitana realizamos envíos express (mismo día o 24 hrs). Para envíos a provincia a través de Olva Courier o Shalom, los tiempos de tránsito varían entre 48 a 72 horas hábiles tras la confirmación del pago.</p>
-            </div>
-            <div class="faq-item">
-                <h4>¿Emiten boleta y factura electrónica?</h4>
-                <p>Sí, por supuesto. Todos nuestros productos incluyen IGV y se emite la boleta o factura electrónica validada por SUNAT según los datos comerciales que ingreses en la pasarela de pagos.</p>
-            </div>
-            <div class="faq-item">
-                <h4>¿Qué cubre la garantía de los productos?</h4>
-                <p>Todos nuestros equipos cuentan con una garantía mínima de 6 meses contra defectos de fábrica. Si tu equipo presenta fallas de origen, gestionamos el cambio directo tras una rápida revisión técnica.</p>
-            </div>
-        </div>
-    </section>
 
     <footer>
         <div class="footer-grid">
@@ -578,7 +277,7 @@
                     LUXNOVA
                 </div>
                 <p>RUC: 20123456789</p>
-                <p>Hardware Premium para profesionales exigentes.</p>
+                <p>Hardware Premium para empresas y profesionales exigentes.</p>
             </div>
             <div class="footer-col">
                 <h4>Atención al Cliente</h4>
@@ -596,10 +295,6 @@
             <div class="footer-col">
                 <h4>Pagos Seguros 100%</h4>
                 <p>Tus transacciones están encriptadas bajo normativa bancaria PCI-DSS.</p>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <span style="background: white; color: black; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">VISA</span>
-                    <span style="background: white; color: black; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">MASTERCARD</span>
-                </div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -614,7 +309,7 @@
             <button class="close-cart" onclick="toggleCart()">&times;</button>
         </div>
         <div class="cart-body" id="cartItemsContainer">
-            <div class="empty-cart-msg">Tu carrito está vacío.<br>Agrega algunos productos tecnológicos.</div>
+            <div class="empty-cart-msg">Tu carrito está vacío.</div>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
@@ -622,104 +317,358 @@
                 <span id="cartTotalVal">S/ 0.00</span>
             </div>
             <button class="btn-checkout" onclick="procesarPago()">Proceder al Pago Seguro</button>
-            <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">
-                Tus datos de facturación y dirección de envío se pedirán en el siguiente paso.
-            </p>
         </div>
     </aside>
 
     <div id="toast-container"></div>
+
     <div id="serviceModal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close" onclick="cerrarModal()">&times;</span>
             
-            <div class="modal-img-container">
-                <img id="modalImage" src="" alt="Producto">
+            <div class="modal-top">
+                
+                <div class="modal-gallery-container">
+                    <div class="modal-main-image" id="zoomContainer" onmousemove="efectoZoom(event)" onmouseleave="resetZoom()">
+                        <img id="modalImage" src="" alt="Producto">
+                    </div>
+                    <div class="modal-thumbnails" id="modalThumbnails">
+                        </div>
+                </div>
+                
+                <div class="modal-buybox">
+                    <div class="modal-condition" id="modalCondition">Nuevo | 1 vendido</div>
+                    <h1 class="modal-title" id="modalTitle">Título del Producto</h1>
+                    
+                    <div class="modal-price">
+                        <span style="font-size: 1.5rem; font-weight: 600;">S/</span>
+                        <span id="modalPriceVal">0</span>
+                    </div>
+                    <div class="modal-installments">12 cuotas de S/ <span id="modalInstallment">0.00</span> sin interés</div>
+                    
+                    <div class="modal-shipping-box">
+                        <svg class="modal-shipping-icon" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.2 9.3a1 1 0 001 .7h12.4a1 1 0 001-.8L21 13"/></svg>
+                        <div class="modal-shipping-text">
+                            <p class="green">Llega gratis mañana</p>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Comprando dentro de las próximas 4 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="modal-seller">Vendido por <strong>Luxnova Digital</strong><br>MercadoLíder Platinum</div>
+
+                    <div class="modal-bullets">
+                        <p>Lo que tienes que saber de este producto:</p>
+                        <ul id="modalBulletsList"></ul>
+                    </div>
+
+                    <div class="modal-buy-buttons">
+                        <button class="btn-checkout-modal" onclick="comprarAhora()">Comprar ahora</button>
+                        <button class="btn-add-modal" onclick="añadirDesdeModal()">Agregar al carrito</button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="modal-info">
-                <div id="modalTag" class="modal-inner-tag">Etiqueta</div>
-                <h2 id="modalTitle">Título</h2>
-                <div id="modalPrice">S/ 0.00 PEN</div>
-                <p id="modalDesc">Descripción</p>
-                <ul id="modalFeatures" class="modal-features"></ul>
-                <button class="btn-buy btn-modal-pay" id="btnProcesarPago" onclick="añadirDesdeModal()">Añadir al Carrito</button>
+
+            <div class="modal-bottom">
+                <h2>Características del producto</h2>
+                <div class="specs-grid" id="modalSpecsGrid">
+                    </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        let carrito = [];
-
-        const dataServicios = {
-            'tripode': { tag: 'Básico', titulo: 'Mini Trípode Flexible', precio: 'S/ 40.00 PEN', valorNumerico: 40, desc: 'Patas articuladas que se adaptan a cualquier terreno o superficie tubular.', imgUrl: 'https://images.unsplash.com/photo-1586520330364-704944d18ec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Cuerpo central de aleación de aluminio.', 'Cabezal de bola giratorio 360 grados.', 'Incluye adaptador universal para cualquier smartphone.'] },
-            'cargador': { tag: 'Más Vendido', titulo: 'Cargador Carga Rápida GaN 65W', precio: 'S/ 80.00 PEN', valorNumerico: 80, desc: 'Olvídate de llevar múltiples cargadores. Este bloque es un 50% más pequeño que los tradicionales gracias al Nitruro de Galio.', imgUrl: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Potencia total de 65 Watts.', '2 puertos USB-C Power Delivery y 1 USB-A.', 'Protección integrada contra sobrevoltaje.'] },
-            'audifonos': { tag: 'Premium Audio', titulo: 'Audífonos Inalámbricos (ANC)', precio: 'S/ 300.00 PEN', valorNumerico: 300, desc: 'Aíslate del entorno en la oficina o durante tus viajes. Audio de alta fidelidad certificado.', imgUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Cancelación Activa de Ruido híbrida (hasta 35dB).', 'Conexión Multipunto (conecta PC y celular a la vez).', 'Autonomía de 40 horas con carga rápida USB-C.'] },
-            'monitor': { tag: 'Productividad', titulo: 'Monitor Portátil Full HD 15.6"', precio: 'S/ 500.00 PEN', valorNumerico: 500, desc: 'La pantalla secundaria perfecta para nómadas digitales o programadores.', imgUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Panel IPS anti-reflejo a 60Hz.', 'Plug & Play total: Un solo cable USB-C transmite video y energía.', 'Incluye funda magnética protectora que sirve de soporte.'] },
-            'docking': { tag: 'Pro Setup', titulo: 'Docking Station Thunderbolt 4', precio: 'S/ 800.00 PEN', valorNumerico: 800, desc: 'Convierte tu laptop delgada en una poderosa estación de trabajo de escritorio.', imgUrl: 'https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Ancho de banda extremo de 40Gbps.', 'Soporta hasta 2 monitores externos en resolución 4K a 60Hz.', 'Entrega 90W de potencia para cargar tu laptop conectada.'] },
-            'ssd': { tag: 'Storage Pro', titulo: 'Disco SSD NVMe 4TB Rugerizado', precio: 'S/ 1,000.00 PEN', valorNumerico: 1000, desc: 'Para editores de video y fotógrafos que manejan archivos pesados en terrenos hostiles.', imgUrl: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Velocidad de lectura súper rápida (2000 MB/s).', 'Carcasa de goma a prueba de caídas (2 metros).', 'Certificación IP68 (resistente a polvo y sumergible en agua).'] },
-            'vr': { tag: 'Innovación', titulo: 'Gafas VR Autónomas', precio: 'S/ 1,600.00 PEN', valorNumerico: 1600, desc: 'Realidad Virtual sin ataduras. Juega, trabaja o asiste a reuniones virtuales sin conectar la gafa a una PC.', imgUrl: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Almacenamiento interno de 128GB.', 'Resolución 4K por ojo con lentes pancake.', 'Seguimiento espacial de 6 grados de libertad (6DoF) sin sensores externos.'] },
-            'giftcard': { tag: 'Monto Libre', titulo: 'Tarjeta de Regalo Digital', precio: 'Monto a Elección', valorNumerico: 'variable', desc: 'Adquiere saldo prepago en Luxnova Digital. Ideal para regalos de empresa o para ajustar saldos pendientes.', imgUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', features: ['Código canjeable sin fecha de caducidad.', 'El monto exacto se define al añadir al carrito.', 'Envío instantáneo por correo electrónico.'] }
-        };
-
-        function mostrarToast(mensaje) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" fill="none"/></svg> ${mensaje}`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('active');
-            document.getElementById('cartOverlay').classList.toggle('active');
-            renderizarCarrito();
-        }
-
-        function agregarAlCarrito(id, nombre, precio, imgUrl) {
-            carrito.push({ id, nombre, precio, imgUrl, idUnico: Date.now() });
-            actualizarBadge();
-            mostrarToast("Añadido al carrito con éxito");
-        }
-
-        function agregarGiftCard() {
-            let montoStr = prompt("Ingrese el monto en Soles (PEN) que desea cargar en su Tarjeta de Regalo:");
-            let monto = parseFloat(montoStr);
-            if (monto && monto > 0) {
-                const giftImgUrl = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232563eb" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M8 14h.01M12 14h4"/></svg>';
-                carrito.push({ id: 'giftcard', nombre: 'Tarjeta de Regalo Digital', precio: monto, imgUrl: giftImgUrl, idUnico: Date.now() });
-                actualizarBadge();
-                mostrarToast(`Tarjeta por S/ ${monto} añadida`);
-            } else if(montoStr !== null) {
-                alert("Monto inválido. Ingrese solo números mayores a cero.");
+        // BASE DE DATOS EXTENDIDA (CON ARRAY DE 4 IMÁGENES POR PRODUCTO)
+        const dbProductos = [
+            {
+                id: 'tripode',
+                tag: 'Básico',
+                titulo: 'Kit Streaming Videos Microfono Tripode Luz Led Cable Celular Color Negro',
+                precio: 40,
+                ventas: 125,
+                // AQUÍ DEFINES LAS 4 IMÁGENES (Uso tus rutas locales solicitadas para el primero)
+                imagenes: [
+                    './img/tripode-1.png', 
+                    './img/tripode-2.png', 
+                    './img/tripode-3.png', 
+                    './img/tripode-4.png'  
+                ],
+                bullets: [
+                    'Cable de 50cm incluido.',
+                    'Tiene luz LED con 3 niveles de intensidad.',
+                    'Micrófono con reducción de ruido ambiental.',
+                    'Adaptador universal para cualquier smartphone.'
+                ],
+                specs: {
+                    'Características generales': { 'Marca': 'Genérica', 'Modelo': 'AY-49T', 'Color': 'Negro', 'Es gamer': 'No' },
+                    'Especificaciones': { 'Formatos de micrófono': 'Micrófono', 'Tipos de micrófono': 'Omnidireccional', 'Patrones polares': 'Positivo', 'Cantidad de micrófonos': '1', 'Con luz LED': 'Sí' },
+                    'Conectividad': { 'Con Bluetooth': 'No' },
+                    'Peso y dimensiones': { 'Peso': '463 g', 'Altura máxima': '35 cm' },
+                    'Accesorios': { 'Accesorios incluidos': 'Pedestal, Cable 50cm, Luz LED' }
+                }
+            },
+            {
+                id: 'cargador',
+                tag: 'Más Vendido',
+                titulo: 'Cargador De Pared Carga Rápida GaN 65W Multipuerto USB-C',
+                precio: 80,
+                ventas: 430,
+                // Para los demás, repito la misma de Unsplash 4 veces a modo de ejemplo.
+                // REEMPLÁZALAS CON TUS RUTAS ./img/... CUANDO LAS TENGAS.
+                imagenes: [
+                    './img/cargador-1.png', 
+                    './img/cargador-2.png', 
+                    './img/cargador-3.png', 
+                    './img/cargador-4.png'  
+                ],
+                bullets: [
+                    'Potencia total máxima de 65W simultáneos.',
+                    'Tecnología Nitruro de Galio (GaN) para menor calentamiento.',
+                    'Ideal para Laptops, Tablets y Smartphones de alta gama.',
+                    'Protección contra sobrecargas y cortocircuitos.'
+                ],
+                specs: {
+                    'Características generales': { 'Marca': 'Luxnova Tech', 'Modelo': 'GaN-65W-Pro', 'Color': 'Blanco', 'Voltaje de entrada': '110V/220V' },
+                    'Conectividad': { 'Tipo de conector': '2x USB-C, 1x USB-A', 'Incluye cable': 'No' },
+                    'Especificaciones Técnicas': { 'Carga rápida': 'Sí (PD 3.0, QC 4.0)', 'Potencia máxima': '65 W' }
+                }
+            },
+            {
+                id: 'Smart',
+                tag: 'Más Vendido',
+                titulo: 'Reloj Smartwatch Xiaomi Redmi Watch 5 Active Matte Silver Caja Plateado Malla Blanco',
+                precio: 150,
+                ventas: 551,
+                imagenes: [
+                    './img/Smart-1.png', 
+                    './img/Smart-2.png', 
+                    './img/Smart-3.png'  
+                ],
+                bullets: [
+                    'Potencia total máxima de 65W simultáneos.',
+                    'Tecnología Nitruro de Galio (GaN) para menor calentamiento.',
+                    'Ideal para Laptops, Tablets y Smartphones de alta gama.',
+                    'Protección contra sobrecargas y cortocircuitos.'
+                ],
+                specs: {
+                    'Características generales': { 'Marca': 'Luxnova Tech', 'Modelo': 'GaN-65W-Pro', 'Color': 'Blanco', 'Voltaje de entrada': '110V/220V' },
+                    'Conectividad': { 'Tipo de conector': '2x USB-C, 1x USB-A', 'Incluye cable': 'No' },
+                    'Especificaciones Técnicas': { 'Carga rápida': 'Sí (PD 3.0, QC 4.0)', 'Potencia máxima': '65 W' }
+                }
+            },
+            {
+                id: 'audifonos',
+                tag: 'Premium Audio',
+                titulo: 'Audífonos Inalámbricos On-Ear Bluetooth 5.3 Con Cancelación De Ruido',
+                precio: 300,
+                ventas: 85,
+                imagenes: [
+                    './img/audifonos-1.png', 
+                    './img/audifonos-2.png', 
+                    './img/audifonos-3.png', 
+                    './img/audifonos-4.png'  
+                ],
+                bullets: [
+                    'Cancelación Activa de Ruido híbrida (hasta 35dB).',
+                    'Conexión Multipunto (conecta PC y celular a la vez).',
+                    'Autonomía de 40 horas con carga rápida USB-C.',
+                    'Almohadillas de Memory Foam ultra cómodas.'
+                ],
+                specs: {
+                    'Características generales': { 'Marca': 'SoundCore', 'Línea': 'Life Series', 'Modelo': 'Q30', 'Color': 'Negro Mate' },
+                    'Batería': { 'Duración de batería': '40 h (con ANC), 60 h (sin ANC)', 'Tiempo de carga': '2 h' },
+                    'Conectividad': { 'Versión de Bluetooth': '5.3', 'Con micrófono': 'Sí (2 micrófonos integrados)' },
+                    'Sonido': { 'Respuesta en frecuencia': '20 Hz - 20 kHz', 'Cancelación de ruido': 'Sí (Activa)' }
+                }
+            },
+            {
+                id: 'monitor',
+                tag: 'Productividad',
+                titulo: 'Monitor Portátil Full HD 15.6 Pulgadas USB-C IPS Anti-Reflejo',
+                precio: 500,
+                ventas: 62,
+                imagenes: [
+                    './img/monitor-1.png', 
+                    './img/monitor-2.png', 
+                    './img/monitor-3.png', 
+                    './img/monitor-4.png'  
+                ],
+                bullets: [
+                    'Panel IPS de 15.6" con resolución Full HD (1920x1080).',
+                    'Conexión Plug & Play mediante un solo cable USB-C.',
+                    'Incluye funda magnética que funciona como soporte ajustable.',
+                    'Altavoces duales estéreo incorporados.'
+                ],
+                specs: {
+                    'Pantalla': { 'Tamaño de pantalla': '15.6 "', 'Resolución': '1920 px x 1080 px', 'Tipo de panel': 'IPS', 'Frecuencia de actualización': '60 Hz' },
+                    'Conectividad': { 'Conexiones del monitor de la computadora': '2x USB-C, 1x Mini HDMI, 1x Audio Jack 3.5mm' },
+                    'Peso y dimensiones': { 'Peso sin base': '780 g', 'Espesor': '0.3 pulgadas' },
+                    'Accesorios': { 'Cables incluidos': 'USB-C a USB-C, HDMI a Mini HDMI' }
+                }
+            },
+            {
+                id: 'dock',
+                tag: 'Pro Setup',
+                titulo: 'Estación de Acoplamiento Docking Station Thunderbolt 4 40Gbps',
+                precio: 800,
+                ventas: 34,
+                imagenes: [
+                    './img/dock-1.jpg', 
+                    './img/dock-2.jpg', 
+                    './img/dock-3.jpg', 
+                    './img/dock-4.jpg'  
+                ],
+                bullets: [
+                    'Ancho de banda extremo de 40Gbps para transferencias.',
+                    'Soporta hasta 2 monitores externos en resolución 4K a 60Hz.',
+                    'Entrega 90W de potencia para cargar tu laptop conectada.',
+                    'Chasis de aluminio para disipación de calor pasiva.'
+                ],
+                specs: {
+                    'Características generales': { 'Marca': 'Kensington', 'Modelo': 'TB4-Pro', 'Color': 'Plata' },
+                    'Puertos y conectores': { 'Total de puertos': '11', 'Puertos de video': '2x Thunderbolt 4, 1x HDMI 2.1', 'Puertos USB': '3x USB-A 3.2, 1x USB-A 2.0', 'Puerto Ethernet': '1x RJ45 Gigabit' },
+                    'Especificaciones Técnicas': { 'Suministro de energía': '90W Power Delivery', 'Compatibilidad': 'Windows 10/11, macOS 11+' }
+                }
+            },
+            {
+                id: 'ssd',
+                tag: 'Blindado',
+                titulo: 'Disco Duro Sólido SSD NVMe 4TB Externo Rugerizado Alta Velocidad',
+                precio: 1000,
+                ventas: 110,
+                imagenes: [
+                    './img/ssd-1.png', 
+                    './img/ssd-2.png', 
+                    './img/ssd-3.png', 
+                    './img/ssd-4.png'  
+                ],
+                bullets: [
+                    'Velocidades de lectura de hasta 2000 MB/s.',
+                    'Carcasa con certificación militar (soporta caídas de 3 metros).',
+                    'Certificación IP68 (resistente al polvo y sumergible en agua).',
+                    'Encriptación por hardware AES 256-bit.'
+                ],
+                specs: {
+                    'Características principales': { 'Capacidad': '4 TB', 'Tecnología de almacenamiento': 'SSD NVMe', 'Interfaces': 'USB-C 3.2 Gen 2x2' },
+                    'Rendimiento': { 'Velocidad de lectura': '2000 MB/s', 'Velocidad de escritura': '1950 MB/s' },
+                    'Resistencia': { 'A prueba de agua': 'Sí (IP68)', 'Resistente a golpes': 'Sí (Certificación MIL-STD-810G)' },
+                    'Dimensiones': { 'Peso': '145 g', 'Material': 'Aluminio y Silicona' }
+                }
+            },
+            {
+                id: 'vr',
+                tag: 'Innovación',
+                titulo: 'Gafas de Realidad Virtual Autónomas Metaverso 128GB',
+                precio: 1600,
+                ventas: 28,
+                imagenes: [
+                    './img/vr-1.png', 
+                    './img/vr-2.png', 
+                    './img/vr-3.png', 
+                    './img/vr-4.png'  
+                ],
+                bullets: [
+                    'Completamente autónomo, no requiere conexión a PC.',
+                    'Pantallas LCD con resolución de 1920x1832 por ojo.',
+                    'Seguimiento espacial de 6 grados de libertad (6DoF) inside-out.',
+                    'Incluye dos controles hápticos de precisión.'
+                ],
+                specs: {
+                    'Hardware': { 'Almacenamiento': '128 GB', 'Procesador': 'Snapdragon XR2', 'Memoria RAM': '6 GB' },
+                    'Pantalla': { 'Resolución por ojo': '1920 px x 1832 px', 'Tasa de refresco': '90 Hz / 120 Hz', 'Tipo de lente': 'Fresnel' },
+                    'Sensores': { 'Sensores integrados': 'Acelerómetro, Giroscopio, Cámaras infrarrojas', 'Seguimiento': '6DoF (Head & Hands)' },
+                    'Conectividad': { 'Wi-Fi': 'Sí (Wi-Fi 6)', 'Bluetooth': 'Sí (v5.1)' }
+                }
             }
+        ];
+
+        let carrito = [];
+        let productoModalActual = null;
+
+        // INICIALIZAR CATÁLOGO (Usa la posición 0 del array de imágenes para la portada)
+        function renderizarCatalogo() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            dbProductos.forEach(prod => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="tag-sale">${prod.tag}</div>
+                        <div class="card-img" style="cursor:pointer;" onclick="abrirModal('${prod.id}')">
+                            <img src="${prod.imagenes[0]}" alt="${prod.titulo}">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title" style="cursor:pointer;" onclick="abrirModal('${prod.id}')">${prod.titulo.substring(0, 50)}...</h3>
+                            <div class="card-price-container">
+                                <span class="card-price">S/ ${prod.precio}</span>
+                            </div>
+                            <div class="card-shipping">
+                                <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.2 9.3a1 1 0 001 .7h12.4a1 1 0 001-.8L21 13"/></svg>
+                                Envío gratis
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn-view" onclick="abrirModal('${prod.id}')">Ver Producto</button>
+                                <button class="btn-add" onclick="agregarAlCarrito('${prod.id}')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
-        let productoModalActual = null;
-        
-        function abrirModal(idServicio) {
-            const data = dataServicios[idServicio];
-            if (!data) return;
+        // LÓGICA DE MODAL (ACTUALIZADA CON THUMBNAILS Y PREPARADA PARA ZOOM)
+        function abrirModal(id) {
+            const prod = dbProductos.find(p => p.id === id);
+            if (!prod) return;
+            productoModalActual = prod;
 
-            productoModalActual = idServicio;
-            document.getElementById('modalImage').src = data.imgUrl;
-            document.getElementById('modalTag').innerText = data.tag;
-            document.getElementById('modalTitle').innerText = data.titulo;
-            document.getElementById('modalPrice').innerText = data.precio;
-            document.getElementById('modalDesc').innerText = data.desc;
+            document.getElementById('modalCondition').innerText = `Nuevo | ${prod.ventas} vendidos`;
+            document.getElementById('modalTitle').innerText = prod.titulo;
+            document.getElementById('modalPriceVal').innerText = prod.precio.toFixed(2);
+            document.getElementById('modalInstallment').innerText = (prod.precio / 12).toFixed(2);
             
-            const ulFeatures = document.getElementById('modalFeatures');
-            ulFeatures.innerHTML = ''; 
-            data.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.innerText = feature;
-                ulFeatures.appendChild(li);
+            // 1. Cargar la imagen principal (la primera del arreglo)
+            const imgPrincipal = document.getElementById('modalImage');
+            imgPrincipal.src = prod.imagenes[0];
+            
+            // 2. Generar las 4 miniaturas dinámicamente
+            const thumbsContainer = document.getElementById('modalThumbnails');
+            thumbsContainer.innerHTML = '';
+            prod.imagenes.forEach((imgSrc, index) => {
+                const thumbDiv = document.createElement('div');
+                thumbDiv.className = index === 0 ? 'modal-thumb active' : 'modal-thumb';
+                thumbDiv.innerHTML = `<img src="${imgSrc}" alt="miniatura">`;
+                
+                thumbDiv.onclick = function() {
+                    imgPrincipal.src = imgSrc;
+                    document.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                };
+                thumbsContainer.appendChild(thumbDiv);
             });
+
+            // Bullets
+            const ulBullets = document.getElementById('modalBulletsList');
+            ulBullets.innerHTML = '';
+            prod.bullets.forEach(b => ulBullets.innerHTML += `<li>${b}</li>`);
+
+            // Tablas de Especificaciones
+            const gridSpecs = document.getElementById('modalSpecsGrid');
+            gridSpecs.innerHTML = '';
+            for (const [groupName, attributes] of Object.entries(prod.specs)) {
+                let rows = '';
+                for (const [key, val] of Object.entries(attributes)) {
+                    rows += `<tr><th>${key}</th><td>${val}</td></tr>`;
+                }
+                gridSpecs.innerHTML += `
+                    <div class="spec-group">
+                        <h3>${groupName}</h3>
+                        <table class="spec-table"><tbody>${rows}</tbody></table>
+                    </div>
+                `;
+            }
 
             document.body.style.overflow = 'hidden';
             document.getElementById('serviceModal').classList.add('active');
@@ -727,80 +676,124 @@
 
         function cerrarModal() {
             document.getElementById('serviceModal').classList.remove('active');
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto';
             productoModalActual = null;
         }
 
-        function añadirDesdeModal() {
-            if(productoModalActual === 'giftcard') {
-                agregarGiftCard();
-            } else if(productoModalActual) {
-                const p = dataServicios[productoModalActual];
-                agregarAlCarrito(productoModalActual, p.titulo, p.valorNumerico, p.imgUrl);
+        // ==========================================
+        // NUEVAS FUNCIONES PARA EL EFECTO LUPA (ZOOM)
+        // ==========================================
+        function efectoZoom(e) {
+            const container = document.getElementById('zoomContainer');
+            const img = document.getElementById('modalImage');
+            
+            // Obtener dimensiones exactas de la caja principal de la imagen
+            const rect = container.getBoundingClientRect();
+            
+            // Calcular dónde está el ratón en porcentaje (de 0 a 100%)
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            // Aplicar el zoom (escala 2.5x) y mover el punto de origen al cursor
+            img.style.transformOrigin = `${x}% ${y}%`;
+            img.style.transform = "scale(2.5)";
+        }
+
+        function resetZoom() {
+            const img = document.getElementById('modalImage');
+            // Devolver la imagen a su estado normal (1x) al quitar el ratón
+            img.style.transform = "scale(1)";
+            img.style.transformOrigin = "center center";
+        }
+
+        // CARRITO Y TOASTS
+        function mostrarToast(mensaje) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" fill="none"/></svg> ${mensaje}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            document.getElementById('cartOverlay').classList.toggle('active');
+            renderizarCarritoOffCanvas();
+        }
+
+        function agregarAlCarrito(idStr) {
+            const prod = dbProductos.find(p => p.id === idStr);
+            if(prod) {
+                carrito.push({ ...prod, idUnico: Date.now() });
+                document.getElementById('cart-count').innerText = carrito.length;
+                mostrarToast("Agregaste a tu carrito");
             }
-            cerrarModal();
+        }
+
+        function añadirDesdeModal() {
+            if(productoModalActual) {
+                agregarAlCarrito(productoModalActual.id);
+                cerrarModal();
+                toggleCart(); 
+            }
+        }
+
+        function comprarAhora() {
+            if(productoModalActual) {
+                alert(`Redirigiendo directamente a la pasarela Tumipay (Express Checkout) para comprar:\n\n${productoModalActual.titulo}\nTotal: S/ ${productoModalActual.precio} PEN`);
+            }
         }
 
         function eliminarDelCarrito(idUnico) {
             carrito = carrito.filter(item => item.idUnico !== idUnico);
-            actualizarBadge();
-            renderizarCarrito();
-        }
-
-        function actualizarBadge() {
             document.getElementById('cart-count').innerText = carrito.length;
+            renderizarCarritoOffCanvas();
         }
 
-        function renderizarCarrito() {
+        function renderizarCarritoOffCanvas() {
             const container = document.getElementById('cartItemsContainer');
             const totalVal = document.getElementById('cartTotalVal');
             container.innerHTML = '';
             let total = 0;
 
             if (carrito.length === 0) {
-                container.innerHTML = '<div class="empty-cart-msg">Tu carrito está vacío.<br>Agrega algunos productos tecnológicos.</div>';
+                container.innerHTML = '<div class="empty-cart-msg">Tu carrito está vacío.</div>';
                 totalVal.innerText = 'S/ 0.00';
                 return;
             }
 
             carrito.forEach(item => {
                 total += item.precio;
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'cart-item';
-                itemDiv.innerHTML = `
-                    <div class="cart-item-img"><img src="${item.imgUrl}" alt="${item.nombre}"></div>
-                    <div class="cart-item-details">
-                        <div class="cart-item-title">${item.nombre}</div>
-                        <div class="cart-item-price">S/ ${item.precio.toFixed(2)}</div>
-                        <button class="cart-item-remove" onclick="eliminarDelCarrito(${item.idUnico})">Quitar</button>
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-img"><img src="${item.imagenes[0]}" alt=""></div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.titulo.substring(0,35)}...</div>
+                            <div class="cart-item-price">S/ ${item.precio.toFixed(2)}</div>
+                            <button class="cart-item-remove" onclick="eliminarDelCarrito(${item.idUnico})">Eliminar</button>
+                        </div>
                     </div>
                 `;
-                container.appendChild(itemDiv);
             });
-            totalVal.innerText = `S/ ${total.toFixed(2)} PEN`;
+            totalVal.innerText = `S/ ${total.toFixed(2)}`;
         }
 
         function procesarPago() {
-            if (carrito.length === 0) {
-                alert("Tu carrito está vacío. Añade productos antes de continuar.");
-                return;
-            }
+            if (carrito.length === 0) { alert("Tu carrito está vacío."); return; }
             const total = carrito.reduce((sum, item) => sum + item.precio, 0);
             
-            // Lógica de Promoción de Limpieza
-            let promoMsg = "";
-            if (total >= 150) {
-                promoMsg = "\n\n🎁 ¡Felicidades! Tu envío express es GRATIS y se ha añadido un Kit de Limpieza Tech a tu pedido.";
-            } else {
-                promoMsg = `\n\n💡 Agrega S/ ${(150 - total).toFixed(2)} más a tu carrito para obtener Envío Gratis + Kit de Limpieza.`;
-            }
+            let promoMsg = total >= 150 
+                ? "\n\n🎁 Envío Express Gratis + Kit de Limpieza aplicados a tu orden."
+                : `\n\n💡 Agrega S/ ${(150 - total).toFixed(2)} más para Envío Gratis.`;
 
-            alert(`Conectando con Tumipay (Entorno Seguro PCI-DSS)...\n\nMonto a Pagar: S/ ${total.toFixed(2)} PEN${promoMsg}`);
+            alert(`Conectando con Tumipay Checkout Seguro...\n\nMonto a Pagar: S/ ${total.toFixed(2)} PEN${promoMsg}`);
         }
 
-        document.getElementById('serviceModal').addEventListener('click', function(e) {
-            if(e.target === this) cerrarModal();
-        });
+        // INIT
+        window.onload = () => { renderizarCatalogo(); };
+        document.getElementById('serviceModal').addEventListener('click', function(e) { if(e.target === this) cerrarModal(); });
     </script>
 </body>
 </html>
