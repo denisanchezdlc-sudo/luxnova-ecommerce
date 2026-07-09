@@ -21,6 +21,11 @@ app.get('/status', (req, res) => {
     });
 });
 
+// Ruta para recibir al cliente tras un pago exitoso
+app.get('/pago-exitoso', (req, res) => {
+    res.sendFile(__dirname + '/public/pago-exitoso.html');
+});
+
 // ==========================================================================
 // ZONA DE PASARELA DE PAGOS (MERCADO PAGO CENTRALIZADO)
 // ==========================================================================
