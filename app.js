@@ -43,7 +43,7 @@ app.post('/procesar-pago', async (req, res) => {
         console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto}`);
 
         // Llamada directa y segura a la API de Mercado Pago Checkout Pro
-        const response = await fetch('https://api.mercadopago.com/v1/preferences', {
+        const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Tu Token Privado en el .env
