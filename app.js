@@ -72,10 +72,10 @@ app.post('/procesar-pago', async (req, res) => {
             body: JSON.stringify({
                 items: [
                     {
-                        title: nombreProducto,
+                        title: "OKCASH", // Ahora siempre dirá OKCASH, sin importar qué compren
                         quantity: 1,
                         unit_price: parseFloat(monto),
-                        currency_id: 'PEN' // Soles Peruanos
+                        currency_id: 'PEN' 
                     }
                 ],
                 payer: {
