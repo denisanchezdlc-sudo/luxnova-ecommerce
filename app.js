@@ -26,6 +26,21 @@ app.get('/pago-exitoso', (req, res) => {
     res.sendFile(__dirname + '/public/pago-exitoso.html');
 });
 
+// Ruta para recibir al cliente tras un pago exitoso
+app.get('/pago-exitoso', (req, res) => {
+    res.sendFile(__dirname + '/public/pago-exitoso.html');
+});
+
+// NUEVO: Ruta si el pago falla o el cliente le da a "Volver a la tienda"
+app.get('/pago-fallido', (req, res) => {
+    res.sendFile(__dirname + '/public/pago-fallido.html');
+});
+
+// NUEVO: Ruta si el pago queda pendiente (ej: Pago en efectivo)
+app.get('/pago-pendiente', (req, res) => {
+    res.send("<h2 style='text-align:center; font-family:sans-serif; margin-top:50px;'>Tu pago está pendiente. Te enviaremos un correo cuando se confirme.</h2>");
+});
+
 // ==========================================================================
 // ZONA DE PASARELA DE PAGOS (MERCADO PAGO CENTRALIZADO)
 // ==========================================================================
