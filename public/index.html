@@ -1441,7 +1441,7 @@
             if(radio) radio.checked = true;
         }
 
-        // FUNCION ACTUALIZADA: Recopila los datos y los envía a Supabase
+        // FUNCION ACTUALIZADA Y CONECTADA A MERCADO PAGO
         async function finalizarTransaccion() {
             // 1. Recopilar datos de facturación
             const tipoComprobante = document.querySelector('input[name="tipo_comprobante"]:checked').value;
@@ -1470,7 +1470,7 @@
                 return;
             }
 
-            // 3. Empaquetar todo en un objeto
+            // 3. Empaquetar todo en un objeto para Supabase
             const nuevaOrden = {
                 cliente_nombre: nombreCliente,
                 cliente_documento: docCliente,
@@ -1483,37 +1483,56 @@
                 provincia: prov,
                 distrito: dist,
                 total: checkoutTotalActual,
-                carrito: carrito // ¡Pasamos la lista de productos comprados entera!
+                carrito: carrito 
             };
 
             try {
-                // Cambiamos el texto del botón para que el usuario sepa que está cargando
+                // Cambiamos el texto del botón para mostrar carga
                 const btnPagar = document.querySelector('.btn-continue[onclick="finalizarTransaccion()"]');
-                const textoOriginal = btnPagar.innerText;
-                btnPagar.innerText = "Procesando...";
+                btnPagar.innerText = "Conectando con Mercado Pago...";
                 btnPagar.disabled = true;
 
-                // 4. Insertar en la tabla 'ordenes' de Supabase
+                // 4. Aseguramos la orden insertándola en Supabase primero
                 const { error } = await clienteSupabase.from('ordenes').insert([nuevaOrden]);
-
                 if (error) throw error;
 
-                // 5. Éxito: Mostrar mensaje, vaciar carrito y cerrar
-                alert(`✅ Pedido Registrado en Base de Datos.\n\nSerás redirigido a Tumipay para pagar S/ ${checkoutTotalActual.toFixed(2)} PEN.`);
-                
-                carrito = []; // Vaciamos el carrito
-                document.getElementById('cart-count').innerText = "0";
-                renderizarCarritoOffCanvas();
-                cerrarCheckout();
+                // Creamos un título dinámico para la pasarela dependiendo de cuántas cosas compre
+                const tituloResumen = carrito.length === 1 ? carrito[0].titulo : `Compra de ${carrito.length} productos - Luxnova`;
+                const idTransaccion = 'VC-' + Date.now(); // Creamos un ID único de rastreo
 
-                // Aquí iría el código real de redirección a Tumipay:
-                // window.location.href = "URL_DE_TUMIPAY";
+                // 5. Llamamos a nuestro PROPIO backend (app.js) para que gestione Mercado Pago
+                // Usamos la ruta relativa '/procesar-pago' porque el frontend y el backend están en el mismo Render
+                const respuestaMP = await fetch('/procesar-pago', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        monto: checkoutTotalActual,
+                        clienteEmail: email,
+                        id_carrito: idTransaccion,
+                        producto: tituloResumen,
+                        origen: 'vertice-corporativo.onrender.com'
+                    })
+                });
+
+                const dataMP = await respuestaMP.json();
+
+                if (dataMP.checkout_url) {
+                    // Si todo sale bien, vaciamos el carrito visualmente
+                    carrito = []; 
+                    document.getElementById('cart-count').innerText = "0";
+                    renderizarCarritoOffCanvas();
+                    
+                    // ¡Despegue! Redirigimos a la pantalla oficial de cobro
+                    window.location.href = dataMP.checkout_url;
+                } else {
+                    alert("Hubo un problema al generar el enlace seguro. Inténtalo de nuevo.");
+                    btnPagar.innerText = "Proceder a Pagar";
+                    btnPagar.disabled = false;
+                }
 
             } catch (error) {
-                console.error("Error al guardar la orden:", error);
-                alert("Hubo un problema de conexión guardando tu pedido. Intenta de nuevo.");
-            } finally {
-                // Restauramos el botón
+                console.error("Error al procesar la transacción:", error);
+                alert("Hubo un problema de conexión. Revisa tu internet e intenta de nuevo.");
                 const btnPagar = document.querySelector('.btn-continue[onclick="finalizarTransaccion()"]');
                 btnPagar.innerText = "Proceder a Pagar";
                 btnPagar.disabled = false;

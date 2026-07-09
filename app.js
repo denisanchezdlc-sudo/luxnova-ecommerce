@@ -7,46 +7,156 @@ const port = process.env.PORT || 3000;
 
 // Configuraciones de seguridad y lectura de datos
 app.use(cors());
-app.use(express.json()); // Vital para que Tumipay nos pueda enviar información
+app.use(express.json()); // Vital para leer los JSON que envían las webs y Mercado Pago
 
 // 1. Mostrar la Vitrina Corporativa al público
 app.use(express.static('public'));
 
-// 2. Ruta de Diagnóstico (Actualizada para Auditoría)
+// 2. Ruta de Diagnóstico (Actualizada para Auditoría con Mercado Pago)
 app.get('/status', (req, res) => {
     res.json({ 
         empresa: "LUXNOVA DIGITAL S.A.C.",
         estado: "Operativo",
-        pasarela: "Esperando credenciales de Tumipay"
+        pasarela: "Mercado Pago Checkout Pro (Centralizado)"
     });
 });
 
-// ==========================================
-// ZONA DE PASARELA DE PAGOS (FUTURA CONEXIÓN)
-// ==========================================
+// ==========================================================================
+// ZONA DE PASARELA DE PAGOS (MERCADO PAGO CENTRALIZADO)
+// ==========================================================================
 
-// 3. Ruta para generar el link de pago cuando el cliente haga clic en "Comprar"
+// PASO 1 REEMPLAZADO: Ruta para generar el link de pago (Soporta Vértice y Lux Network)
 app.post('/procesar-pago', async (req, res) => {
-    const { producto, precio } = req.body;
-    
-    // Aquí programaremos la llamada a Tumipay usando tus credenciales del .env
-    // Tumipay nos devolverá un link seguro y nosotros se lo daremos al cliente.
-    
-    console.log(`Iniciando compra corporativa de: ${producto} por S/ ${precio} PEN`);
-    res.json({ 
-        mensaje: "Simulación: Conectando con el entorno seguro...",
-        checkout_url: "https://link-de-pago-simulado.com"
-    });
+    try {
+        // Recibimos los datos. Si vienen de una web externa, incluirán el campo 'origen'
+        const { monto, clienteEmail, origen, id_carrito, producto } = req.body;
+
+        // Validaciones de seguridad básicas
+        if (!monto || !clienteEmail) {
+            return res.status(400).json({ error: "Faltan parámetros requeridos (monto o clienteEmail)" });
+        }
+
+        // Si no se envía un origen explícito, asumimos que viene de la web local (Vértice Corporativo)
+        const webOrigen = origen || 'vertice-corporativo.onrender.com';
+        const nombreProducto = producto || "Compra en Plataforma Luxnova";
+
+        console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto}`);
+
+        // Llamada directa y segura a la API de Mercado Pago Checkout Pro
+        const response = await fetch('https://api.mercadopago.com/v1/preferences', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Tu Token Privado en el .env
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [
+                    {
+                        title: nombreProducto,
+                        quantity: 1,
+                        unit_price: parseFloat(monto),
+                        currency_id: 'PEN' // Soles Peruanos
+                    }
+                ],
+                payer: {
+                    email: clienteEmail
+                },
+                // LA JUGADA MAESTRA: Guardamos el origen en la metadata para el enrutador del webhook
+                metadata: {
+                    origen_web: webOrigen,
+                    id_carrito: id_carrito || Date.now().toString()
+                },
+                // Redirecciones dinámicas basadas en la web que inició la compra
+                back_urls: {
+                    success: `https://${webOrigen}/pago-exitoso`,
+                    failure: `https://${webOrigen}/pago-fallido`,
+                    pending: `https://${webOrigen}/pago-pendiente`
+                },
+                auto_return: "approved"
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Error al comunicarse con Mercado Pago");
+        }
+
+        // Devolvemos la URL real de Mercado Pago para que la interfaz redirija al usuario
+        res.json({ 
+            mensaje: "Conexión segura establecida con Mercado Pago",
+            checkout_url: data.init_point 
+        });
+
+    } catch (error) {
+        console.error("Error crítico al generar preferencia de pago:", error);
+        res.status(500).json({ error: "No se pudo procesar la solicitud de pago seguro" });
+    }
 });
 
-// 4. Webhook: El teléfono por donde Tumipay nos avisará que el cliente ya pagó
-app.post('/webhook-tumipay', (req, res) => {
-    const notificacion = req.body;
-    
-    // Aquí leeremos si el pago fue exitoso para activar el servicio B2B
-    console.log("¡Tumipay informa un cambio de estado en una transacción!", notificacion);
-    
-    res.status(200).send("Notificación recibida exitosamente");
+// PASO 2 REEMPLAZADO: Webhook unificado (Escucha a Mercado Pago y enruta las confirmaciones)
+app.post('/webhook-tumipay', async (req, res) => {
+    try {
+        // Mercado Pago envía notificaciones con estructuras específicas (type y data.id)
+        const { type, data } = req.body;
+
+        if (type === 'payment' && data && data.id) {
+            const paymentId = data.id;
+
+            console.log(`[Webhook] Notificación recibida para el pago ID: ${paymentId}. Verificando...`);
+
+            // Consultamos los detalles reales del pago en los servidores de Mercado Pago
+            const paymentResponse = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` }
+            });
+
+            const paymentData = await paymentResponse.json();
+
+            // Si el pago es real y está aprobado de forma definitiva
+            if (paymentResponse.ok && paymentData.status === 'approved') {
+                
+                // Extraemos la metadata sembrada en el paso 1
+                const { origen_web, id_carrito } = paymentData.metadata;
+                const montoAprobado = paymentData.transaction_amount;
+                const emailComprador = paymentData.payer.email;
+
+                console.log(`[Webhook] ¡PAGO APROBADO! S/ ${montoAprobado} de ${emailComprador}`);
+
+                // ENRUTADOR INTELIGENTE SEGÚN EL ORIGEN
+                if (origen_web === 'lux-network-core.onrender.com') {
+                    console.log(`--> Enrutando despacho automático hacia Lux Network Core...`);
+                    
+                    // Disparamos una alerta silenciosa al backend de tu segunda web
+                    try {
+                        await fetch('https://lux-network-core.onrender.com/api/confirmar-pedido', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id_carrito: id_carrito,
+                                estado: 'PAGADO',
+                                monto: montoAprobado,
+                                email: emailComprador
+                            })
+                        });
+                    } catch (err) {
+                        console.error("Error al notificar al servidor secundario lux-network-core:", err);
+                    }
+
+                } else {
+                    // Flujo por defecto para compras locales en Vértice Corporativo
+                    console.log(`--> Procesando despacho local para Vértice Corporativo (Guardar en Supabase, emitir comprobante, etc.)`);
+                }
+            }
+        }
+
+        // Siempre respondemos 200 OK a Mercado Pago de inmediato para que no reintente el envío
+        res.status(200).send('OK');
+
+    } catch (error) {
+        console.error("Error procesando evento del Webhook:", error);
+        res.status(200).send('Procesado con observaciones internas');
+    }
 });
 
 // ==========================================
