@@ -98,117 +98,107 @@
         .btn-add:hover { background: var(--accent-hover); }
 
         /* ==========================================================================
-           5. SISTEMA DE MODALES (FICHA CON ZOOM)
+           5. SISTEMA DE MODALES (ESTILO BOUTIQUE TECH PREMIUM)
            ========================================================================== */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(12px); opacity: 0; transition: opacity 0.4s ease; padding: 20px; }
         .modal-overlay.active { display: flex; opacity: 1; }
         
-        .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); width: 95%; max-width: 1100px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-content { background: #ffffff; border-radius: 24px; width: 100%; max-width: 1200px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(30px) scale(0.98); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
         
-        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: var(--text-muted); line-height: 1; z-index: 10; }
+        .modal-close { position: absolute; top: 25px; right: 30px; font-size: 2.5rem; cursor: pointer; color: var(--text-dark); line-height: 1; z-index: 10; font-weight: 300; transition: transform 0.3s ease; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; }
+        .modal-close:hover { transform: rotate(90deg); background: #e2e8f0; }
 
         .modal-top { display: flex; flex-direction: column; border-bottom: 1px solid var(--border); }
-        @media (min-width: 800px) { .modal-top { flex-direction: row; } }
+        @media (min-width: 900px) { .modal-top { flex-direction: row; } }
 
-        .modal-gallery-container { flex: 1; display: flex; flex-direction: column; background: #ffffff; padding: 40px; border-right: 1px solid var(--border);}
-        
-        .modal-main-image { 
-            width: 100%; height: 400px; overflow: hidden; border-radius: 8px; 
-            border: 1px solid var(--border); cursor: zoom-in; position: relative;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .modal-main-image img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            transition: transform 0.1s ease-out; 
-            transform-origin: center center; pointer-events: none;
-        }
+        /* GALERÍA TOTALMENTE LIMPIA */
+        .modal-gallery-container { flex: 1.2; display: flex; flex-direction: column; background: #ffffff; padding: 50px; }
+        .modal-main-image { width: 100%; height: 450px; cursor: zoom-in; position: relative; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .modal-main-image img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s ease-out; pointer-events: none; }
 
-        .modal-thumbnails { display: flex; gap: 10px; margin-top: 20px; height: 70px; justify-content: center;}
-        .modal-thumb { flex: 0 0 70px; background: white; border: 2px solid var(--border); border-radius: 6px; padding: 5px; cursor: pointer; transition: 0.3s; }
-        .modal-thumb.active, .modal-thumb:hover { border-color: var(--accent); }
+        .modal-thumbnails { display: flex; gap: 15px; margin-top: 30px; justify-content: center;}
+        .modal-thumb { flex: 0 0 75px; height: 75px; background: #ffffff; border: 2px solid transparent; border-radius: 12px; padding: 8px; cursor: pointer; transition: all 0.3s ease; opacity: 0.5; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .modal-thumb.active, .modal-thumb:hover { opacity: 1; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
         .modal-thumb img { width: 100%; height: 100%; object-fit: contain; }
 
-        .modal-buybox { flex: 1; padding: 40px; background: #f8fafc; }
-        .modal-condition { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
-        .modal-title { font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
-        .modal-price { font-size: 2.5rem; color: var(--text-dark); font-weight: 400; margin-bottom: 5px; display: flex; align-items: flex-start; gap: 5px; }
-        .modal-price span { font-size: 1.2rem; margin-top: 5px;}
-        .modal-installments { color: var(--success); font-size: 0.9rem; margin-bottom: 25px; }
+        /* ZONA DE COMPRA MINIMALISTA */
+        .modal-buybox { flex: 1; padding: 50px; background: #ffffff; border-left: 1px solid #f1f5f9; display: flex; flex-direction: column; justify-content: center; }
         
-        /* --- NUEVOS ESTILOS PARA LA CAJA DE COMPRA --- */
-        .link-blue { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: text-decoration 0.2s; display: inline-block; }
-        .link-blue:hover { text-decoration: underline; }
+        .modal-condition { font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 15px; display: inline-block; background: #eff6ff; padding: 6px 12px; border-radius: 30px; width: fit-content; }
+        .modal-title { font-size: 2.2rem; color: var(--primary); font-weight: 800; margin-bottom: 15px; line-height: 1.1; letter-spacing: -1px; }
         
-        .coupon-section { margin: 15px 0 25px 0; }
-        .coupon-box { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .coupon-badge { background: #e0e7ff; color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .coupon-box label { font-size: 0.9rem; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .coupon-box input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer;}
-        .coupon-min { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+        .modal-price { font-size: 3.5rem; color: var(--primary); font-weight: 800; margin-bottom: 25px; display: flex; align-items: flex-start; gap: 8px; letter-spacing: -2px; }
+        .modal-price span { font-size: 1.8rem; margin-top: 8px; font-weight: 600; color: var(--text-muted); letter-spacing: 0; }
         
-        .color-section { margin: 0 0 25px 0; }
-        .color-title { font-size: 0.95rem; color: var(--text-dark); margin-bottom: 10px; }
-        .color-thumb { width: 50px; height: 50px; border: 2px solid var(--accent); border-radius: 6px; padding: 2px; cursor: pointer; background: white;}
-        .color-thumb img { width: 100%; height: 100%; object-fit: contain; }
+        .link-blue { color: var(--text-dark); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 4px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .link-blue:hover { color: var(--accent); text-decoration-color: var(--accent); }
+        
+        /* Detalles sutiles y selectores */
+        .coupon-section { margin: 20px 0; padding: 20px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+        .coupon-box { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .coupon-badge { background: var(--primary); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .coupon-box label { font-size: 0.95rem; font-weight: 500; color: var(--primary); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .coupon-min { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+        
+        .color-section { margin-bottom: 25px; display: flex; align-items: center; gap: 15px; }
+        .color-title { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .color-title strong { color: var(--primary); font-weight: 800; }
+        .color-thumb { width: 45px; height: 45px; border-radius: 50%; padding: 4px; border: 2px solid var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .color-thumb img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
 
-        .modal-shipping-box { display: flex; gap: 15px; margin-bottom: 25px; }
-        .modal-shipping-icon { fill: var(--success); width: 24px; height: 24px; }
-        .modal-shipping-text p { font-size: 0.9rem; margin: 0; }
-        .modal-shipping-text p.green { color: var(--success); font-weight: 600; }
+        /* Envío Premium */
+        .modal-shipping-box { display: flex; align-items: center; gap: 15px; background: #f8fafc; padding: 15px 20px; border-radius: 12px; margin-bottom: 30px; }
+        .modal-shipping-icon { fill: var(--primary); width: 24px; height: 24px; flex-shrink: 0; }
+        .modal-shipping-text p { font-size: 0.9rem; margin: 0; color: var(--text-muted); }
+        .modal-shipping-text p.green { color: var(--primary); font-weight: 700; font-size: 0.95rem; }
 
-        .modal-seller { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; }
-        .modal-seller strong { color: var(--accent); cursor: pointer; }
+        .modal-seller { display: none; /* Ocultamos el formato ML clásico */ }
 
-        .modal-buy-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
-        .btn-checkout-modal { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-        .btn-checkout-modal:hover { background: var(--accent-hover); }
-        .btn-add-modal { background: #e0e7ff; color: var(--accent); border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-        .btn-add-modal:hover { background: #dbeafe; }
+        /* Botones Robustos */
+        .modal-buy-buttons { display: flex; gap: 15px; margin-bottom: 30px; }
+        .btn-checkout-modal { flex: 1; background: var(--primary); color: white; border: none; padding: 20px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15); }
+        .btn-checkout-modal:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(15, 23, 42, 0.25); background: #000; }
+        .btn-add-modal { flex: 1; background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 20px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-add-modal:hover { background: var(--primary); color: white; }
+        @media (max-width: 600px) { .modal-buy-buttons { flex-direction: column; } }
 
-        /* --- ESTILOS DE GARANTÍA Y COMPRA PROTEGIDA --- */
-        .modal-trust-info { margin-top: 25px; display: flex; flex-direction: column; gap: 18px; border-top: 1px solid var(--border); padding-top: 20px; }
-        .trust-item { display: flex; align-items: flex-start; gap: 12px; }
-        .trust-item svg { width: 22px; height: 22px; flex-shrink: 0; stroke: var(--text-muted); fill: none; stroke-width: 1.5; margin-top: 2px;}
+        /* Grid de Confianza Inferior */
+        .modal-trust-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; padding-top: 30px; border-top: 1px solid #f1f5f9; }
+        .trust-item { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; cursor: pointer; padding: 15px; border-radius: 12px; transition: background 0.3s; }
+        .trust-item:hover { background: #f8fafc; }
+        .trust-item svg { width: 28px; height: 28px; stroke: var(--primary); fill: none; stroke-width: 1.5; }
         .trust-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
-        .trust-item p strong { color: var(--accent); cursor: pointer; font-weight: 500; }
-        .trust-item p strong:hover { text-decoration: underline; }
-        .add-to-list { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--accent); font-size: 0.9rem; font-weight: 500; cursor: pointer; }
-        .add-to-list svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-        .add-to-list:hover { text-decoration: underline; }
+        .trust-item p strong { color: var(--primary); display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
 
-        .modal-bullets { margin-bottom: 20px; }
-        .modal-bullets p { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
-        .modal-bullets ul { list-style: none; padding: 0; }
-        .modal-bullets li { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; padding-left: 20px; position: relative; }
-        .modal-bullets li::before { content: '•'; position: absolute; left: 0; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
-
-        .modal-bottom { padding: 40px; background: white; }
-        .modal-bottom h2 { font-size: 1.5rem; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+        /* ZONA INFERIOR: SPECS Y DESCRIPCIÓN ELEGANTES */
+        .modal-bottom { padding: 60px 50px; background: #f8fafc; }
+        .modal-bottom h2 { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 40px; letter-spacing: -1px; border: none; padding: 0; }
         
-        .specs-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .modal-bullets { margin-bottom: 40px; }
+        .modal-bullets p { display: none; } /* Ocultamos el texto genérico de ML */
+        .modal-bullets ul { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 700px) { .modal-bullets ul { grid-template-columns: 1fr 1fr; } }
+        .modal-bullets li { font-size: 1.05rem; color: var(--primary); font-weight: 500; display: flex; align-items: flex-start; gap: 12px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .modal-bullets li::before { content: '✓'; color: var(--success); font-weight: 900; font-size: 1.2rem; }
+
+        /* Highlights en forma de Chips */
+        .specs-highlights { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 50px; }
+        .highlight-item { display: flex; align-items: center; gap: 10px; background: white; padding: 10px 20px; border-radius: 30px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+        .highlight-icon { display: none; }
+        .highlight-text { font-size: 0.9rem; font-weight: 600; color: var(--primary); }
+
+        /* Tablas Técnicas Clean */
+        .specs-grid { display: grid; grid-template-columns: 1fr; gap: 50px; }
         @media (min-width: 800px) { .specs-grid { grid-template-columns: 1fr 1fr; } }
-        
-        .spec-group h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: var(--primary); }
-        .spec-table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
-        .spec-table tr:nth-child(even) { background-color: var(--bg-main); }
-        .spec-table th, .spec-table td { padding: 12px 15px; text-align: left; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
-        .spec-table th { background-color: #f1f5f9; color: var(--text-dark); font-weight: 600; width: 40%; }
-        .spec-table td { color: var(--text-muted); width: 60%; }
-        .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
+        .spec-group h3 { font-size: 1rem; font-weight: 800; margin-bottom: 20px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: inline-block; }
+        .spec-table { width: 100%; border-collapse: collapse; border: none; background: transparent;}
+        .spec-table th, .spec-table td { padding: 15px 0; text-align: left; font-size: 0.95rem; border-bottom: 1px solid #e2e8f0; background: transparent !important; }
+        .spec-table th { color: var(--text-muted); font-weight: 500; width: 45%; }
+        .spec-table td { color: var(--primary); font-weight: 700; width: 55%; }
 
-        /* --- NUEVO: ESTILOS PARA CARACTERÍSTICAS DESTACADAS (HIGHLIGHTS) --- */
-        .specs-highlights { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 30px; }
-        @media (min-width: 600px) { .specs-highlights { grid-template-columns: 1fr 1fr; } }
-        .highlight-item { display: flex; align-items: center; gap: 15px; }
-        .highlight-icon { width: 32px; height: 32px; background-color: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .highlight-icon svg { width: 16px; height: 16px; stroke: var(--text-dark); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;}
-        .highlight-text { font-size: 0.95rem; color: var(--text-dark); }
-
-        /* --- NUEVO: ESTILOS PARA LA DESCRIPCIÓN DEL PRODUCTO --- */
-        .modal-description { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border); }
-        .modal-description h2 { font-size: 1.5rem; margin-bottom: 20px; color: var(--primary); border: none; padding: 0;}
-        .modal-description p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; white-space: pre-line; }
+        .modal-description { margin-top: 60px; padding-top: 0; border-top: none; max-width: 800px; }
+        .modal-description p { font-size: 1.1rem; color: var(--text-dark); line-height: 1.8; white-space: pre-line; font-weight: 400; }
 
         /* ==========================================================================
            6. CARRITO DE COMPRAS OFF-CANVAS
@@ -443,7 +433,7 @@
 <body>
 
     <div class="top-bar">
-        ⚡ Promoción de Temporada: ¡Obtén <span>Envío Express Gratis + Kit de Limpieza</span> en compras mayores a S/ 150!
+        ⚡ Promoción de Temporada: ¡Obtén <span>Envío Express Gratis</span> en compras mayores a S/ 150!
     </div>
 
     <header>
@@ -502,7 +492,7 @@
             <div class="b2b-content">
                 <h3>¿Buscas equipar a toda tu empresa?</h3>
                 <p>En nuestra tienda online mostramos exclusivamente nuestra selección "Top Ventas" para despacho inmediato (B2C). Como proveedores tecnológicos B2B, contamos con una <strong>amplia red de distribución e importación bajo pedido</strong> para brindarte las mejores marcas del mercado.</p>
-                <a href="https://wa.me/51999999999?text=Hola%20equipo%20Luxnova,%20deseo%20cotizar%20equipamiento%20tecnológico%20para%20mi%20empresa." class="btn-quote" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/51957197011?text=Hola%20equipo%20Luxnova,%20deseo%20cotizar%20equipamiento%20tecnológico%20para%20mi%20empresa." class="btn-quote" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     Solicitar Cotización Corporativa
                 </a>
@@ -512,7 +502,7 @@
 
     <!-- BOTÓN FLOTANTE DE WHATSAPP -->
     <!-- Reemplaza el número 51999999999 por tu número real (Código de país + número) -->
-    <a href="https://wa.me/51999999999?text=Hola%20equipo%20de%20Luxnova%20Digital,%20tengo%20una%20consulta%20sobre%20un%20producto." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <a href="https://wa.me/51957197011?text=Hola%20equipo%20de%20Luxnova%20Digital,%20tengo%20una%20consulta%20sobre%20un%20producto." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 2A13.9 13.9 0 0 0 2 16a13.7 13.7 0 0 0 2.2 7.5L2 30l6.7-2.1A13.9 13.9 0 0 0 16 30a13.9 13.9 0 0 0 0-28Zm0 25.6a11.5 11.5 0 0 1-5.9-1.6l-.4-.2-4.4 1.4 1.2-4.3-.3-.4A11.6 11.6 0 0 1 4.4 16a11.6 11.6 0 0 1 23.2 0A11.6 11.6 0 0 1 16 27.6ZM22.4 20c-.3-.2-2-.9-2.3-1s-.6-.2-.8.2c-.3.4-.9 1-1.1 1.2s-.5.2-.8.1a9 9 0 0 1-2.6-1.6 10 10 0 0 1-1.8-2.2c-.2-.4 0-.6.2-.8l.5-.7a4 4 0 0 0 .5-.8.6.6 0 0 0 0-.6c-.2-.3-1-2.3-1.3-3.1-.3-.8-.6-.7-.8-.7h-.7c-.3 0-.7.1-1.1.5s-1.4 1.4-1.4 3.4 1.5 4 1.7 4.3 2.9 4.5 7.1 6.3c2.7 1.1 3.8 1.2 5 1 .9-.2 2-.8 2.3-1.6.3-.7.3-1.4.2-1.6s-.5-.2-.9-.4Z"/>
         </svg>
@@ -525,7 +515,7 @@
                     <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     LUXNOVA
                 </div>
-                <p>RUC: 20123456789</p>
+                <p>RUC: 20615583562</p>
                 <p>Hardware Premium para empresas y profesionales exigentes.</p>
             </div>
             <div class="footer-col">
@@ -790,7 +780,7 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>RUC *</label>
-                                        <input type="text" id="docFactura" placeholder="Ej: 20123456789">
+                                        <input type="text" id="docFactura" placeholder="Ej: 20615583562">
                                     </div>
                                     <div class="form-group">
                                         <label>Razón Social *</label>
@@ -1013,575 +1003,48 @@
         </div>
     </div>
 
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        const dbProductos = [
-            {
-                id: 'tripode',
-                tag: 'Básico',
-                titulo: 'Kit Streaming Videos Microfono Tripode Luz Led Cable Celular Color Negro',
-                precio: 40,
-                ventas: 125,
-                imagenes: [
-                    './img/tripode-1.png', 
-                    './img/tripode-2.png', 
-                    './img/tripode-3.png', 
-                    './img/tripode-4.png'  
-                ],
-                bullets: [
-                    'Cable de 50cm.',
-                    'Tiene luz LED.'
-                ],
-                highlights: [
-                    'Tipos de micrófono: <strong>Omnidireccional</strong>',
-                    'Patrones polares: <strong>Positivo</strong>',
-                    'Con parlante incorporado: <strong>No</strong>'
-                ],
-                specs: {
-                    'Características generales': { 
-                        'Marca': 'Genérica', 
-                        'Modelo': 'AY-49T', 
-                        'Color': 'Negro', 
-                        'Es gamer': 'No' 
-                    },
-                    'Otros': {
-                        'Largo del cable': '50 cm',
-                        'Usos recomendados del micrófono': 'Para cámaras',
-                        'Con parlantes incorporados': 'No'
-                    },
-                    'Accesorios': { 
-                        'Accesorios incluidos': 'Pedestal' 
-                    },
-                    'Especificaciones': { 
-                        'Formatos de micrófono': 'Microfono', 
-                        'Tipos de micrófono': 'Omnidireccional', 
-                        'Patrones polares': 'Positivo', 
-                        'Cantidad de micrófonos': '1', 
-                        'Con luz LED': 'Sí' 
-                    },
-                    'Conectividad': { 
-                        'Con Bluetooth': 'No' 
-                    },
-                    'Frecuencia': {
-                        'Frecuencia mínima - Frecuencia máxima': '16 Hz - 50 Hz'
-                    },
-                    'Peso y dimensiones': { 
-                        'Peso': '463 g' 
-                    }
-                },
-                // NUEVO: SECCIÓN DE DESCRIPCIÓN
-                descripcion: `Kit Trípode Selfie Micrófono Luz Lámpara Led Soporte
-KIT DE VLOGGING AY-49T
+        // 1. Inicializar Supabase (Recuerda poner TUS credenciales reales aquí)
+        const supabaseUrl = 'https://ugtasczfkisrqdywivfq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVndGFzY3pma2lzcnFkeXdpdmZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1NDUzMTgsImV4cCI6MjA5OTEyMTMxOH0.i9uZe4MRNDViH5tJp2NZliVOXS5Y0wctMNTTY014XZA';
+        const clienteSupabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-ESPECIFICACIONES:
-Soporte Expandible hasta 55cm, con patas retráctiles para convertir en palo selfie.
-Micrófono de reducción de ruido:
-El micrófono cuenta con un amplio rango de captación cardioide y tecnología de cancelación de ruido, además de una cápsula de micrófono de alta calidad para una grabación de alta fidelidad.
-Conexión por cable 3.5mm. Luz LED de 6500 K:
-El cordón de la lámpara de 49 piezas proporciona una temperatura de color de luz de 6500K y una potencia de salida de 7W, alimentado con 3 pilas AAA (no incluidas), para una iluminación de video más brillante y uniforme. Abrazadera de teléfono universal:
-El rango de sujeción del soporte del teléfono es de aproximadamente 6.5 a 10 cm, compatible con la mayoría de los teléfonos inteligentes.
-El montaje superior de zapata fría permite un montaje rápido del micrófono y la luz LED.
-
-ALTURA MÍNIMA: 28,5 CM (Sin el bastón selfie)
-ALTURA MÍNIMA CON EL BASTÓN: 43,5 CM
-ALTURA MÁXIMA CON EL BASTÓN: 53,5 CM`
-            },
-            {
-                id: 'cargador',
-                tag: 'Más Vendido',
-                titulo: 'Cargador Multiple Rapida - 70w Pd Qc3 - 6en1 Hoco',
-                precio: 80,
-                ventas: 430,
-                imagenes: [
-                    './img/cargador-1.png', 
-                    './img/cargador-2.png', 
-                    './img/cargador-3.png', 
-                    './img/cargador-4.png'  
-                ],
-                bullets: [
-                    'Carga rápida con potencia de hasta 70W.',
-                    'Compatible con tecnologías de Xiaomi, Samsung y Apple.',
-                    'Puertos USB-C y USB-A integrados.',
-                    'Protección contra sobrecalentamiento y cortocircuitos.'
-                ],
-                specs: {
-                    'Características principales': { 
-                        'Marca del cargador': 'Hoco', 
-                        'Modelo del cargador': 'C152', 
-                        'Modelo alfanumérico': 'C152', 
-                        'Tipos de conectores del cable': 'USB-C/USB-A' 
-                    },
-                    'Otros': { 
-                        'Tipo de cargador': 'Pared', 
-                        'Tipo de velocidad de carga': 'Carga rápida', 
-                        'Tipo de uso': 'Celular', 
-                        'Marcas de dispositivos móviles compatibles': 'Todas las marcas',
-                        'Modelos de dispositivos móviles compatibles': 'Todos los modelos',
-                        'Voltaje de entrada': '110V-240V',
-                        'Voltaje de salida': '5V-20V',
-                        'Incluye cable': 'No',
-                        'Eficiencia energética Perú': 'A'
-                    }
-                },
-                descripcion: `Empresa Formal, emitimos Boleta y Factura
-Los repartos para Lima son de 4 a 8pm si no puede esperar por favor preguntar antes de comprar.
-también hacemos envíos urgentes en 2 horas con costo adicional. (consultar)
-Contamos con tienda física para recoger en la victoria emporio GAMARRA, referencia cerca del centro comercial gama.
-
-La marca Hoco está ingresando al mercado peruano con un amplio catálogo de productos tecnológicos procurando ofrecer a sus clientes productos de calidad a precios competitivos.
-este cargador es capaz de brindar hasta 70W de energía, compatible con equipos apple y android.
-con un puerto USB-A para cargar tus equipos a carga rápida normal hasta 3A y en el puerto C hasta 20v 3A, compatible con tecnologías propias de Xiaomi, Poco, Samsung y Apple
-Marca Hoco
-Modelo C152
-Carga rápida potencia hasta 70W
-Potencia hasta 5V/3A, 12V/3A, 15V/3A, 20V3.35A
-Puerto USB-A 5V/3A, 9V/2A, 12V/1.5A
-Voltaje de entrada: DC 100-240V 50/0Hz 0.8A
-Protección contra sobrecalentamiento, protección contra cortocircuitos, protección contra sobredescarga, protección contra sobrealimentación y protección contra sobretensión.
-Producto original en caja`
-            },
-            {
-                id: 'Smart',
-                tag: 'Más Vendido',
-                titulo: 'Reloj Smartwatch Xiaomi Redmi Watch 5 Active Matte Silver Caja Plateado Malla Blanco',
-                precio: 150,
-                ventas: 551,
-                imagenes: [
-                    './img/Smart-1.png', 
-                    './img/Smart-2.png', 
-                    './img/Smart-3.png', 
-                    './img/Smart-4.png'  
-                ],
-                bullets: [
-                    'Pantalla grande de 1.83 pulgadas.',
-                    'Monitor de frecuencia cardíaca 24/7.',
-                    'Más de 100 modos deportivos.',
-                    'Resistencia al agua 5ATM.'
-                ],
-                highlights: [
-                    'Tipo de pantalla: <strong>LCD</strong>',
-                    'Duración de la batería: <strong>18 días</strong>',
-                    'Con GPS: <strong>No</strong>',
-                    'Es resistente al agua: <strong>Sí</strong>',
-                    'Con Bluetooth: <strong>Sí</strong>',
-                    'Marca: <strong>Xiaomi</strong>'
-                ],
-                specs: {
-                    'Características generales': { 
-                        'Marca': 'Xiaomi', 
-                        'Línea': 'Redmi Watch', 
-                        'Modelo': 'Active 5', 
-                        'Modelo alfanumérico': 'M2231W1' 
-                    },
-                    'Pantalla': { 
-                        'Tamaño de la pantalla': '2 "', 
-                        'Tipo de pantalla': 'LCD' 
-                    },
-                    'Malla del reloj': {
-                        'Material de la malla': 'TPU',
-                        'Color de la malla': 'Blanco',
-                        'Tipo de malla': 'Deportiva'
-                    },
-                    'Caja del reloj': {
-                        'Color de la caja': 'Plateado'
-                    },
-                    'Otros': {
-                        'Idiomas': 'Múltiples',
-                        'Accesorios incluidos': 'Cable, Manual'
-                    },
-                    'Conectividad': {
-                        'Con red móvil': 'No',
-                        'Con Wi-Fi': 'No',
-                        'Con GPS': 'No',
-                        'Con Bluetooth': 'Sí',
-                        'Con NFC': 'No'
-                    },
-                    'Resistencia al agua': {
-                        'Es resistente al agua': 'Sí',
-                        'Profundidad máxima de resistencia al agua': '50 m'
-                    },
-                    'Especificaciones': {
-                        'Sistemas operativos compatibles del smartwatch': 'HyperOS',
-                        'Es infantil': 'No',
-                        'Es smartband': 'No'
-                    },
-                    'Funciones y sensores': {
-                        'Funciones del smartwatch': 'Consumo de calorías, Control de música, Llamadas Bluetooth, Clima, Cámara remota, Tareas, Encontrar tu teléfono'
-                    },
-                    'Batería': {
-                        'Capacidad de la batería': '470 mAh',
-                        'Duración de la batería': '18 días'
-                    },
-                    'Resistencia': {
-                        'Clasificación de resistencia al agua y al polvo': '5ATM'
-                    },
-                    'Peso': {
-                        'Peso': '30.6 g'
-                    }
-                },
-                descripcion: `Detalles Técnicos
--Dimensiones: 1,83 pulgadas de alta resolución LCD
--Rectangular
--Resolución: 320 x 385 px
--Brillo: Hasta 500 nits, ajustable
--Sensor de frecuencia cardíaca
--Acelerómetro
--Sensor SpO2
--Bluetooth v5.3 BLE
--APP Mi Fitness (Xiaomi Wear)
--Soporta smartphone con Android 6.0 e iOS 12.0 y superior
--Compatible con Strava y Apple Health APP
--Capacidad: 470 mAh
--Resistencia al agua IPX8
--Tiempo de uso: hasta 18 días (modo nominal)/Hasta 12 días (uso potente)
--Carga mediante cable magnético
--Dimensiones: 49.1 x 40.4 x 11.4 mm
--Peso: 30.6 gr
-
-Reloj inteligente que eleva tu estilo y rendimiento
-El XIAOMI Redmi Active 5 es un compañero diario para monitorear tu salud, mejorar tu condición física y mantenerte conectado. Con un diseño moderno y elegante, una amplia pantalla de alta resolución y funciones avanzadas, este smartwatch combina estilo y tecnología.
-
-Pantalla LCD de Alta Definición
-Disfruta de una visualización clara y vibrante con su pantalla de 1,83 pulgadas, que ofrece una resolución de 320 x 385 píxeles. Con un brillo ajustable de hasta 500 nits, podrás ver fácilmente la pantalla incluso en condiciones de luz brillante, garantizando una experiencia de uso cómoda en todo momento.
-
-Monitoreo Completo de Salud
-El Redmi Active 5 cuenta con avanzados sensores que te permiten monitorear tu salud de forma continua. Incluye un sensor de frecuencia cardíaca, un acelerómetro, y un sensor SpO2 para medir los niveles de oxígeno en sangre. Todo esto está integrado en la aplicación Mi Fitness (Xiaomi Wear), compatible con las populares plataformas Strava y Apple Health, para un seguimiento detallado de tu bienestar.
-
-Aviso legal
-• La duración de la batería depende del uso que se le dé al producto.`
-            },
-            {
-                id: 'audifonos',
-                tag: 'Premium Audio',
-                titulo: 'Audífonos Jbl Tune 660nc Lifestyle Cancelación Ruido Negro',
-                precio: 300,
-                ventas: 85,
-                imagenes: [
-                    './img/audifonos-1.png', 
-                    './img/audifonos-2.png', 
-                    './img/audifonos-3.png', 
-                    './img/audifonos-4.png'  
-                ],
-                bullets: [
-                    'Con cancelación de ruido activa.',
-                    'Duración máxima de la batería de 22 h.',
-                    'Con modo manos libres y micrófono desmontable.',
-                    'Diseño over-ear con comodidad insuperable.'
-                ],
-                highlights: [
-                    'Es inalámbrico: <strong>Sí</strong>',
-                    'Es resistente al agua: <strong>No</strong>',
-                    'Con luz LED: <strong>No</strong>',
-                    'Con cancelación de ruido: <strong>Sí</strong>',
-                    'Con micrófono: <strong>No</strong>',
-                    'Duración de la batería: <strong>22 h</strong>'
-                ],
-                specs: {
-                    'Características principales': { 
-                        'Fabricante': 'Harman',
-                        'Marca': 'JBL', 
-                        'Línea': 'Tune', 
-                        'Modelo': '660NC', 
-                        'Modelo alfanumérico': 'Tune 660NC',
-                        'Color': 'Negro',
-                        'Modelo detallado': 'JBLFREEWFHWLKBLKAM'
-                    },
-                    'Micrófono': { 
-                        'Con micrófono': 'No', 
-                        'Con modo manos libres': 'Sí', 
-                        'Con micrófono desmontable': 'Sí', 
-                        'Con micrófono flexible': 'No',
-                        'Orientaciones del micrófono': 'Derecha'
-                    },
-                    'Sonido': { 
-                        'Unidad de diafragma': '8.6 mm', 
-                        'Respuesta en frecuencia': '20 Hz - 20 kHz', 
-                        'Sensibilidad': '100 dB', 
-                        'Con cancelación de ruido': 'Sí'
-                    },
-                    'Batería': { 
-                        'Duración máxima de la batería': '22 h', 
-                        'Capacidad de la batería del auricular': '450 mAh',
-                        'Capacidad de la batería del estuche de carga': '400 mAh',
-                        'Incluye estuche de carga': 'No',
-                        'Con carga inalámbrica': 'No'
-                    },
-                    'Otros': {
-                        'Es infantil': 'No',
-                        'Tiempo de carga del auricular': '2 h',
-                        'Tiempo de carga del estuche': '8 h',
-                        'Con sensor de proximidad': 'No',
-                        'Cantidad de micrófonos': '1',
-                        'Funciones de control': 'Play',
-                        'Configuración de canales': '0'
-                    }
-                },
-                descripcion: `JBL, marca de renombre mundial en el mercado de audio, es desde hace más 70 años una referente por la alta calidad de sus productos. Su gama de audífonos es variada, ya que la compañía ofrece produtos in-ear, over-ear, on-ear, deportivos e inalámbricos. Cualquiera de estos es una buena opción para hacerte disfrutar de tu música preferida.
-
-El formato perfecto para ti
-El diseño over-ear genera una comodidad insuperable gracias a sus suaves almohadillas. Al mismo tiempo, su sonido envolvente del más alto nivel se convierte en el protagonista de la escena.`
-            },
-            {
-                id: 'monitor',
-                tag: 'Productividad',
-                titulo: 'Yxk Monitor Portátil De 15.6 Pulgadas 1080p Usb-c Hdmi Ultra',
-                precio: 500,
-                ventas: 62,
-                imagenes: [
-                    './img/monitor-1.png', 
-                    './img/monitor-2.png', 
-                    './img/monitor-3.png', 
-                    './img/monitor-4.png'  
-                ],
-                bullets: [
-                    'Panel A de 15.6" con resolución Full HD (1080P).',
-                    'Conexión mediante USB-C y HDMI.',
-                    'Diseño portátil ideal para productividad.',
-                    'Altavoces duales estéreo incorporados.'
-                ],
-                highlights: [
-                    'Tamaño de la pantalla: <strong>15.6 "</strong>',
-                    'Tipo de resolución: <strong>FHD</strong>',
-                    'Con pantalla táctil: <strong>No</strong>',
-                    'Es curvo: <strong>No</strong>',
-                    'Es reclinable: <strong>No</strong>',
-                    'Con altavoces incorporados: <strong>Sí</strong>'
-                ],
-                specs: {
-                    'Características generales': { 
-                        'Marca': 'YXK', 
-                        'Línea': 'Monitor Portátil Tipo C', 
-                        'Modelo': 'yxk', 
-                        'Color': 'Negro',
-                        'Voltaje': '220V'
-                    },
-                    'Pantalla': { 
-                        'Tamaño de la pantalla': '15.6 "', 
-                        'Resolución de la pantalla': '1080P', 
-                        'Tipo de panel': 'A', 
-                        'Tipo de resolución': 'FHD',
-                        'Es curvo': 'No',
-                        'Frecuencia de actualización recomendada': '60 Hz',
-                        'Relación de aspecto': '16:09',
-                        'Brillo': '250 cd/m²',
-                        'Contraste': '800:1',
-                        'Ángulo de visión horizontal': '178°',
-                        'Ángulo de visión vertical': '178°',
-                        'Con pantalla táctil': 'No',
-                        'Tiempo de respuesta GTG': '5 ms'
-                    },
-                    'Especificaciones': {
-                        'Es portátil': 'Sí',
-                        'Con altura ajustable': 'No',
-                        'Con función de pivote': 'No',
-                        'Con parlantes incorporados': 'Sí',
-                        'Con montaje VESA': 'No',
-                        'Es reclinable': 'No',
-                        'Año de lanzamiento': '2024'
-                    },
-                    'Otros': {
-                        'Conectividad': 'USB-C, HDMI',
-                        'Incluye accesorios': 'Sí',
-                        'Accesorios incluidos': 'Cable, Cable tipo C, Mini HDMI'
-                    }
-                }
-            },
-            {
-                id: 'dock',
-                tag: 'Pro Setup',
-                titulo: 'Razer Thunderbolt 4 Dock: 10 Puertos en 1 - Salida de Video Dual 4K o Único 8K',
-                precio: 800,
-                ventas: 34,
-                imagenes: [
-                    './img/dock-1.jpg', 
-                    './img/dock-2.jpg', 
-                    './img/dock-3.jpg', 
-                    './img/dock-4.jpg'  
-                ],
-                bullets: [
-                    'Conexión Thunderbolt 4 de hasta 40 Gbps.',
-                    '10 puertos en 1, incluyendo Ethernet y SD UHS-II.',
-                    'Soporte para monitores Dual 4K a 120Hz o Único 8K.',
-                    'Carga pasante para mantener tu laptop al 100%.'
-                ],
-                highlights: [
-                    'Total de puertos: <strong>10</strong>',
-                    'Tecnología: <strong>Thunderbolt 4 / USB4</strong>',
-                    'Soporte Multi-Monitor: <strong>Sí</strong>',
-                    'Carga pasante (Power Delivery): <strong>Sí</strong>'
-                ],
-                specs: {
-                    'Características generales': { 
-                        'Marca': 'Razer', 
-                        'Línea': 'Thunderbolt Dock', 
-                        'Modelo': 'Chroma'
-                    },
-                    'Puertos y conectores': { 
-                        'Total de puertos': '10', 
-                        'Puertos Thunderbolt 4': '4 (1 upstream, 3 downstream)', 
-                        'Puertos USB': '3x USB-A 3.2 Gen 2', 
-                        'Puerto Ethernet': '1x Gigabit Ethernet',
-                        'Lector de tarjetas': 'SD UHS-II (SD 4.0)',
-                        'Audio': 'Conector combinado de 3.5 mm'
-                    },
-                    'Video y Pantallas': {
-                        'Soporte de monitores': 'Hasta 2 monitores',
-                        'Resolución (Mac Intel)': 'Dual 4K a 120Hz',
-                        'Resolución (Mac M1)': '1 pantalla 5K a 60Hz',
-                        'Resolución máxima': 'Único 8K'
-                    },
-                    'Especificaciones Técnicas': { 
-                        'Velocidad de transferencia': '40 Gbps', 
-                        'Compatibilidad': 'Windows, Mac (Thunderbolt heredados y USB4)'
-                    }
-                },
-                descripcion: `Vuelva a cablear las reglas con el Razer Thunderbolt 4 Dock Chroma, un elegante y personalizable hub que inaugura una nueva era de conectividad para su configuración ideal. Equipado con 10 puertos, velocidades de transferencia de datos ultrarrápidas y salida de video dual 4K o único 8K, siempre estará preparado para hacer las conexiones correctas.
-
-CERTIFICADO THUNDERBOLT 4
-Totalmente compatible con dispositivos Thunderbolt 4 que proporcionan conexiones de 40 Gbps, cumplimiento USB4, carga de portátiles a través de un puerto y capacidad para despertar el portátil desde el modo de suspensión usando periféricos conectados al dock.
-
-10 PUERTOS EN UNO
-Equipado con 4 puertos Thunderbolt 4 (1 upstream y 3 downstream), Ethernet Gigabit, conector combinado de audio de 3.5 mm, ranura para tarjeta SD UHS-II (SD 4.0) y 3 puertos USB-A 3.2 Gen 2 para conectar una gran variedad de dispositivos.
-
-APOYO DE DOS MONITORES
-Acceda hasta 2x pantallas 4K a 120Hz (Mac Intel), 1 pantalla 5K a 60Hz (Mac M1) con un cable Thunderbolt 4.
-
-FUTURISTA Y COMPATIBLE HACIA ATRÁS
-Compatible con dispositivos Thunderbolt heredados y USB4 compatible, el Razer Thunderbolt 4 Dock Chroma admite dispositivos pasados y presentes para brindar la flexibilidad de crear la configuración ideal.
-
-CARGA PASANTE
-Mantenga el portátil USB-C cargado en todo momento usando la función incorporada del dock para cargar el sistema mientras alimenta simultáneamente todos los otros dispositivos conectados.`
-            },
-            {
-                id: 'ssd',
-                tag: 'Blindado',
-                titulo: 'Disco Duro Portátil Toshiba Canvio Basics 4tb + Protector',
-                precio: 1000,
-                ventas: 110,
-                imagenes: [
-                    './img/ssd-1.png', 
-                    './img/ssd-2.png', 
-                    './img/ssd-3.png', 
-                    './img/ssd-4.png'  
-                ],
-                bullets: [
-                    'Capacidad de 4 TB.',
-                    'Velocidad de rotación de 5400 rpm.',
-                    'Conectividad rápida USB 3.0.',
-                    'Incluye cable USB y protector.'
-                ],
-                highlights: [
-                    'Capacidad: <strong>4 TB</strong>',
-                    'Velocidad de rotación: <strong>5400 rpm</strong>',
-                    'Factor de forma: <strong>2.5 pulgadas</strong>',
-                    'Interfaces: <strong>USB 3.0</strong>'
-                ],
-                specs: {
-                    'Características generales': { 
-                        'Marca': 'Toshiba', 
-                        'Línea': 'Canvio Basics', 
-                        'Modelo': 'HDTB440XK3CA',
-                        'Versión': '4 TB',
-                        'Color': 'Negro'
-                    },
-                    'Almacenamiento': { 
-                        'Capacidad': '4 TB', 
-                        'Tipo de almacenamiento del disco': 'HDD' 
-                    },
-                    'Especificaciones': { 
-                        'Ubicación del disco rígido y SSD': 'Externo', 
-                        'Factor de forma del disco rígido y SSD': '2.5 pulgadas', 
-                        'Temperatura de funcionamiento': '5°C X 35°C',
-                        'Velocidad de rotación': '5,400 rpm'
-                    },
-                    'Otros': {
-                        'Accesorios incluidos': 'Cable USB, Protector',
-                        'Conectividad': 'USB 3.0',
-                        'Incluye accesorios': 'Sí'
-                    }
-                },
-                descripcion: `El Disco Duro Portátil Toshiba Canvio Basics de 4 TB es la solución ideal para quienes buscan un almacenamiento confiable y de gran capacidad. Con su diseño compacto de 2.5 pulgadas, este dispositivo es perfecto para llevar tus archivos a donde quieras, ya sea en el trabajo, la escuela o durante tus viajes.
-
-Equipado con una velocidad de rotación de 5400 rpm y conectividad USB 3.0, garantiza transferencias rápidas y eficientes de datos. Su capacidad de 4 TB permite almacenar una gran cantidad de documentos, fotos, videos y más, asegurando que siempre tengas espacio disponible para tus necesidades.
-
-El paquete incluye un cable USB y un protector, brindando una capa adicional de seguridad para tu disco duro. Con un rango de temperatura de funcionamiento de 5°C a 35°C, este dispositivo está diseñado para adaptarse a diversas condiciones ambientales, manteniendo tus datos seguros en todo momento.
-
-El Toshiba Canvio Basics es la opción perfecta para estudiantes, profesionales y cualquier persona que necesite un almacenamiento externo confiable y de alta capacidad. No dejes que la falta de espacio limite tu creatividad y productividad; elige este disco duro portátil y lleva tu información contigo sin preocupaciones.
-
-Garantía de fábrica: 12 meses`
-            },
-            {
-                id: 'vr',
-                tag: 'Innovación',
-                titulo: 'Gafas Metaverse de realidad virtual con control Bluetooth de realidad virtual',
-                precio: 1600, // Puedes ajustar este precio si no corresponde al modelo VR Box
-                ventas: 28,
-                imagenes: [
-                    './img/vr-1.png', 
-                    './img/vr-2.png', 
-                    './img/vr-3.png', 
-                    './img/vr-4.png'  
-                ],
-                bullets: [
-                    'Inmersión total de 360 grados.',
-                    'Lentes de resina óptica HD de 42 mm.',
-                    'Botones de ajuste de enfoque y encuadre.',
-                    'Incluye control remoto Bluetooth.'
-                ],
-                highlights: [
-                    // Puedes agregar highlights aquí si lo deseas, basándote en la imagen no hay highlights específicos en la parte superior.
-                ],
-                specs: {
-                    'Características principales': { 
-                        'Marca': 'Valecom', 
-                        'Modelo': 'Óculos Metaverso Vr Box' 
-                    },
-                    'Otros': {
-                        'Sistema operativo compatible': 'iOS/Android',
-                        'Con control remoto': 'Sí',
-                        'Es inalámbrico': 'Sí',
-                        'Con foco ajustable': 'Sí',
-                        'Incluye accesorios': 'Sí',
-                        'Accesorios incluidos': 'Control Bluetooth'
-                    }
-                },
-                descripcion: `Gafas Vr Box Metaverse Control Bluetooth de realidad virtual
-
-Las gafas Vr Box Metaverse ofrecen una increíble experiencia de realidad virtual. Con él, es posible sumergirse en la acción virtual y disfrutar de impresionantes efectos 3D. Las gafas vienen con un control remoto Bluetooth, lo que hace que los juegos sean aún más interesantes.
-
-Este casco de realidad virtual es ligero y duradero, y está hecho de ABS de alta calidad. Tiene botones de ajuste de enfoque en los laterales para una imagen nítida y clara. En la parte superior, puedes ajustar el encuadre para obtener la mejor experiencia posible.
-
-Las gafas Vr Box Metaverse ofrecen una inmersión total de 360 grados. Proyecta imágenes frente a los ojos y sigue los movimientos de la cabeza, lo que te permite explorar e interactuar con el entorno virtual de forma natural.
-
-Especificaciones técnicas:
-
-- Sensores: acelerómetro, giroscopio y sensor de proximidad.
-- Lentes: resina óptica HD de 42 mm, que proporciona una experiencia visual libre de fatiga y mareos.
-- Ángulo de visión: 100%.
-- Color: blanco y negro.
-- Material: gafas de ABS y lente de policarbonato.
-- Conexión al celular mediante Bluetooth con el nombre vr box.
-- Alcance Bluetooth: hasta 10 m.
-- Control con botón giratorio (360°), botón de encendido/apagado, botón d (ratón, selfie), botón c (realidad virtual, selfie, vídeo), botón b (modo de juego, videojuego) y botón a (música, vídeo).
-- Funciones de control: controla el smartphone cuando utilizas las gafas 3D.
-- Compatibilidad: sistemas iOS, Android y PC.
-- Tiempo de juego: aproximadamente 40-120 horas.
-
-Dimensiones:
-
-- Gafas Vr Box: 10 cm de alto, 13 cm de ancho y 20 cm de largo.
-- Control: altura 5 cm, anchura 3 cm y longitud 12 cm.
-
-Contenido del paquete:
-
-- 1 Vr Box
-Gafas - 1 mando Bluetooth`
-            }
-        ];
-
+        // 2. Variables globales de la aplicación
+        let dbProductos = [];
         let carrito = [];
         let productoModalActual = null;
         let checkoutTotalActual = 0;
 
+        // 3. Función asíncrona para consultar Supabase
+        async function cargarProductosDesdeSupabase() {
+            try {
+                // ¡AQUÍ TAMBIÉN! Usamos el nuevo nombre "clienteSupabase"
+                const { data, error } = await clienteSupabase
+                    .from('productos')
+                    .select('*')
+                    .order('ventas', { ascending: false }); 
+
+                if (error) throw error;
+
+                // Convertimos el precio a número por si acaso
+                dbProductos = data.map(item => ({
+                    ...item,
+                    precio: parseFloat(item.precio)
+                }));
+                
+                // Ahora sí, dibujamos el catálogo
+                renderizarCatalogo();
+                
+            } catch (error) {
+                console.error("Error al conectar con Supabase:", error);
+                document.getElementById('productGrid').innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Error al cargar el catálogo. Intenta nuevamente.</p>';
+            }
+        }
+
+        // 4. Continuación de tu código existente (Las variables duplicadas ya fueron eliminadas)
         function renderizarCatalogo() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -1697,28 +1160,24 @@ Gafas - 1 mando Bluetooth`
                 descContainer.style.display = 'none';
             }
             
-            // === LA SOLUCIÓN ESTÁ AQUÍ ===
-            // Inyectamos el bloque de confianza dinámicamente para que el 'onclick' sobreviva
-            // === BLOQUE DE CONFIANZA ACTUALIZADO (AMBOS CLICABLES) ===
+            // === BLOQUE DE CONFIANZA PREMIUM D2C ===
             const buyboxContenedor = document.querySelector('.modal-buybox');
             const infoExistente = buyboxContenedor.querySelector('.modal-trust-info');
-            if (infoExistente) {
-                infoExistente.remove();
-            }
+            if (infoExistente) infoExistente.remove();
             
             buyboxContenedor.insertAdjacentHTML('beforeend', `
                 <div class="modal-trust-info">
-                    <div class="trust-item" onclick="abrirModalInfo('modalDevolucion')" style="cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    <div class="trust-item" onclick="abrirModalInfo('modalDevolucion')">
                         <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <p><strong style="color: var(--accent);">Devolución gratis.</strong> Tienes 30 días desde que lo recibes.</p>
+                        <p><strong>Devolución Rápida</strong>30 días de cobertura</p>
                     </div>
-                    <div class="trust-item" onclick="abrirModalInfo('modalCompraProtegida')" style="cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    <div class="trust-item" onclick="abrirModalInfo('modalCompraProtegida')">
                         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <p><strong style="color: var(--accent);">Compra Protegida.</strong> Recibe el producto que esperabas o te devolvemos tu dinero.</p>
+                        <p><strong>Compra Segura</strong>Protección de pago total</p>
                     </div>
                     <div class="trust-item">
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <p>30 días de garantía de fábrica.</p>
+                        <p><strong>Garantía Local</strong>Soporte directo B2B</p>
                     </div>
                 </div>
             `);
@@ -1982,9 +1441,83 @@ Gafas - 1 mando Bluetooth`
             if(radio) radio.checked = true;
         }
 
-        function finalizarTransaccion() {
-            alert(`✅ Proceso de Checkout Completado.\n\nConectando API con Pasarela Tumipay...\n\nMonto a Pagar: S/ ${checkoutTotalActual.toFixed(2)} PEN`);
-            cerrarCheckout();
+        // FUNCION ACTUALIZADA: Recopila los datos y los envía a Supabase
+        async function finalizarTransaccion() {
+            // 1. Recopilar datos de facturación
+            const tipoComprobante = document.querySelector('input[name="tipo_comprobante"]:checked').value;
+            let nombreCliente = "", docCliente = "", razonSocial = "";
+
+            if (tipoComprobante === 'boleta') {
+                nombreCliente = document.getElementById('nomBoleta').value;
+                docCliente = document.getElementById('docBoleta').value;
+            } else {
+                nombreCliente = document.getElementById('nomFactura').value; 
+                razonSocial = document.getElementById('nomFactura').value;
+                docCliente = document.getElementById('docFactura').value;
+            }
+
+            // 2. Recopilar datos de contacto y envío
+            const telefono = document.querySelector('input[type="tel"]').value;
+            const email = document.querySelector('input[type="email"]').value;
+            const direccion = document.getElementById('dirCalle').value;
+            const dep = document.getElementById('selectDepartamento').value;
+            const prov = document.getElementById('selectProvincia').value;
+            const dist = document.getElementById('selectDistrito').value;
+
+            // Validación rápida
+            if(!telefono || !email || !direccion) {
+                alert("Por favor, retrocede y asegúrate de completar tus datos de contacto y dirección.");
+                return;
+            }
+
+            // 3. Empaquetar todo en un objeto
+            const nuevaOrden = {
+                cliente_nombre: nombreCliente,
+                cliente_documento: docCliente,
+                cliente_telefono: telefono,
+                cliente_email: email,
+                tipo_comprobante: tipoComprobante,
+                razon_social: razonSocial,
+                direccion: direccion,
+                departamento: dep,
+                provincia: prov,
+                distrito: dist,
+                total: checkoutTotalActual,
+                carrito: carrito // ¡Pasamos la lista de productos comprados entera!
+            };
+
+            try {
+                // Cambiamos el texto del botón para que el usuario sepa que está cargando
+                const btnPagar = document.querySelector('.btn-continue[onclick="finalizarTransaccion()"]');
+                const textoOriginal = btnPagar.innerText;
+                btnPagar.innerText = "Procesando...";
+                btnPagar.disabled = true;
+
+                // 4. Insertar en la tabla 'ordenes' de Supabase
+                const { error } = await clienteSupabase.from('ordenes').insert([nuevaOrden]);
+
+                if (error) throw error;
+
+                // 5. Éxito: Mostrar mensaje, vaciar carrito y cerrar
+                alert(`✅ Pedido Registrado en Base de Datos.\n\nSerás redirigido a Tumipay para pagar S/ ${checkoutTotalActual.toFixed(2)} PEN.`);
+                
+                carrito = []; // Vaciamos el carrito
+                document.getElementById('cart-count').innerText = "0";
+                renderizarCarritoOffCanvas();
+                cerrarCheckout();
+
+                // Aquí iría el código real de redirección a Tumipay:
+                // window.location.href = "URL_DE_TUMIPAY";
+
+            } catch (error) {
+                console.error("Error al guardar la orden:", error);
+                alert("Hubo un problema de conexión guardando tu pedido. Intenta de nuevo.");
+            } finally {
+                // Restauramos el botón
+                const btnPagar = document.querySelector('.btn-continue[onclick="finalizarTransaccion()"]');
+                btnPagar.innerText = "Proceder a Pagar";
+                btnPagar.disabled = false;
+            }
         }
 
         // === LÓGICA DE UBIGEO DINÁMICO (24 DEPARTAMENTOS + CALLAO) ===
@@ -2205,7 +1738,7 @@ Gafas - 1 mando Bluetooth`
         }
         
         // INIT
-        window.onload = () => { renderizarCatalogo(); };
+        window.onload = () => { cargarProductosDesdeSupabase(); };
         document.getElementById('serviceModal').addEventListener('click', function(e) { if(e.target === this) cerrarModal(); });
         document.getElementById('checkoutFlowModal').addEventListener('click', function(e) { if(e.target === this) cerrarCheckout(); });
     </script>

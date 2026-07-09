@@ -67,8 +67,8 @@
             </div>
             <h1 class="title">Libro de Reclamaciones Virtual</h1>
             <div class="company-info">
-                <p><strong>Razón Social:</strong> LUXNOVA DIGITAL S.A.C. | <strong>RUC:</strong> 20123456789</p>
-                <p><strong>Dirección:</strong> La Victoria, Lima, Perú</p>
+                <p><strong>Razón Social:</strong> LUXNOVA DIGITAL S.A.C. | <strong>RUC:</strong> 20615583562</p>
+                <p><strong>Dirección:</strong> Rioja, San martin, Perú</p>
             </div>
         </div>
 
@@ -177,29 +177,70 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
+        // 1. Inicializar Supabase (¡Pon tus credenciales reales aquí también!)
+        const supabaseUrl = 'https://ugtasczfkisrqdywivfq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVndGFzY3pma2lzcnFkeXdpdmZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1NDUzMTgsImV4cCI6MjA5OTEyMTMxOH0.i9uZe4MRNDViH5tJp2NZliVOXS5Y0wctMNTTY014XZA'; 
+        const clienteSupabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         // Configurar la fecha actual y número de reclamo al cargar
         window.onload = function() {
-            // Fecha formato DD/MM/YYYY
             const hoy = new Date();
             const dia = String(hoy.getDate()).padStart(2, '0');
             const mes = String(hoy.getMonth() + 1).padStart(2, '0');
             const anio = hoy.getFullYear();
             document.getElementById('fechaActual').innerText = `${dia}/${mes}/${anio}`;
 
-            // Número de reclamo aleatorio simulado (Ej. 000452-2026)
             const numAleatorio = String(Math.floor(Math.random() * 999999)).padStart(6, '0');
             const numReclamoFicticio = `${numAleatorio}-${anio}`;
             document.getElementById('numReclamo').innerText = numReclamoFicticio;
             document.getElementById('modalNumReclamo').innerText = numReclamoFicticio;
         };
 
-        // Función simulada de envío
-        function enviarReclamo(e) {
+        // Función real para enviar datos a Supabase
+        async function enviarReclamo(e) {
             e.preventDefault(); // Evita que la página se recargue
             
-            // Muestra el mensaje de éxito
-            document.getElementById('successModal').classList.add('active');
+            const btnSubmit = document.querySelector('.btn-submit');
+            btnSubmit.innerText = "Enviando...";
+            btnSubmit.disabled = true;
+
+            // Recopilamos todos los datos del formulario (Usando selectores ordenados)
+            const inputs = document.querySelectorAll('input, textarea');
+            
+            const nuevoReclamo = {
+                numero_reclamo: document.getElementById('numReclamo').innerText,
+                nombre: inputs[0].value,
+                documento: inputs[1].value,
+                domicilio: inputs[2].value,
+                telefono: inputs[3].value,
+                email: inputs[4].value,
+                tipo_bien: document.querySelector('input[name="tipoBien"]:checked').value,
+                monto: parseFloat(inputs[7].value),
+                comprobante: inputs[8].value,
+                descripcion_bien: inputs[9].value,
+                tipo_accion: document.querySelector('input[name="tipoAccion"]:checked').value,
+                detalle: inputs[12].value,
+                pedido_cliente: inputs[13].value
+            };
+
+            try {
+                // Insertamos en la tabla de Supabase
+                const { error } = await clienteSupabase.from('reclamaciones').insert([nuevoReclamo]);
+                
+                if (error) throw error;
+
+                // Muestra el modal de éxito si todo salió bien
+                document.getElementById('successModal').classList.add('active');
+                
+            } catch (error) {
+                console.error("Error al enviar reclamo:", error);
+                alert("Ocurrió un error al enviar tu reclamación. Por favor, intenta de nuevo.");
+                btnSubmit.innerText = "Enviar Reclamación";
+                btnSubmit.disabled = false;
+            }
         }
     </script>
 </body>
