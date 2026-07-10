@@ -45,11 +45,25 @@ app.get('/pago-pendiente', (req, res) => {
 // ZONA DE PASARELA DE PAGOS (MERCADO PAGO CENTRALIZADO)
 // ==========================================================================
 
-// PASO 1 REEMPLAZADO: Ruta para generar el link de pago (Soporta Vértice y Lux Network)
+const jwt = require('jsonwebtoken'); // Asegúrate de tener esto arriba en tu app.js
+
 app.post('/procesar-pago', async (req, res) => {
     try {
-        // Recibimos los datos. Si vienen de una web externa, incluirán el campo 'origen'
         const { monto, clienteEmail, origen, id_carrito, producto } = req.body;
+        
+        // 1. Extraemos y desciframos el Token que nos envió Lux Network
+        const authHeader = req.headers['authorization'];
+        let idDelComprador = "ANONIMO";
+        
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.split(' ')[1];
+            try {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                idDelComprador = decoded.id; // ¡AQUÍ ATRAPAMOS SU ID REAL!
+            } catch (err) {
+                console.log("Token no válido o ausente, se procesa como anónimo.");
+            }
+        }
 
         // Validaciones de seguridad básicas
         if (!monto || !clienteEmail) {
@@ -81,10 +95,11 @@ app.post('/procesar-pago', async (req, res) => {
                 payer: {
                     email: clienteEmail
                 },
-                // LA JUGADA MAESTRA: Guardamos el origen en la metadata para el enrutador del webhook
+                // LA JUGADA MAESTRA: Guardamos el origen y el ID REAL en la metadata
                 metadata: {
                     origen_web: webOrigen,
-                    id_carrito: id_carrito || Date.now().toString()
+                    id_carrito: id_carrito || Date.now().toString(),
+                    usuario_id_lux: idDelComprador // <--- EL ID VIAJA ESCONDIDO AQUÍ
                 },
                 // Redirecciones dinámicas basadas en la web que inició la compra
                 back_urls: {
@@ -136,8 +151,8 @@ app.post('/webhook-tumipay', async (req, res) => {
             // Si el pago es real y está aprobado de forma definitiva
             if (paymentResponse.ok && paymentData.status === 'approved') {
                 
-                // Extraemos la metadata sembrada en el paso 1
-                const { origen_web, id_carrito } = paymentData.metadata;
+                /// Extraemos la metadata sembrada
+                const { origen_web, id_carrito, usuario_id_lux } = paymentData.metadata; // <--- SACAMOS EL ID
                 const montoAprobado = paymentData.transaction_amount;
                 const emailComprador = paymentData.payer.email;
 
@@ -156,7 +171,7 @@ app.post('/webhook-tumipay', async (req, res) => {
                                 id_carrito: id_carrito,
                                 estado: 'PAGADO',
                                 monto: montoAprobado,
-                                email: emailComprador
+                                usuario_id_real: usuario_id_lux // <--- LE ENVIAMOS EL ID EXACTO A LUX NETWORK
                             })
                         });
                     } catch (err) {
