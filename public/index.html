@@ -1764,36 +1764,64 @@
     </script>
 
 <!-- ========================================== -->
-<!-- MODAL DE COOKIES LUXNOVA (VERSIÓN FINAL) -->
+<!-- BANNER DE COOKIES LUXNOVA (NO INTRUSIVO) -->
 <!-- ========================================== -->
 <style>
-    /* El fondo oscuro ocupa toda la pantalla de la computadora/celular */
-    .cookie-overlay {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0, 0, 0, 0.7); z-index: 999998; display: none;
+    /* La caja flotante en la parte inferior */
+    .cookie-banner {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ffffff;
+        width: 90%;
+        max-width: 850px;
+        padding: 20px 25px;
+        z-index: 999999;
+        display: none; /* Se activa con JS */
+        border-radius: 12px;
+        font-family: Arial, Helvetica, sans-serif;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
     }
-    /* La caja estática en el centro */
-    .cookie-modal {
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        background: #ffffff; width: 90%; max-width: 650px; padding: 35px;
-        z-index: 999999; display: none; border-radius: 8px; 
-        font-family: Arial, Helvetica, sans-serif; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+
+    .cookie-banner-text { flex: 1; }
+    
+    .cookie-banner-text h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.1rem;
+        color: #0f172a;
+        font-weight: bold;
     }
-    .cookie-modal h3 { margin-top: 0; font-size: 1.4rem; color: #0f172a; font-weight: bold; }
-    .cookie-modal p { font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 25px; }
-    
-    /* El enlace ahora es del color azul de tu marca */
-    .cookie-modal a { color: #2563eb; font-weight: bold; text-decoration: underline; }
-    
-    .cookie-buttons { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
-    .cookie-buttons-right { display: flex; gap: 10px; flex-wrap: wrap; }
-    
-    /* Botones más modernos y redondeados */
+
+    .cookie-banner-text p {
+        font-size: 0.9rem;
+        color: #475569;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* El enlace azul de tu marca */
+    .cookie-banner a { color: #2563eb; font-weight: bold; text-decoration: none; }
+    .cookie-banner a:hover { text-decoration: underline; }
+
+    /* Contenedor de los dos botones */
+    .cookie-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    /* Diseño de los botones */
     .btn-cookie { 
-        padding: 12px 20px; font-weight: bold; cursor: pointer; 
-        font-size: 0.9rem; border-radius: 6px; transition: 0.2s; border: 1px solid transparent;
+        padding: 10px 20px; font-weight: bold; cursor: pointer; 
+        font-size: 0.85rem; border-radius: 6px; transition: 0.2s; border: 1px solid transparent;
     }
-    /* Botones secundarios (gris claro) */
+    
+    /* Botón secundario (gris claro) */
     .btn-outline { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
     .btn-outline:hover { background: #f1f5f9; }
     
@@ -1801,66 +1829,64 @@
     .btn-luxnova { background: #2563eb; color: #ffffff; }
     .btn-luxnova:hover { background: #1d4ed8; }
     
-    @media (max-width: 600px) {
-        .cookie-buttons, .cookie-buttons-right { flex-direction: column; width: 100%; }
-        .btn-cookie { width: 100%; text-align: center; }
+    /* Adaptación perfecta para celulares */
+    @media (max-width: 768px) {
+        .cookie-banner {
+            flex-direction: column;
+            bottom: 0;
+            width: 100%;
+            border-radius: 16px 16px 0 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .cookie-buttons { width: 100%; justify-content: stretch; }
+        .btn-cookie { flex: 1; text-align: center; padding: 12px; }
     }
 </style>
 
 <!-- Estructura Visual -->
-<div class="cookie-overlay" id="cookieOverlay"></div>
-<div class="cookie-modal" id="cookieModal">
-    <h3>Política de Uso de Cookies</h3>
-    <p>
-        Al hacer clic en “Aceptar todas las cookies”, usted acepta que las cookies se guarden en su dispositivo para mejorar la navegación del sitio, analizar el uso del mismo, y colaborar con nuestros estudios para marketing. <a href="/politica-de-cookies.html">Política de Cookies</a>
-    </p>
+<div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-banner-text">
+        <h3>Privacidad y Cookies</h3>
+        <p>
+            Al hacer clic en “Aceptar todas las cookies”, aceptas que se guarden en tu dispositivo para mejorar la navegación y analizar el uso del sitio. <a href="/politica-de-cookies.html">Ver Política</a>
+        </p>
+    </div>
     <div class="cookie-buttons">
-        <button class="btn-cookie btn-outline" id="btnConfigCookies">Configuración</button>
-        <div class="cookie-buttons-right">
-            <button class="btn-cookie btn-outline" id="btnRechazarCookies">Rechazarlas todas</button>
-            <button class="btn-cookie btn-luxnova" id="btnAceptarCookies">Aceptar todas las cookies</button>
-        </div>
+        <button class="btn-cookie btn-outline" id="btnRechazarCookies">Rechazar</button>
+        <button class="btn-cookie btn-luxnova" id="btnAceptarCookies">Aceptar todas</button>
     </div>
 </div>
 
-<!-- Cerebro Lógico (Anti-Bloqueos + Escape de Contenedor) -->
+<!-- Cerebro Lógico (Anti-Bloqueos + No Intrusivo) -->
 <script>
     (function() {
-        const avisoModal = document.getElementById('cookieModal');
-        const avisoOverlay = document.getElementById('cookieOverlay');
+        const avisoBanner = document.getElementById('cookieBanner');
         const btnAceptar = document.getElementById('btnAceptarCookies');
         const btnRechazar = document.getElementById('btnRechazarCookies');
-        const btnConfig = document.getElementById('btnConfigCookies');
 
-        if (!avisoModal || !avisoOverlay) return;
+        if (!avisoBanner) return;
 
-        // 🚀 EL TRUCO DE MAGIA: Sacamos las cookies de cualquier formulario
-        // y las pegamos en la raíz absoluta de la página.
-        document.body.appendChild(avisoOverlay);
-        document.body.appendChild(avisoModal);
+        // Lo teletransportamos a la raíz para que no se tranque en ningún formulario
+        document.body.appendChild(avisoBanner);
 
         try {
             const estado = localStorage.getItem('luxnova_cookies_estado');
             if (!estado) {
-                avisoModal.style.display = 'block';
-                avisoOverlay.style.display = 'block';
+                // Usamos 'flex' para que los elementos se acomoden horizontalmente
+                avisoBanner.style.display = 'flex'; 
             }
         } catch (error) {
-            avisoModal.style.display = 'block';
-            avisoOverlay.style.display = 'block';
+            avisoBanner.style.display = 'flex';
         }
 
         function cerrarAvisoCookies(decision) {
             try { localStorage.setItem('luxnova_cookies_estado', decision); } catch (e) {}
-            avisoModal.style.display = 'none';
-            avisoOverlay.style.display = 'none';
+            avisoBanner.style.display = 'none';
         }
 
         if(btnAceptar) btnAceptar.addEventListener('click', () => cerrarAvisoCookies('aceptadas'));
         if(btnRechazar) btnRechazar.addEventListener('click', () => cerrarAvisoCookies('rechazadas'));
-        if(btnConfig) btnConfig.addEventListener('click', () => {
-            window.location.href = '/politica-de-cookies.html';
-        });
     })();
 </script>
 <!-- ========================================== -->
