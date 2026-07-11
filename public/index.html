@@ -1763,48 +1763,51 @@
         document.getElementById('checkoutFlowModal').addEventListener('click', function(e) { if(e.target === this) cerrarCheckout(); });
     </script>
 
-    <!-- ========================================== -->
-<!-- MODAL DE COOKIES LUXNOVA -->
+<!-- ========================================== -->
+<!-- MODAL DE COOKIES LUXNOVA (VERSIÓN FINAL) -->
 <!-- ========================================== -->
 <style>
-    /* El fondo oscuro transparente */
+    /* El fondo oscuro ocupa toda la pantalla de la computadora/celular */
     .cookie-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6); z-index: 9998; display: none;
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0, 0, 0, 0.7); z-index: 999998; display: none;
     }
-    /* La caja del aviso */
+    /* La caja estática en el centro */
     .cookie-modal {
         position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        background: #fdfdfc; width: 90%; max-width: 750px; padding: 30px;
-        z-index: 9999; display: none; border: 1px solid #111; 
-        font-family: Arial, Helvetica, sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        background: #ffffff; width: 90%; max-width: 650px; padding: 35px;
+        z-index: 999999; display: none; border-radius: 8px; 
+        font-family: Arial, Helvetica, sans-serif; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
     }
-    .cookie-modal h3 { margin-top: 0; font-size: 1.3rem; color: #111; font-weight: bold; }
-    .cookie-modal p { font-size: 0.95rem; color: #333; line-height: 1.5; margin-bottom: 30px; }
-    .cookie-modal a { color: #eab308; font-weight: bold; text-decoration: underline; }
+    .cookie-modal h3 { margin-top: 0; font-size: 1.4rem; color: #0f172a; font-weight: bold; }
+    .cookie-modal p { font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 25px; }
     
-    /* Contenedor de botones */
+    /* El enlace ahora es del color azul de tu marca */
+    .cookie-modal a { color: #2563eb; font-weight: bold; text-decoration: underline; }
+    
     .cookie-buttons { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
-    .cookie-buttons-right { display: flex; gap: 15px; flex-wrap: wrap; }
+    .cookie-buttons-right { display: flex; gap: 10px; flex-wrap: wrap; }
     
-    /* Diseño de los botones */
+    /* Botones más modernos y redondeados */
     .btn-cookie { 
         padding: 12px 20px; font-weight: bold; cursor: pointer; 
-        font-size: 0.9rem; border: 1px solid #111; transition: 0.2s;
+        font-size: 0.9rem; border-radius: 6px; transition: 0.2s; border: 1px solid transparent;
     }
-    .btn-outline { background: transparent; color: #111; }
-    .btn-outline:hover { background: #f3f4f6; }
-    .btn-yellow { background: #fbbf24; color: #111; border-color: #fbbf24; }
-    .btn-yellow:hover { background: #f59e0b; }
+    /* Botones secundarios (gris claro) */
+    .btn-outline { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
+    .btn-outline:hover { background: #f1f5f9; }
     
-    /* Adaptación para celulares */
+    /* Botón principal (Azul Luxnova) */
+    .btn-luxnova { background: #2563eb; color: #ffffff; }
+    .btn-luxnova:hover { background: #1d4ed8; }
+    
     @media (max-width: 600px) {
         .cookie-buttons, .cookie-buttons-right { flex-direction: column; width: 100%; }
-        .btn-cookie { width: 100%; }
+        .btn-cookie { width: 100%; text-align: center; }
     }
 </style>
 
-<!-- La estructura visual -->
+<!-- Estructura Visual -->
 <div class="cookie-overlay" id="cookieOverlay"></div>
 <div class="cookie-modal" id="cookieModal">
     <h3>Política de Uso de Cookies</h3>
@@ -1812,62 +1815,42 @@
         Al hacer clic en “Aceptar todas las cookies”, usted acepta que las cookies se guarden en su dispositivo para mejorar la navegación del sitio, analizar el uso del mismo, y colaborar con nuestros estudios para marketing. <a href="/politica-de-cookies.html">Política de Cookies</a>
     </p>
     <div class="cookie-buttons">
-        <button class="btn-cookie btn-outline" id="btnConfigCookies">Configuración de cookies</button>
+        <button class="btn-cookie btn-outline" id="btnConfigCookies">Configuración</button>
         <div class="cookie-buttons-right">
             <button class="btn-cookie btn-outline" id="btnRechazarCookies">Rechazarlas todas</button>
-            <button class="btn-cookie btn-yellow" id="btnAceptarCookies">Aceptar todas las cookies</button>
+            <button class="btn-cookie btn-luxnova" id="btnAceptarCookies">Aceptar todas las cookies</button>
         </div>
     </div>
 </div>
 
-<!-- El cerebro lógico (Versión Anti-Bloqueos) -->
+<!-- Cerebro Lógico (Anti-Bloqueos) -->
 <script>
     (function() {
-        console.log("1. Iniciando sistema de cookies...");
         const avisoModal = document.getElementById('cookieModal');
         const avisoOverlay = document.getElementById('cookieOverlay');
         const btnAceptar = document.getElementById('btnAceptarCookies');
         const btnRechazar = document.getElementById('btnRechazarCookies');
         const btnConfig = document.getElementById('btnConfigCookies');
 
-        if (!avisoModal || !avisoOverlay) {
-            console.error("❌ ERROR: No se encontró el HTML del modal.");
-            return;
-        }
-        console.log("2. HTML detectado correctamente.");
+        if (!avisoModal || !avisoOverlay) return;
 
-        // Usamos try-catch para evitar que el navegador estrelle el código
         try {
             const estado = localStorage.getItem('luxnova_cookies_estado');
-            console.log("3. Estado en memoria:", estado);
-            
             if (!estado) {
-                console.log("4. Mostrando el recuadro al usuario...");
                 avisoModal.style.display = 'block';
                 avisoOverlay.style.display = 'block';
-            } else {
-                console.log("4. El usuario ya había decidido antes. Se mantiene oculto.");
             }
         } catch (error) {
-            console.warn("⚠️ MODO ESTRICTO: El navegador bloqueó la memoria. Mostrando recuadro por seguridad.");
-            // Si el navegador bloquea la memoria, mostramos el modal igual
             avisoModal.style.display = 'block';
             avisoOverlay.style.display = 'block';
         }
 
-        // Función para cerrar
         function cerrarAvisoCookies(decision) {
-            try {
-                localStorage.setItem('luxnova_cookies_estado', decision);
-            } catch (e) {
-                console.warn("⚠️ No se pudo guardar la decisión por la privacidad del navegador.");
-            }
+            try { localStorage.setItem('luxnova_cookies_estado', decision); } catch (e) {}
             avisoModal.style.display = 'none';
             avisoOverlay.style.display = 'none';
-            console.log("5. Recuadro cerrado. Acción:", decision);
         }
 
-        // Conectar botones
         if(btnAceptar) btnAceptar.addEventListener('click', () => cerrarAvisoCookies('aceptadas'));
         if(btnRechazar) btnRechazar.addEventListener('click', () => cerrarAvisoCookies('rechazadas'));
         if(btnConfig) btnConfig.addEventListener('click', () => {
