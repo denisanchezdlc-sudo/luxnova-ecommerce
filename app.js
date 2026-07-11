@@ -70,8 +70,9 @@ app.post('/procesar-pago', async (req, res) => {
             return res.status(400).json({ error: "Faltan parámetros requeridos (monto o clienteEmail)" });
         }
 
-        // Si no se envía un origen explícito, asumimos que viene de la web local (Vértice Corporativo)
+        // Si no se envía un origen explícito, asumimos que viene de la web local
         const webOrigen = origen || 'luxnovadig.com';
+        // Tomamos el producto real que envía el frontend para variar el concepto de compra
         const nombreProducto = producto || "Compra en Plataforma Luxnova";
 
         console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto}`);
@@ -80,26 +81,26 @@ app.post('/procesar-pago', async (req, res) => {
         const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Tu Token Privado en el .env
+                'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, 
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 items: [
                     {
-                        title: "OKCASH", // Ahora siempre dirá OKCASH, sin importar qué compren
+                        title: nombreProducto, // ¡ADIÓS OKCASH! Ahora dirá "Recarga de Saldo..."
                         quantity: 1,
                         unit_price: parseFloat(monto),
                         currency_id: 'PEN' 
                     }
                 ],
                 payer: {
-                    email: clienteEmail
+                    email: clienteEmail // Recibe el correo dinámico único generado en el frontend
                 },
                 // LA JUGADA MAESTRA: Guardamos el origen y el ID REAL en la metadata
                 metadata: {
                     origen_web: webOrigen,
                     id_carrito: id_carrito || Date.now().toString(),
-                    usuario_id_lux: idDelComprador // <--- EL ID VIAJA ESCONDIDO AQUÍ
+                    usuario_id_lux: idDelComprador 
                 },
                 // Redirecciones dinámicas basadas en la web que inició la compra
                 back_urls: {
