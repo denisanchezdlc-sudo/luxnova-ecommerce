@@ -1820,36 +1820,34 @@
     </div>
 </div>
 
-<!-- El cerebro lógico -->
+<!-- El cerebro lógico (Versión Inmediata) -->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const cookieModal = document.getElementById('cookieModal');
-        const cookieOverlay = document.getElementById('cookieOverlay');
-        const btnAceptar = document.getElementById('btnAceptarCookies');
-        const btnRechazar = document.getElementById('btnRechazarCookies');
-        const btnConfig = document.getElementById('btnConfigCookies');
+    // Se ejecuta al instante porque los elementos HTML ya se leyeron arriba
+    const cookieModal = document.getElementById('cookieModal');
+    const cookieOverlay = document.getElementById('cookieOverlay');
+    const btnAceptar = document.getElementById('btnAceptarCookies');
+    const btnRechazar = document.getElementById('btnRechazarCookies');
+    const btnConfig = document.getElementById('btnConfigCookies');
 
-        // 1. Revisamos la memoria del navegador para ver si ya aceptó/rechazó antes
-        if (!localStorage.getItem('luxnova_cookies_estado')) {
-            // Si no hay registro, mostramos el cuadro y el fondo oscuro
-            cookieModal.style.display = 'block';
-            cookieOverlay.style.display = 'block';
-        }
+    // 1. Revisamos la memoria del navegador
+    if (!localStorage.getItem('luxnova_cookies_estado')) {
+        cookieModal.style.display = 'block';
+        cookieOverlay.style.display = 'block';
+    }
 
-        // 2. Función maestra para guardar la decisión y ocultar el cuadro
-        function cerrarModal(decision) {
-            localStorage.setItem('luxnova_cookies_estado', decision);
-            cookieModal.style.display = 'none';
-            cookieOverlay.style.display = 'none';
-        }
+    // 2. Función para guardar la decisión
+    function cerrarModal(decision) {
+        localStorage.setItem('luxnova_cookies_estado', decision);
+        cookieModal.style.display = 'none';
+        cookieOverlay.style.display = 'none';
+    }
 
-        // 3. Activamos los botones
-        btnAceptar.addEventListener('click', () => cerrarModal('aceptadas'));
-        btnRechazar.addEventListener('click', () => cerrarModal('rechazadas'));
-        
-        btnConfig.addEventListener('click', () => {
-            alert("En el futuro, esto puede abrir otra ventana con detalles técnicos.");
-        });
+    // 3. Activamos los botones
+    btnAceptar.addEventListener('click', () => cerrarModal('aceptadas'));
+    btnRechazar.addEventListener('click', () => cerrarModal('rechazadas'));
+    
+    btnConfig.addEventListener('click', () => {
+        alert("En el futuro, esto puede abrir otra ventana con detalles técnicos.");
     });
 </script>
 <!-- ========================================== -->
