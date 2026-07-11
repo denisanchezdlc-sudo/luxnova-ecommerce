@@ -1820,36 +1820,58 @@
     </div>
 </div>
 
-<!-- El cerebro lógico (Ejecución Forzada) -->
+<!-- El cerebro lógico (Versión Anti-Bloqueos) -->
 <script>
     (function() {
+        console.log("1. Iniciando sistema de cookies...");
         const avisoModal = document.getElementById('cookieModal');
         const avisoOverlay = document.getElementById('cookieOverlay');
         const btnAceptar = document.getElementById('btnAceptarCookies');
         const btnRechazar = document.getElementById('btnRechazarCookies');
         const btnConfig = document.getElementById('btnConfigCookies');
 
-        // Si por alguna razón no encuentra el HTML, se detiene
-        if (!avisoModal || !avisoOverlay) return;
+        if (!avisoModal || !avisoOverlay) {
+            console.error("❌ ERROR: No se encontró el HTML del modal.");
+            return;
+        }
+        console.log("2. HTML detectado correctamente.");
 
-        // 1. Revisamos la memoria del navegador inmediatamente
-        if (!localStorage.getItem('luxnova_cookies_estado')) {
+        // Usamos try-catch para evitar que el navegador estrelle el código
+        try {
+            const estado = localStorage.getItem('luxnova_cookies_estado');
+            console.log("3. Estado en memoria:", estado);
+            
+            if (!estado) {
+                console.log("4. Mostrando el recuadro al usuario...");
+                avisoModal.style.display = 'block';
+                avisoOverlay.style.display = 'block';
+            } else {
+                console.log("4. El usuario ya había decidido antes. Se mantiene oculto.");
+            }
+        } catch (error) {
+            console.warn("⚠️ MODO ESTRICTO: El navegador bloqueó la memoria. Mostrando recuadro por seguridad.");
+            // Si el navegador bloquea la memoria, mostramos el modal igual
             avisoModal.style.display = 'block';
             avisoOverlay.style.display = 'block';
         }
 
-        // 2. Función para guardar y cerrar
+        // Función para cerrar
         function cerrarAvisoCookies(decision) {
-            localStorage.setItem('luxnova_cookies_estado', decision);
+            try {
+                localStorage.setItem('luxnova_cookies_estado', decision);
+            } catch (e) {
+                console.warn("⚠️ No se pudo guardar la decisión por la privacidad del navegador.");
+            }
             avisoModal.style.display = 'none';
             avisoOverlay.style.display = 'none';
+            console.log("5. Recuadro cerrado. Acción:", decision);
         }
 
-        // 3. Conectamos los botones
-        btnAceptar.addEventListener('click', () => cerrarAvisoCookies('aceptadas'));
-        btnRechazar.addEventListener('click', () => cerrarAvisoCookies('rechazadas'));
-        btnConfig.addEventListener('click', () => {
-            alert("En el futuro, esto abrirá los detalles técnicos.");
+        // Conectar botones
+        if(btnAceptar) btnAceptar.addEventListener('click', () => cerrarAvisoCookies('aceptadas'));
+        if(btnRechazar) btnRechazar.addEventListener('click', () => cerrarAvisoCookies('rechazadas'));
+        if(btnConfig) btnConfig.addEventListener('click', () => {
+            window.location.href = '/politica-de-cookies.html';
         });
     })();
 </script>
