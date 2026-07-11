@@ -71,7 +71,7 @@ app.post('/procesar-pago', async (req, res) => {
         }
 
         // Si no se envía un origen explícito, asumimos que viene de la web local (Vértice Corporativo)
-        const webOrigen = origen || 'vertice-corporativo.onrender.com';
+        const webOrigen = origen || 'luxnovadig.com';
         const nombreProducto = producto || "Compra en Plataforma Luxnova";
 
         console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto}`);
