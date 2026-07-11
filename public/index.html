@@ -1823,7 +1823,7 @@
     </div>
 </div>
 
-<!-- Cerebro Lógico (Anti-Bloqueos) -->
+<!-- Cerebro Lógico (Anti-Bloqueos + Escape de Contenedor) -->
 <script>
     (function() {
         const avisoModal = document.getElementById('cookieModal');
@@ -1833,6 +1833,11 @@
         const btnConfig = document.getElementById('btnConfigCookies');
 
         if (!avisoModal || !avisoOverlay) return;
+
+        // 🚀 EL TRUCO DE MAGIA: Sacamos las cookies de cualquier formulario
+        // y las pegamos en la raíz absoluta de la página.
+        document.body.appendChild(avisoOverlay);
+        document.body.appendChild(avisoModal);
 
         try {
             const estado = localStorage.getItem('luxnova_cookies_estado');
