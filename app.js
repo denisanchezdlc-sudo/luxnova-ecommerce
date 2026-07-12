@@ -72,12 +72,14 @@ app.post('/procesar-pago', async (req, res) => {
 
         // Si no se envía un origen explícito, asumimos que viene de la web local
         const webOrigen = origen || 'luxnovadig.com';
-        // Tomamos el producto real que envía el frontend para variar el concepto de compra
-        const nombreProducto = producto || "Compra en Plataforma Luxnova";
+        
+        // El servidor tomará 'producto-lux' que le envía la web, 
+        // o lo pondrá por defecto si la compra es de Vértice y no trae nombre.
+        const nombreProducto = producto || "producto-lux";
 
-        console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto}`);
+        console.log(`[Pago] Iniciando solicitud desde: ${webOrigen} por un monto de S/ ${monto} con el item: ${nombreProducto}`);
 
-        // Llamada directa y segura a la API de Mercado Pago Checkout Pro
+        // Llamada directa y segura a la API de Mercado Pago
         const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
             method: 'POST',
             headers: {
@@ -87,16 +89,15 @@ app.post('/procesar-pago', async (req, res) => {
             body: JSON.stringify({
                 items: [
                     {
-                        title: nombreProducto, // ¡ADIÓS OKCASH! Ahora dirá "Recarga de Saldo..."
+                        title: nombreProducto, // Se envía 'producto-lux' de forma universal
                         quantity: 1,
                         unit_price: parseFloat(monto),
                         currency_id: 'PEN' 
                     }
                 ],
                 payer: {
-                    email: clienteEmail // Recibe el correo dinámico único generado en el frontend
+                    email: clienteEmail 
                 },
-                // LA JUGADA MAESTRA: Guardamos el origen y el ID REAL en la metadata
                 metadata: {
                     origen_web: webOrigen,
                     id_carrito: id_carrito || Date.now().toString(),
