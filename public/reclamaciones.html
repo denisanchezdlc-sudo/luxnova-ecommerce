@@ -12,12 +12,14 @@
         
         .container { max-width: 900px; margin: 0 auto; background: white; padding: 50px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         
-        .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--border); padding-bottom: 30px; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;}
-        .logo svg { width: 24px; height: 24px; fill: #2563eb; }
-        .title { font-size: 1.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;}
-        .company-info { font-size: 0.9rem; color: var(--text-muted); }
-        
+        /* NUEVO ENCABEZADO LEGAL (CAJA ROJA INDECOPI) */
+        .reclamaciones-header { background: #fef2f2; border: 2px solid #fca5a5; padding: 35px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
+        .reclamaciones-header h1 { color: #991b1b; font-size: 2rem; margin-bottom: 10px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;}
+        .reclamaciones-header p { color: #7f1d1d; font-size: 1rem; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+        .reclamaciones-nota { color: #991b1b; font-size: 0.85rem; margin-top: 20px; font-weight: 600; }
+        .logo-header { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; font-weight: 800; color: #1e293b; margin-bottom: 15px; }
+        .logo-header svg { width: 24px; height: 24px; fill: #2563eb; }
+
         .claim-meta { display: flex; justify-content: space-between; background: #f1f5f9; padding: 15px 20px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; margin-bottom: 30px; border: 1px solid var(--border);}
         
         .form-section { margin-bottom: 40px; }
@@ -58,20 +60,26 @@
 <body>
 
     <div class="container">
-        <a href="legal.html" class="btn-back">← Volver a Políticas Legales</a>
+        <!-- BOTÓN ACTUALIZADO PARA IR AL INDEX -->
+        <a href="index.html" class="btn-back">← Volver a la Tienda Principal</a>
         
-        <div class="header">
-            <div class="logo">
+        <!-- NUEVA CAJA ROJA DE INDECOPI -->
+        <div class="reclamaciones-header">
+            <div class="logo-header">
                 <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                LUXNOVA DIGITAL
+                LUXNOVA DIGITAL S.A.C.
             </div>
-            <h1 class="title">Libro de Reclamaciones Virtual</h1>
-            <div class="company-info">
-                <p><strong>Razón Social:</strong> LUXNOVA DIGITAL S.A.C. | <strong>RUC:</strong> 20615583562</p>
-                <p><strong>Dirección:</strong> Rioja, San martin, Perú</p>
+            <h1>Libro de Reclamaciones Virtual</h1>
+            <p style="margin-bottom: 15px; color: #450a0a;"><strong>RUC:</strong> 20615583562 | <strong>Dirección:</strong> Rioja, San Martín, Perú</p>
+            <p>
+                Conforme a lo establecido en el <strong>Código de Protección y Defensa del Consumidor (Ley N° 29571)</strong>, ponemos a tu disposición este Libro de Reclamaciones Virtual para registrar quejas o reclamos sobre nuestras atenciones o productos.
+            </p>
+            <div class="reclamaciones-nota">
+                * La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante INDECOPI.
             </div>
         </div>
 
+        <!-- TU FORMULARIO ORIGINAL INTACTO -->
         <form id="reclamacionesForm" onsubmit="enviarReclamo(event)">
             
             <div class="claim-meta">
@@ -177,15 +185,14 @@
         </div>
     </div>
 
+    <!-- TU SCRIPT ORIGINAL INTACTO -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // 1. Inicializar Supabase (¡Pon tus credenciales reales aquí también!)
         const supabaseUrl = 'https://ugtasczfkisrqdywivfq.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVndGFzY3pma2lzcnFkeXdpdmZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1NDUzMTgsImV4cCI6MjA5OTEyMTMxOH0.i9uZe4MRNDViH5tJp2NZliVOXS5Y0wctMNTTY014XZA'; 
         const clienteSupabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Configurar la fecha actual y número de reclamo al cargar
         window.onload = function() {
             const hoy = new Date();
             const dia = String(hoy.getDate()).padStart(2, '0');
@@ -199,15 +206,13 @@
             document.getElementById('modalNumReclamo').innerText = numReclamoFicticio;
         };
 
-        // Función real para enviar datos a Supabase
         async function enviarReclamo(e) {
-            e.preventDefault(); // Evita que la página se recargue
+            e.preventDefault(); 
             
             const btnSubmit = document.querySelector('.btn-submit');
             btnSubmit.innerText = "Enviando...";
             btnSubmit.disabled = true;
 
-            // Recopilamos todos los datos del formulario (Usando selectores ordenados)
             const inputs = document.querySelectorAll('input, textarea');
             
             const nuevoReclamo = {
@@ -227,12 +232,10 @@
             };
 
             try {
-                // Insertamos en la tabla de Supabase
                 const { error } = await clienteSupabase.from('reclamaciones').insert([nuevoReclamo]);
                 
                 if (error) throw error;
 
-                // Muestra el modal de éxito si todo salió bien
                 document.getElementById('successModal').classList.add('active');
                 
             } catch (error) {
