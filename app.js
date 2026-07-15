@@ -150,16 +150,21 @@ app.post('/generar-pago-directo', async (req, res) => {
             }
         }
 
+        // VALIDACIÓN ESTRICTA: Si falta algún dato, detenemos el proceso antes de hablar con MP
         if (!monto || !clienteEmail || !metodoPago) {
+            console.error("Faltan parámetros en el body:", req.body);
             return res.status(400).json({ error: "Faltan parámetros requeridos" });
         }
 
         const webOrigen = origen || 'luxnovadig.com';
         const nombreProducto = producto || "producto-lux";
+        
+        // Aseguramos que el monto sea un número de coma flotante válido
+        const montoNumerico = parseFloat(monto);
 
-        console.log(`[API Directa] Generando ${metodoPago} por S/ ${monto} para el usuario ${idDelComprador}`);
+        console.log(`[API Directa] Generando ${metodoPago} por S/ ${montoNumerico} para el usuario ${idDelComprador}`);
 
-        // 2. Llamada directa a v1/payments (NO a preferences)
+        // 2. Llamada directa a v1/payments
         const response = await fetch('https://api.mercadopago.com/v1/payments', {
             method: 'POST',
             headers: {
@@ -168,23 +173,27 @@ app.post('/generar-pago-directo', async (req, res) => {
                 'X-Idempotency-Key': id_carrito // Evita pagos duplicados si el usuario hace doble clic
             },
             body: JSON.stringify({
-                transaction_amount: parseFloat(monto),
+                transaction_amount: montoNumerico,
                 description: nombreProducto,
                 payment_method_id: metodoPago, // Recibirá 'yape' o 'pagoefectivo_atm'
                 payer: {
-                    email: clienteEmail // Tu escudo dinámico
+                    email: clienteEmail, // Tu escudo dinámico
+                    // Mercado pago puede exigir estos datos para PagoEfectivo
+                    first_name: "Cliente", 
+                    last_name: "Anonimo"
                 },
                 metadata: {
                     origen_web: webOrigen,
                     id_carrito: id_carrito,
-                    usuario_id_lux: idDelComprador // Fundamental para el Webhook
+                    usuario_id_lux: idDelComprador 
                 }
             })
         });
 
         const data = await response.json();
 
-        if (data.status === 'pending') {
+        // 3. Verificamos si Mercado Pago aprobó o rechazó la petición
+        if (response.ok && (data.status === 'pending' || data.status === 'approved')) {
             // El pago se creó exitosamente esperando acción del cliente
             let respuestaFrontend = {
                 exito: true,
@@ -201,14 +210,16 @@ app.post('/generar-pago-directo', async (req, res) => {
                 respuestaFrontend.ticket_url = data.point_of_interaction.transaction_data.ticket_url;
             }
 
-            res.json(respuestaFrontend);
+            return res.json(respuestaFrontend);
         } else {
-            res.status(400).json({ error: "No se pudo generar el código de pago", detalle: data });
+            // AQUÍ ATRAPAMOS EL ERROR EXACTO DE MERCADO PAGO
+            console.error("Error devuelto por Mercado Pago:", data);
+            return res.status(400).json({ error: "Mercado Pago rechazó los datos", detalle: data });
         }
 
     } catch (error) {
         console.error("Error crítico en API Directa:", error);
-        res.status(500).json({ error: "No se pudo procesar la solicitud" });
+        return res.status(500).json({ error: "No se pudo procesar la solicitud interna" });
     }
 });
 
