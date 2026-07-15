@@ -158,11 +158,12 @@ app.post('/generar-pago-directo', async (req, res) => {
 
         const webOrigen = origen || 'luxnovadig.com';
         const nombreProducto = producto || "producto-lux";
-        
-        // Aseguramos que el monto sea un número de coma flotante válido
         const montoNumerico = parseFloat(monto);
 
-        console.log(`[API Directa] Generando ${metodoPago} por S/ ${montoNumerico} para el usuario ${idDelComprador}`);
+        // 🚨 EL TRUCO NINJA: Si elige Yape, forzamos PagoEfectivo para obtener su QR
+        const metodoReal = metodoPago === 'yape' ? 'pagoefectivo_atm' : metodoPago;
+
+        console.log(`[API Directa] Generando ${metodoReal} por S/ ${montoNumerico}`);
 
         // 2. Llamada directa a v1/payments
         const response = await fetch('https://api.mercadopago.com/v1/payments', {
@@ -175,18 +176,13 @@ app.post('/generar-pago-directo', async (req, res) => {
             body: JSON.stringify({
                 transaction_amount: montoNumerico,
                 description: nombreProducto,
-                payment_method_id: metodoPago, 
-                // LE DECIMOS A MP A DÓNDE AVISAR CUANDO EL CLIENTE PAGUE
+                payment_method_id: metodoReal, // Usamos la variable interceptada
                 notification_url: "https://luxnovadig.com/webhook-tumipay", 
                 payer: {
                     email: clienteEmail,
                     first_name: "Cliente", 
                     last_name: "Anonimo",
-                    // 🚨 LA LLAVE PARA YAPE: DNI OBLIGATORIO 🚨
-                    identification: {
-                        type: "DNI",
-                        number: "70000000" // DNI genérico válido para cumplir con la API
-                    }
+                    identification: { type: "DNI", number: "70000000" }
                 },
                 metadata: {
                     origen_web: webOrigen,
@@ -198,17 +194,14 @@ app.post('/generar-pago-directo', async (req, res) => {
 
         const data = await response.json();
 
-        // 3. Verificamos si Mercado Pago aprobó
         if (response.ok && (data.status === 'pending' || data.status === 'approved')) {
-            let respuestaFrontend = {
+            // Devolvemos el Ticket URL en ambos casos
+            return res.json({
                 exito: true,
                 id_pago: data.id,
-                metodo: metodoPago,
-                // AMBOS MÉTODOS (Yape y PagoEfectivo) USAN EL TICKET OFICIAL DE MP
+                metodo: metodoPago, // Le devolvemos 'yape' para que el frontend sepa qué título poner
                 ticket_url: data.transaction_details.external_resource_url
-            };
-
-            return res.json(respuestaFrontend);
+            });
         } else {
             console.error("Error devuelto por Mercado Pago:", data);
             return res.status(400).json({ error: "Mercado Pago rechazó los datos", detalle: data });
