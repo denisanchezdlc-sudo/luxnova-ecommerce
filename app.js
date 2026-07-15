@@ -131,6 +131,87 @@ app.post('/procesar-pago', async (req, res) => {
     }
 });
 
+// NUEVO: Procesamiento API Directo para Yape y PagoEfectivo (Sin salir de la web)
+app.post('/generar-pago-directo', async (req, res) => {
+    try {
+        const { monto, clienteEmail, origen, id_carrito, producto, metodoPago } = req.body;
+        
+        // 1. Extraemos y desciframos el Token de Lux Network
+        const authHeader = req.headers['authorization'];
+        let idDelComprador = "ANONIMO";
+        
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.split(' ')[1];
+            try {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                idDelComprador = decoded.id; 
+            } catch (err) {
+                console.log("Token no válido o ausente.");
+            }
+        }
+
+        if (!monto || !clienteEmail || !metodoPago) {
+            return res.status(400).json({ error: "Faltan parámetros requeridos" });
+        }
+
+        const webOrigen = origen || 'luxnovadig.com';
+        const nombreProducto = producto || "producto-lux";
+
+        console.log(`[API Directa] Generando ${metodoPago} por S/ ${monto} para el usuario ${idDelComprador}`);
+
+        // 2. Llamada directa a v1/payments (NO a preferences)
+        const response = await fetch('https://api.mercadopago.com/v1/payments', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, 
+                'Content-Type': 'application/json',
+                'X-Idempotency-Key': id_carrito // Evita pagos duplicados si el usuario hace doble clic
+            },
+            body: JSON.stringify({
+                transaction_amount: parseFloat(monto),
+                description: nombreProducto,
+                payment_method_id: metodoPago, // Recibirá 'yape' o 'pagoefectivo_atm'
+                payer: {
+                    email: clienteEmail // Tu escudo dinámico
+                },
+                metadata: {
+                    origen_web: webOrigen,
+                    id_carrito: id_carrito,
+                    usuario_id_lux: idDelComprador // Fundamental para el Webhook
+                }
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'pending') {
+            // El pago se creó exitosamente esperando acción del cliente
+            let respuestaFrontend = {
+                exito: true,
+                id_pago: data.id,
+                metodo: metodoPago
+            };
+
+            // Extraemos los datos según el método elegido
+            if (metodoPago === 'yape') {
+                respuestaFrontend.qr_base64 = data.point_of_interaction.transaction_data.qr_code_base64;
+                respuestaFrontend.codigo_yape = data.point_of_interaction.transaction_data.qr_code;
+            } else if (metodoPago === 'pagoefectivo_atm') {
+                // PagoEfectivo nos da un link con el código CIP y las instrucciones
+                respuestaFrontend.ticket_url = data.point_of_interaction.transaction_data.ticket_url;
+            }
+
+            res.json(respuestaFrontend);
+        } else {
+            res.status(400).json({ error: "No se pudo generar el código de pago", detalle: data });
+        }
+
+    } catch (error) {
+        console.error("Error crítico en API Directa:", error);
+        res.status(500).json({ error: "No se pudo procesar la solicitud" });
+    }
+});
+
 // PASO 2 REEMPLAZADO: Webhook unificado (Escucha a Mercado Pago y enruta las confirmaciones)
 app.post('/webhook-tumipay', async (req, res) => {
     try {
