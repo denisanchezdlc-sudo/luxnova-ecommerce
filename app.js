@@ -203,11 +203,11 @@ app.post('/generar-pago-directo', async (req, res) => {
 
             // Extraemos los datos según el método elegido
             if (metodoPago === 'yape') {
-                respuestaFrontend.qr_base64 = data.point_of_interaction.transaction_data.qr_code_base64;
-                respuestaFrontend.codigo_yape = data.point_of_interaction.transaction_data.qr_code;
+                respuestaFrontend.qr_base64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
+                respuestaFrontend.codigo_yape = data.point_of_interaction?.transaction_data?.qr_code;
             } else if (metodoPago === 'pagoefectivo_atm') {
-                // PagoEfectivo nos da un link con el código CIP y las instrucciones
-                respuestaFrontend.ticket_url = data.point_of_interaction.transaction_data.ticket_url;
+                // 🔥 CORRECCIÓN: Esta es la ruta correcta del recibo de PagoEfectivo
+                respuestaFrontend.ticket_url = data.transaction_details.external_resource_url;
             }
 
             return res.json(respuestaFrontend);
