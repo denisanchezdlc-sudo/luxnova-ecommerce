@@ -297,7 +297,7 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
 
         // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
         const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
-        const response = await fetch(`https://api-empresas.staging.topup.com.co/production/api/v2/payin`, {
+        const response = await fetch('https://api-empresas.staging.topup.com.co/production/api/v1/payin', {
             method: 'POST',
             headers: {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, 
