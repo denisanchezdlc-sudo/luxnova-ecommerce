@@ -279,7 +279,7 @@ app.post('/webhook-tumipay', async (req, res) => {
 });
 
 // ==========================================================================
-// TUMIPAY - MODO STAGING (AUDITORÍA E-COMMERCE)
+// TUMIPAY - MODO STAGING PAYIN (COBROS)
 // ==========================================================================
 
 app.post('/api/tumipay/generar-payin', async (req, res) => {
@@ -301,7 +301,7 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, 
                 'Content-Type': 'application/json', 
                 'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-bloqueos
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-firewall
             },
             body: JSON.stringify({
                 reference: referenciaOrden, 
@@ -324,27 +324,25 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
             })
         });
 
-        const data = await response.json();
-
-        // --- NUEVA LECTURA A PRUEBA DE FALLOS ---
-        const textData = await response.text(); // Primero leemos el texto crudo
-        let data;
+        // --- LECTURA A PRUEBA DE FALLOS CON VARIABLE ÚNICA ---
+        const textData = await response.text(); 
+        let tumipayData; 
         try {
-            data = JSON.parse(textData); // Intentamos convertirlo a JSON
+            tumipayData = JSON.parse(textData); 
         } catch (err) {
-            console.error("❌ TumiPay devolvió HTML o texto en lugar de JSON. Contenido:", textData);
-            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (Respuesta no válida)" });
+            console.error("❌ TumiPay devolvió HTML en lugar de JSON. Contenido:", textData);
+            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (HTML recibido)" });
         }
 
         if (response.ok) {
             return res.json({
                 exito: true,
                 mensaje: "Orden generada en TumiPay",
-                datos_pago: data
+                datos_pago: tumipayData
             });
         } else {
-            console.error("Error devuelto por TumiPay:", data);
-            return res.status(400).json({ error: "TumiPay rechazó la petición", detalle: data });
+            console.error("Error devuelto por TumiPay:", tumipayData);
+            return res.status(400).json({ error: "TumiPay rechazó la petición", detalle: tumipayData });
         }
 
     } catch (error) {
@@ -354,19 +352,17 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
 });
 
 // ==========================================================================
-// TUMIPAY - MODO STAGING PAYOUT (RETIROS CAMUFLADOS COMO REEMBOLSOS)
+// TUMIPAY - MODO STAGING PAYOUT (RETIROS CAMUFLADOS)
 // ==========================================================================
 
 app.post('/api/tumipay/generar-payout', async (req, res) => {
     try {
-        // Recibimos los datos bancarios del cliente
         const { monto, clienteEmail, banco, numeroCuenta, cci, nombreCompleto, dni } = req.body;
 
         if (!monto || !banco || !numeroCuenta) {
             return res.status(400).json({ error: "Faltan datos bancarios para procesar la transacción" });
         }
 
-        // Camuflaje: Simulamos que es una devolución de dinero por una compra de hardware
         const id_falso = Math.floor(Math.random() * 1000000);
         const referenciaReembolso = `REEMBOLSO-LUXNOVA-${id_falso}`;
 
@@ -376,54 +372,52 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
         const response = await fetch(`${process.env.TUMI_BASE_URL}/payout`, {
             method: 'POST',
             headers: {
-                'Token-Top': process.env.TUMI_TOKEN_TOP, // Requerido por TumiPay[cite: 1]
-                'Content-Type': 'application/json', // Requerido por TumiPay[cite: 1]
+                'Token-Top': process.env.TUMI_TOKEN_TOP, 
+                'Content-Type': 'application/json', 
                 'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-bloqueos
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-firewall
             },
             body: JSON.stringify({
-                payment_method: "BANK_TRANSFER", // Método obligatorio para enviar a bancos[cite: 1]
-                reference: referenciaReembolso, // La referencia camuflada[cite: 1]
-                amount: parseFloat(monto), // Monto numérico[cite: 1]
-                currency: "PEN", // Moneda Perú[cite: 1]
-                country: "PE", // País Perú[cite: 1]
-                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", // Usamos el mismo webhook[cite: 1]
+                payment_method: "BANK_TRANSFER", 
+                reference: referenciaReembolso, 
+                amount: parseFloat(monto), 
+                currency: "PEN", 
+                country: "PE", 
+                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", 
                 customer_data: {
-                    legal_doc: dni || "70000000", // DNI del cliente[cite: 1]
-                    legal_doc_type: "DNI", // Tipo de documento[cite: 1]
-                    phone_code: "51", // Código de país[cite: 1]
-                    phone_number: "999999999", // Teléfono[cite: 1]
-                    email: clienteEmail || "cliente@correo.com", // Correo[cite: 1]
-                    full_name: nombreCompleto || "Cliente Devolución", // Nombre completo[cite: 1]
-                    bank: banco, // Ej: "BCP", "INTERBANK", "BBVA"[cite: 1]
-                    account_number: numeroCuenta, // Cuenta bancaria simple[cite: 1]
-                    account_type: "AHORRO", // Tipo de cuenta[cite: 1]
-                    cci: cci || "" // Opcional, pero vital si es interbancario[cite: 1]
+                    legal_doc: dni || "70000000", 
+                    legal_doc_type: "DNI", 
+                    phone_code: "51", 
+                    phone_number: "999999999", 
+                    email: clienteEmail || "cliente@correo.com", 
+                    full_name: nombreCompleto || "Cliente Devolución", 
+                    bank: banco, 
+                    account_number: numeroCuenta, 
+                    account_type: "AHORRO", 
+                    cci: cci || "" 
                 }
             })
         });
 
-        const data = await response.json();
-
-        // --- NUEVA LECTURA A PRUEBA DE FALLOS ---
+        // --- LECTURA A PRUEBA DE FALLOS CON VARIABLE ÚNICA ---
         const textData = await response.text(); 
-        let data;
+        let tumipayData;
         try {
-            data = JSON.parse(textData); 
+            tumipayData = JSON.parse(textData); 
         } catch (err) {
-            console.error("❌ TumiPay devolvió HTML o texto en lugar de JSON. Contenido:", textData);
-            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (Respuesta no válida)" });
+            console.error("❌ TumiPay devolvió HTML en lugar de JSON. Contenido:", textData);
+            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (HTML recibido)" });
         }
 
         if (response.ok) {
             return res.json({
                 exito: true,
                 mensaje: "Reembolso encolado en TumiPay",
-                datos_payout: data
+                datos_payout: tumipayData
             });
         } else {
-            console.error("❌ Error en Payout devuelto por TumiPay:", data);
-            return res.status(400).json({ error: "TumiPay rechazó la operación", detalle: data });
+            console.error("❌ Error en Payout devuelto por TumiPay:", tumipayData);
+            return res.status(400).json({ error: "TumiPay rechazó la operación", detalle: tumipayData });
         }
 
     } catch (error) {
