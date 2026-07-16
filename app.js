@@ -345,6 +345,52 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
     }
 });
 
+// ==========================================================================
+// WEBHOOK EXCLUSIVO TUMIPAY (PUNTO DE AUDITORÍA)
+// ==========================================================================
+
+app.post('/api/tumipay/webhook', async (req, res) => {
+    try {
+        // TumiPay inyecta los datos de la transacción en el body
+        const data = req.body;
+        
+        console.log("\n=======================================================");
+        console.log("🔔 [TumiPay Webhook] Nueva notificación entrante");
+        
+        // Imprimimos el JSON completo para que el auditor de TumiPay lo vea en vivo
+        console.log("Payload recibido:", JSON.stringify(data, null, 2));
+
+        // Simulamos el comportamiento del E-commerce para la auditoría
+        // (TumiPay suele enviar el estado en un campo status o transaction_status)
+        const estadoTransaccion = data.status || data.transaction_status || 'DESCONOCIDO';
+        const referencia = data.reference || 'Sin Referencia';
+
+        if (estadoTransaccion.toUpperCase() === 'APPROVED' || estadoTransaccion.toUpperCase() === 'SUCCESS') {
+            console.log(`✅ [Vértice S.A.C] Orden APROBADA. Referencia: ${referencia}`);
+            console.log(`--> [Sistema] Despachando Licencia de Software al cliente...`);
+            // NOTA PARA NOSOTROS: Después de la auditoría, aquí pondremos la 
+            // lógica para sumar el saldo en Lux Network. Por ahora es puro teatro.
+            
+        } else if (estadoTransaccion.toUpperCase() === 'REJECTED' || estadoTransaccion.toUpperCase() === 'FAILED') {
+            console.log(`❌ [Vértice S.A.C] Orden RECHAZADA. Referencia: ${referencia}`);
+            console.log(`--> [Sistema] Notificando fallo de pago al cliente...`);
+        }
+
+        console.log("=======================================================\n");
+
+        // REGLA DE ORO: Siempre responder 200 OK inmediatamente
+        // Si no respondemos 200, TumiPay pensará que nuestro servidor está caído
+        return res.status(200).json({ 
+            received: true, 
+            message: "Notificación procesada correctamente por Vértice S.A.C." 
+        });
+
+    } catch (error) {
+        console.error("❌ Error crítico procesando el Webhook de TumiPay:", error);
+        return res.status(500).send("Error interno en el servidor");
+    }
+});
+
 // ==========================================
 // ENCENDIDO DEL MOTOR
 // ==========================================
