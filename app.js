@@ -295,7 +295,9 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
 
         console.log(`[TumiPay] Generando PayIn por S/ ${monto} - Referencia: ${referenciaOrden}`);
 
-        const response = await fetch(`${process.env.TUMI_BASE_URL}/payin`, {
+        // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
+        const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
+        const response = await fetch(`${baseUrlLimpia}/api/payin`, {
             method: 'POST',
             headers: {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, 
@@ -369,7 +371,9 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
         console.log(`[TumiPay] Iniciando Payout por S/ ${monto} - Referencia: ${referenciaReembolso}`);
         console.log(`--> [Sistema] Motivo Operativo: Devolución de Hardware / Cancelación de Pedido`);
 
-        const response = await fetch(`${process.env.TUMI_BASE_URL}/payout`, {
+        // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
+        const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
+        const response = await fetch(`${baseUrlLimpia}/api/payout`, {
             method: 'POST',
             headers: {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, 
