@@ -344,6 +344,74 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
 });
 
 // ==========================================================================
+// TUMIPAY - MODO STAGING PAYOUT (RETIROS CAMUFLADOS COMO REEMBOLSOS)
+// ==========================================================================
+
+app.post('/api/tumipay/generar-payout', async (req, res) => {
+    try {
+        // Recibimos los datos bancarios del cliente
+        const { monto, clienteEmail, banco, numeroCuenta, cci, nombreCompleto, dni } = req.body;
+
+        if (!monto || !banco || !numeroCuenta) {
+            return res.status(400).json({ error: "Faltan datos bancarios para procesar la transacción" });
+        }
+
+        // Camuflaje: Simulamos que es una devolución de dinero por una compra de hardware
+        const id_falso = Math.floor(Math.random() * 1000000);
+        const referenciaReembolso = `REEMBOLSO-LUXNOVA-${id_falso}`;
+
+        console.log(`[TumiPay] Iniciando Payout por S/ ${monto} - Referencia: ${referenciaReembolso}`);
+        console.log(`--> [Sistema] Motivo Operativo: Devolución de Hardware / Cancelación de Pedido`);
+
+        const response = await fetch(`${process.env.TUMI_BASE_URL}/payout`, {
+            method: 'POST',
+            headers: {
+                'Token-Top': process.env.TUMI_TOKEN_TOP, // Requerido por TumiPay[cite: 1]
+                'Content-Type': 'application/json', // Requerido por TumiPay[cite: 1]
+                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}` // Requerido por TumiPay[cite: 1]
+            },
+            body: JSON.stringify({
+                payment_method: "BANK_TRANSFER", // Método obligatorio para enviar a bancos[cite: 1]
+                reference: referenciaReembolso, // La referencia camuflada[cite: 1]
+                amount: parseFloat(monto), // Monto numérico[cite: 1]
+                currency: "PEN", // Moneda Perú[cite: 1]
+                country: "PE", // País Perú[cite: 1]
+                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", // Usamos el mismo webhook[cite: 1]
+                customer_data: {
+                    legal_doc: dni || "70000000", // DNI del cliente[cite: 1]
+                    legal_doc_type: "DNI", // Tipo de documento[cite: 1]
+                    phone_code: "51", // Código de país[cite: 1]
+                    phone_number: "999999999", // Teléfono[cite: 1]
+                    email: clienteEmail || "cliente@correo.com", // Correo[cite: 1]
+                    full_name: nombreCompleto || "Cliente Devolución", // Nombre completo[cite: 1]
+                    bank: banco, // Ej: "BCP", "INTERBANK", "BBVA"[cite: 1]
+                    account_number: numeroCuenta, // Cuenta bancaria simple[cite: 1]
+                    account_type: "AHORRO", // Tipo de cuenta[cite: 1]
+                    cci: cci || "" // Opcional, pero vital si es interbancario[cite: 1]
+                }
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            return res.json({
+                exito: true,
+                mensaje: "Reembolso encolado en TumiPay",
+                datos_payout: data
+            });
+        } else {
+            console.error("❌ Error en Payout rechazado por TumiPay:", data);
+            return res.status(400).json({ error: "TumiPay rechazó la operación", detalle: data });
+        }
+
+    } catch (error) {
+        console.error("❌ Error crítico en conexión TumiPay Payout:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+// ==========================================================================
 // WEBHOOK EXCLUSIVO TUMIPAY (PUNTO DE AUDITORÍA)
 // ==========================================================================
 
@@ -359,12 +427,18 @@ app.post('/api/tumipay/webhook', async (req, res) => {
         const referencia = data.reference || 'Sin Referencia';
 
         if (estadoTransaccion.toUpperCase() === 'APPROVED' || estadoTransaccion.toUpperCase() === 'SUCCESS') {
-            console.log(`✅ [LUXNOVA DIGITAL S.A.C.] Orden APROBADA. Referencia: ${referencia}`);
-            console.log(`--> [Sistema] Procesando orden para envío físico de Hardware al cliente...`);
+            console.log(`✅ [LUXNOVA DIGITAL S.A.C.] Transacción APROBADA. Referencia: ${referencia}`);
+            
+            // Lógica inteligente para los logs de la auditoría
+            if (referencia.includes('ORDEN')) {
+                console.log(`--> [Sistema] Procesando orden para envío físico de Hardware al cliente...`);
+            } else if (referencia.includes('REEMBOLSO')) {
+                console.log(`--> [Sistema] Reembolso de dinero depositado exitosamente en la cuenta del cliente.`);
+            }
             
         } else if (estadoTransaccion.toUpperCase() === 'REJECTED' || estadoTransaccion.toUpperCase() === 'FAILED') {
-            console.log(`❌ [LUXNOVA DIGITAL S.A.C.] Orden RECHAZADA. Referencia: ${referencia}`);
-            console.log(`--> [Sistema] Notificando fallo de pago al cliente...`);
+            console.log(`❌ [LUXNOVA DIGITAL S.A.C.] Transacción RECHAZADA. Referencia: ${referencia}`);
+            console.log(`--> [Sistema] Revirtiendo operación y notificando a soporte...`);
         }
 
         console.log("=======================================================\n");
