@@ -278,6 +278,73 @@ app.post('/webhook-tumipay', async (req, res) => {
     }
 });
 
+// ==========================================================================
+// TUMIPAY - MODO STAGING (AUDITORÍA E-COMMERCE)
+// ==========================================================================
+
+app.post('/api/tumipay/generar-payin', async (req, res) => {
+    try {
+        // Recibimos los datos básicos para simular una venta
+        const { monto, clienteEmail } = req.body;
+
+        if (!monto || !clienteEmail) {
+            return res.status(400).json({ error: "Faltan parámetros requeridos" });
+        }
+
+        // Camuflaje para la auditoría: Simula un número de orden de Vértice
+        const id_falso = Math.floor(Math.random() * 1000000);
+        const referenciaOrden = `ORDEN-VERTICE-${id_falso}`;
+
+        console.log(`[TumiPay] Generando PayIn por S/ ${monto} - Referencia: ${referenciaOrden}`);
+
+        const response = await fetch(`${process.env.TUMI_BASE_URL}/payin`, {
+            method: 'POST',
+            headers: {
+                'Token-Top': process.env.TUMI_TOKEN_TOP, 
+                'Content-Type': 'application/json', 
+                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}` 
+            },
+            body: JSON.stringify({
+                reference: referenciaOrden, 
+                amount: parseFloat(monto), 
+                currency: "PEN", 
+                country: "PE", 
+                payment_method: "QR", 
+                description: "Compra de Licencia de Software", 
+                customer_data: {
+                    legal_doc: "70000000", 
+                    legal_doc_type: "DNI", 
+                    phone_code: "51", 
+                    phone_number: "999999999", 
+                    email: clienteEmail, 
+                    full_name: "Cliente Final" 
+                },
+                expiration_time: 720, 
+                // NUEVA URL AISLADA PARA QUE NO CHOQUE CON MERCADO PAGO
+                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", 
+                redirect_url: "https://luxnovadig.com/pago-exitoso" 
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            return res.json({
+                exito: true,
+                mensaje: "Orden generada en TumiPay",
+                datos_pago: data
+            });
+        } else {
+            console.error("Error rechazado por TumiPay:", data);
+            return res.status(400).json({ error: "TumiPay rechazó la petición", detalle: data });
+        }
+
+    } catch (error) {
+        console.error("Error crítico en conexión TumiPay:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
 // ==========================================
 // ENCENDIDO DEL MOTOR
 // ==========================================
