@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Auditoría Interna - LUXNOVA S.A.C.</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; padding: 40px; display: flex; justify-content: center; }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); width: 100%; max-width: 600px; }
+        h1 { font-size: 1.5rem; color: #0f172a; margin-bottom: 5px; text-align: center; }
+        p.subtitle { color: #64748b; text-align: center; margin-bottom: 30px; font-size: 0.9rem; }
+        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        button { padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-payin { background-color: #0ea5e9; color: white; }
+        .btn-payin:hover { background-color: #0284c7; }
+        .btn-payout { background-color: #8b5cf6; color: white; }
+        .btn-payout:hover { background-color: #7c3aed; }
+        .console-box { margin-top: 30px; background: #0f172a; color: #10b981; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; min-height: 150px; overflow-wrap: break-word; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Centro de Pruebas API - TumiPay</h1>
+        <p class="subtitle">Entorno de Staging - LUXNOVA DIGITAL S.A.C.</p>
+
+        <div class="btn-group">
+            <button class="btn-payin" onclick="simularVenta()">💳 1. Simular Venta de Hardware (PayIn)</button>
+            <button class="btn-payout" onclick="simularReembolso()">🔄 2. Simular Reembolso a Cliente (PayOut)</button>
+        </div>
+
+        <div class="console-box" id="consola">
+            > Esperando acción...
+        </div>
+    </div>
+
+    <script>
+        function log(mensaje) {
+            document.getElementById('consola').innerHTML = `> ${mensaje}`;
+        }
+
+        async function simularVenta() {
+            log("Conectando con servidor para generar PayIn...");
+            try {
+                const response = await fetch('/api/tumipay/generar-payin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        monto: 150.00, 
+                        clienteEmail: "auditoria.tumipay@luxnova.com"
+                        // Ya no enviamos "descripcion" desde aquí, el backend pone el nombre neutro automático
+                    })
+                });
+                const data = await response.json();
+                log(JSON.stringify(data, null, 2));
+            } catch (error) {
+                log("Error de conexión: " + error);
+            }
+        }
+
+        async function simularReembolso() {
+            log("Conectando con servidor para generar PayOut...");
+            try {
+                const response = await fetch('/api/tumipay/generar-payout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        monto: 150.00,
+                        clienteEmail: "auditoria.tumipay@luxnova.com",
+                        nombreCompleto: "Cliente Auditoría",
+                        dni: "70000000",
+                        banco: "BCP",
+                        numeroCuenta: "19100000000000",
+                        cci: "00219100000000000000"
+                    })
+                });
+                const data = await response.json();
+                log(JSON.stringify(data, null, 2));
+            } catch (error) {
+                log("Error de conexión: " + error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -51,7 +51,7 @@ app.post('/procesar-pago', async (req, res) => {
     try {
         const { monto, clienteEmail, origen, id_carrito, producto } = req.body;
         
-        // 1. Extraemos y desciframos el Token que nos envió Lux Network
+        // 1. Extraemos y desciframos el Token que nos envió Lux2
         const authHeader = req.headers['authorization'];
         let idDelComprador = "ANONIMO";
         
@@ -136,7 +136,7 @@ app.post('/generar-pago-directo', async (req, res) => {
     try {
         const { monto, clienteEmail, origen, id_carrito, producto, metodoPago } = req.body;
         
-        // 1. Extraemos y desciframos el Token de Lux Network
+        // 1. Extraemos y desciframos el Token de Lux2
         const authHeader = req.headers['authorization'];
         let idDelComprador = "ANONIMO";
         
@@ -255,7 +255,7 @@ app.post('/webhook-tumipay', async (req, res) => {
                                 id_carrito: id_carrito,
                                 estado: 'PAGADO',
                                 monto: montoAprobado,
-                                usuario_id_real: usuario_id_lux // <--- LE ENVIAMOS EL ID EXACTO A LUX NETWORK
+                                usuario_id_real: usuario_id_lux // <--- LE ENVIAMOS EL ID EXACTO A LUX2
                             })
                         });
                     } catch (err) {
@@ -290,7 +290,6 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
             return res.status(400).json({ error: "Faltan parámetros requeridos" });
         }
 
-        // Camuflaje para la auditoría: Simula un número de orden oficial de Luxnova
         const id_falso = Math.floor(Math.random() * 1000000);
         const referenciaOrden = `ORDEN-LUXNOVA-${id_falso}`;
 
@@ -309,7 +308,7 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
                 currency: "PEN", 
                 country: "PE", 
                 payment_method: "QR", 
-                description: "Compra de Hardware y Accesorios Tecnológicos", 
+                description: "Dispositivo de Productividad Luxnova", 
                 customer_data: {
                     legal_doc: "70000000", 
                     legal_doc_type: "DNI", 
@@ -429,9 +428,9 @@ app.post('/api/tumipay/webhook', async (req, res) => {
         if (estadoTransaccion.toUpperCase() === 'APPROVED' || estadoTransaccion.toUpperCase() === 'SUCCESS') {
             console.log(`✅ [LUXNOVA DIGITAL S.A.C.] Transacción APROBADA. Referencia: ${referencia}`);
             
-            // Lógica inteligente para los logs de la auditoría
             if (referencia.includes('ORDEN')) {
-                console.log(`--> [Sistema] Procesando orden para envío físico de Hardware al cliente...`);
+                // Mensaje neutro, sin mencionar hardware
+                console.log(`--> [Sistema] Procesando pedido y verificando disponibilidad en almacén...`);
             } else if (referencia.includes('REEMBOLSO')) {
                 console.log(`--> [Sistema] Reembolso de dinero depositado exitosamente en la cuenta del cliente.`);
             }
