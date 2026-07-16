@@ -300,7 +300,8 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
             headers: {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, 
                 'Content-Type': 'application/json', 
-                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}` 
+                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-bloqueos
             },
             body: JSON.stringify({
                 reference: referenciaOrden, 
@@ -325,6 +326,16 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
 
         const data = await response.json();
 
+        // --- NUEVA LECTURA A PRUEBA DE FALLOS ---
+        const textData = await response.text(); // Primero leemos el texto crudo
+        let data;
+        try {
+            data = JSON.parse(textData); // Intentamos convertirlo a JSON
+        } catch (err) {
+            console.error("❌ TumiPay devolvió HTML o texto en lugar de JSON. Contenido:", textData);
+            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (Respuesta no válida)" });
+        }
+
         if (response.ok) {
             return res.json({
                 exito: true,
@@ -332,7 +343,7 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
                 datos_pago: data
             });
         } else {
-            console.error("Error rechazado por TumiPay:", data);
+            console.error("Error devuelto por TumiPay:", data);
             return res.status(400).json({ error: "TumiPay rechazó la petición", detalle: data });
         }
 
@@ -367,7 +378,8 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
             headers: {
                 'Token-Top': process.env.TUMI_TOKEN_TOP, // Requerido por TumiPay[cite: 1]
                 'Content-Type': 'application/json', // Requerido por TumiPay[cite: 1]
-                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}` // Requerido por TumiPay[cite: 1]
+                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-bloqueos
             },
             body: JSON.stringify({
                 payment_method: "BANK_TRANSFER", // Método obligatorio para enviar a bancos[cite: 1]
@@ -393,6 +405,16 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
 
         const data = await response.json();
 
+        // --- NUEVA LECTURA A PRUEBA DE FALLOS ---
+        const textData = await response.text(); 
+        let data;
+        try {
+            data = JSON.parse(textData); 
+        } catch (err) {
+            console.error("❌ TumiPay devolvió HTML o texto en lugar de JSON. Contenido:", textData);
+            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (Respuesta no válida)" });
+        }
+
         if (response.ok) {
             return res.json({
                 exito: true,
@@ -400,7 +422,7 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
                 datos_payout: data
             });
         } else {
-            console.error("❌ Error en Payout rechazado por TumiPay:", data);
+            console.error("❌ Error en Payout devuelto por TumiPay:", data);
             return res.status(400).json({ error: "TumiPay rechazó la operación", detalle: data });
         }
 
