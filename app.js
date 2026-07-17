@@ -243,12 +243,12 @@ app.post('/webhook-tumipay', async (req, res) => {
                 console.log(`[Webhook] ¡PAGO APROBADO! S/ ${montoAprobado} de ${emailComprador}`);
 
                 // ENRUTADOR INTELIGENTE SEGÚN EL ORIGEN
-                if (origen_web === 'luxnovaadig.com') {
+                if (origen_web === 'appluxnova.com') {
                     console.log(`--> Enrutando despacho automático hacia Lux Network Core...`);
                     
                     // Disparamos una alerta silenciosa al backend de tu segunda web
                     try {
-                        await fetch('https://luxnovaadig.com/api/confirmar-pedido', {
+                        await fetch('https://appluxnova.com/api/confirmar-pedido', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
