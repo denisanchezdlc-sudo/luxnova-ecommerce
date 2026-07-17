@@ -286,7 +286,7 @@ app.post('/api/tumipay/generar-payin', async (req, res) => {
     try {
         const { monto, clienteEmail } = req.body;
 
-        if (!monto || !clienteEmail) {
+        if (monto === undefined || monto === null || !clienteEmail) {
             return res.status(400).json({ error: "Faltan parámetros requeridos" });
         }
 
