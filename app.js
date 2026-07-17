@@ -369,7 +369,7 @@ app.post('/api/tumipay/generar-payout', async (req, res) => {
         const referenciaReembolso = `REEMBOLSO-LUXNOVA-${id_falso}`;
 
         console.log(`[TumiPay] Iniciando Payout por S/ ${monto} - Referencia: ${referenciaReembolso}`);
-        console.log(`--> [Sistema] Motivo Operativo: Devolución de Hardware / Cancelación de Pedido`);
+        console.log(`--> [Sistema] Motivo Operativo: Devolución de producto / Cancelación de Pedido`);
 
         // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
         const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
