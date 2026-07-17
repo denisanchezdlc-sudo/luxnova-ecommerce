@@ -27,12 +27,12 @@
         <p class="subtitle">Entorno de Staging - LUXNOVA DIGITAL S.A.C.</p>
 
         <div class="btn-group">
-            <button class="btn-payin" onclick="simularPeticion('/api/tumipay/generar-payin', 150)">💳 1. Simular Venta (PayIn Aprobado)</button>
+            <button class="btn-payin" onclick="simularPeticion('/api/tumipay/generar-payin', 20)">💳 1. Simular Venta (PayIn Aprobado)</button>
             <button class="btn-error" onclick="simularPeticion('/api/tumipay/generar-payin', 0)">❌ Simular Venta (PayIn Rechazado - S/ 0)</button>
         </div>
 
         <div class="btn-group">
-            <button class="btn-payout" onclick="simularPeticion('/api/tumipay/generar-payout', 150)">🔄 2. Simular Reembolso (PayOut Aprobado)</button>
+            <button class="btn-payout" onclick="simularPeticion('/api/tumipay/generar-payout', 20)">🔄 2. Simular Reembolso (PayOut Aprobado)</button>
         </div>
 
         <div class="console-box" id="consola">
