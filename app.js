@@ -131,63 +131,52 @@ app.post('/procesar-pago', async (req, res) => {
     }
 });
 
-// NUEVO: Procesamiento API Directo para Yape y PagoEfectivo (Sin salir de la web)
+// ==========================================================================
+// PROCESAMIENTO API DIRECTO PARA PAGOEFECTIVO (FORMATO EXACTO A LA IMAGEN)
+// ==========================================================================
 app.post('/generar-pago-directo', async (req, res) => {
     try {
-        const { monto, clienteEmail, origen, id_carrito, producto, metodoPago } = req.body;
+        const { monto, clienteEmail, origen, id_carrito, producto } = req.body;
         
-        // 1. Extraemos y desciframos el Token de Lux2
-        const authHeader = req.headers['authorization'];
-        let idDelComprador = "ANONIMO";
-        
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-            const token = authHeader.split(' ')[1];
-            try {
-                const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                idDelComprador = decoded.id; 
-            } catch (err) {
-                console.log("Token no válido o ausente.");
-            }
-        }
-
-        // VALIDACIÓN ESTRICTA: Si falta algún dato, detenemos el proceso antes de hablar con MP
-        if (!monto || !clienteEmail || !metodoPago) {
-            console.error("Faltan parámetros en el body:", req.body);
+        // VALIDACIÓN ESTRICTA
+        if (!monto || !clienteEmail) {
             return res.status(400).json({ error: "Faltan parámetros requeridos" });
         }
 
         const webOrigen = origen || 'luxnovadig.com';
-        const nombreProducto = producto || "producto-lux";
+        const nombreProducto = producto || "Producto - Top";
         const montoNumerico = parseFloat(monto);
 
-        // 🚨 EL TRUCO NINJA: Si elige Yape, forzamos PagoEfectivo para obtener su QR
-        const metodoReal = metodoPago === 'yape' ? 'pagoefectivo_atm' : metodoPago;
+        console.log(`[API Directa] Generando ticket en Mercado Pago por S/ ${montoNumerico}`);
 
-        console.log(`[API Directa] Generando ${metodoReal} por S/ ${montoNumerico}`);
-
-        // 2. Llamada directa a v1/payments
+        // Llamada directa a v1/payments (Genera el ticket de PagoEfectivo al instante)
         const response = await fetch('https://api.mercadopago.com/v1/payments', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, 
                 'Content-Type': 'application/json',
-                'X-Idempotency-Key': id_carrito 
+                'X-Idempotency-Key': id_carrito // Evita pagos duplicados
             },
             body: JSON.stringify({
                 transaction_amount: montoNumerico,
-                description: nombreProducto,
-                payment_method_id: metodoReal, // Usamos la variable interceptada
-                notification_url: "https://luxnovadig.com/webhook-tumipay", 
+                description: nombreProducto, // Aparecerá como "Producto- Top" o lo que hayas puesto
+                payment_method_id: 'pagoefectivo_atm', // Fuerza a usar PagoEfectivo
+                
+                // AÑADIMOS EL CAMPO OBLIGATORIO PARA APROBAR LA INTEGRACIÓN
+                external_reference: id_carrito, 
+                
+                // MUY IMPORTANTE: A esta URL llamará Mercado Pago cuando el cliente pague
+                notification_url: `https://${webOrigen}/webhook-mp`, 
+                
                 payer: {
                     email: clienteEmail,
-                    first_name: "Cliente", 
-                    last_name: "Anonimo",
+                    first_name: "Cliente", // <-- EXACTAMENTE COMO TU IMAGEN
+                    last_name: "Shop",     // <-- EXACTAMENTE COMO TU IMAGEN
                     identification: { type: "DNI", number: "70000000" }
                 },
                 metadata: {
-                    origen_web: webOrigen,
-                    id_carrito: id_carrito,
-                    usuario_id_lux: idDelComprador 
+                    origen_web: webOrigen, 
+                    id_carrito: id_carrito
                 }
             })
         });
@@ -195,12 +184,11 @@ app.post('/generar-pago-directo', async (req, res) => {
         const data = await response.json();
 
         if (response.ok && (data.status === 'pending' || data.status === 'approved')) {
-            // Devolvemos el Ticket URL en ambos casos
             return res.json({
                 exito: true,
                 id_pago: data.id,
-                metodo: metodoPago, // Le devolvemos 'yape' para que el frontend sepa qué título poner
-                ticket_url: data.transaction_details.external_resource_url
+                // Le pasamos al frontend el link directo del ticket con el código CIP
+                ticket_url: data.transaction_details.external_resource_url 
             });
         } else {
             console.error("Error devuelto por Mercado Pago:", data);
@@ -210,266 +198,6 @@ app.post('/generar-pago-directo', async (req, res) => {
     } catch (error) {
         console.error("Error crítico en API Directa:", error);
         return res.status(500).json({ error: "No se pudo procesar la solicitud interna" });
-    }
-});
-
-// PASO 2 REEMPLAZADO: Webhook unificado (Escucha a Mercado Pago y enruta las confirmaciones)
-app.post('/webhook-tumipay', async (req, res) => {
-    try {
-        // Mercado Pago envía notificaciones con estructuras específicas (type y data.id)
-        const { type, data } = req.body;
-
-        if (type === 'payment' && data && data.id) {
-            const paymentId = data.id;
-
-            console.log(`[Webhook] Notificación recibida para el pago ID: ${paymentId}. Verificando...`);
-
-            // Consultamos los detalles reales del pago en los servidores de Mercado Pago
-            const paymentResponse = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-                method: 'GET',
-                headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` }
-            });
-
-            const paymentData = await paymentResponse.json();
-
-            // Si el pago es real y está aprobado de forma definitiva
-            if (paymentResponse.ok && paymentData.status === 'approved') {
-                
-                /// Extraemos la metadata sembrada
-                const { origen_web, id_carrito, usuario_id_lux } = paymentData.metadata; // <--- SACAMOS EL ID
-                const montoAprobado = paymentData.transaction_amount;
-                const emailComprador = paymentData.payer.email;
-
-                console.log(`[Webhook] ¡PAGO APROBADO! S/ ${montoAprobado} de ${emailComprador}`);
-
-                // ENRUTADOR INTELIGENTE SEGÚN EL ORIGEN
-                if (origen_web === 'appluxnova.com') {
-                    console.log(`--> Enrutando despacho automático hacia Lux Network Core...`);
-                    
-                    // Disparamos una alerta silenciosa al backend de tu segunda web
-                    try {
-                        await fetch('https://appluxnova.com/api/confirmar-pedido', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                id_carrito: id_carrito,
-                                estado: 'PAGADO',
-                                monto: montoAprobado,
-                                usuario_id_real: usuario_id_lux // <--- LE ENVIAMOS EL ID EXACTO A LUX2
-                            })
-                        });
-                    } catch (err) {
-                        console.error("Error al notificar al servidor secundario lux-network-core:", err);
-                    }
-
-                } else {
-                    // Flujo por defecto para compras locales en Vértice Corporativo
-                    console.log(`--> Procesando despacho local para Vértice Corporativo (Guardar en Supabase, emitir comprobante, etc.)`);
-                }
-            }
-        }
-
-        // Siempre respondemos 200 OK a Mercado Pago de inmediato para que no reintente el envío
-        res.status(200).send('OK');
-
-    } catch (error) {
-        console.error("Error procesando evento del Webhook:", error);
-        res.status(200).send('Procesado con observaciones internas');
-    }
-});
-
-// ==========================================================================
-// TUMIPAY - MODO STAGING PAYIN (COBROS)
-// ==========================================================================
-
-app.post('/api/tumipay/generar-payin', async (req, res) => {
-    try {
-        const { monto, clienteEmail } = req.body;
-
-        if (monto === undefined || monto === null || !clienteEmail) {
-            return res.status(400).json({ error: "Faltan parámetros requeridos" });
-        }
-
-        const id_falso = Math.floor(Math.random() * 1000000);
-        const referenciaOrden = `ORDEN-LUXNOVA-${id_falso}`;
-
-        console.log(`[TumiPay] Generando PayIn por S/ ${monto} - Referencia: ${referenciaOrden}`);
-
-        // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
-        const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
-        const response = await fetch('https://api-empresas.staging.topup.com.co/production/api/v1/payin', {
-            method: 'POST',
-            headers: {
-                'Token-Top': process.env.TUMI_TOKEN_TOP, 
-                'Content-Type': 'application/json', 
-                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-firewall
-            },
-            body: JSON.stringify({
-                reference: referenciaOrden, 
-                amount: parseFloat(monto), 
-                currency: "PEN", 
-                country: "PE", 
-                payment_method: "QR", 
-                description: "Dispositivo de Productividad Luxnova", 
-                customer_data: {
-                    legal_doc: "70000000", 
-                    legal_doc_type: "DNI", 
-                    phone_code: "51", 
-                    phone_number: "999999999", 
-                    email: clienteEmail, 
-                    full_name: "Cliente Final" 
-                },
-                expiration_time: 720, 
-                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", 
-                redirect_url: "https://luxnovadig.com/pago-exitoso" 
-            })
-        });
-
-        // --- LECTURA A PRUEBA DE FALLOS CON VARIABLE ÚNICA ---
-        const textData = await response.text(); 
-        let tumipayData; 
-        try {
-            tumipayData = JSON.parse(textData); 
-        } catch (err) {
-            console.error("❌ TumiPay devolvió HTML en lugar de JSON. Contenido:", textData);
-            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (HTML recibido)" });
-        }
-
-        if (response.ok) {
-            return res.json({
-                exito: true,
-                mensaje: "Orden generada en TumiPay",
-                datos_pago: tumipayData
-            });
-        } else {
-            console.error("Error devuelto por TumiPay:", tumipayData);
-            return res.status(400).json({ error: "TumiPay rechazó la petición", detalle: tumipayData });
-        }
-
-    } catch (error) {
-        console.error("Error crítico en conexión TumiPay:", error);
-        return res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
-
-// ==========================================================================
-// TUMIPAY - MODO STAGING PAYOUT (RETIROS CAMUFLADOS)
-// ==========================================================================
-
-app.post('/api/tumipay/generar-payout', async (req, res) => {
-    try {
-        const { monto, clienteEmail, banco, numeroCuenta, cci, nombreCompleto, dni } = req.body;
-
-        if (!monto || !banco || !numeroCuenta) {
-            return res.status(400).json({ error: "Faltan datos bancarios para procesar la transacción" });
-        }
-
-        const id_falso = Math.floor(Math.random() * 1000000);
-        const referenciaReembolso = `REEMBOLSO-LUXNOVA-${id_falso}`;
-
-        console.log(`[TumiPay] Iniciando Payout por S/ ${monto} - Referencia: ${referenciaReembolso}`);
-        console.log(`--> [Sistema] Motivo Operativo: Devolución de producto / Cancelación de Pedido`);
-
-        // Limpiamos cualquier slash extra al final y agregamos la ruta /api estándar
-        const baseUrlLimpia = process.env.TUMI_BASE_URL.replace(/\/+$/, '');
-        const response = await fetch(`https://api-empresas.staging.topup.com.co/production/api/v1/payout`, {
-            method: 'POST',
-            headers: {
-                'Token-Top': process.env.TUMI_TOKEN_TOP, 
-                'Content-Type': 'application/json', 
-                'Authorization': `Basic ${process.env.TUMI_AUTH_BASE64}`,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Escudo anti-firewall
-            },
-            body: JSON.stringify({
-                payment_method: "BANK_TRANSFER", 
-                reference: referenciaReembolso, 
-                amount: parseFloat(monto), 
-                currency: "PEN", 
-                country: "PE", 
-                ipn_url: "https://luxnovadig.com/api/tumipay/webhook", 
-                customer_data: {
-                    legal_doc: dni || "70000000", 
-                    legal_doc_type: "DNI", 
-                    phone_code: "51", 
-                    phone_number: "999999999", 
-                    email: clienteEmail || "cliente@correo.com", 
-                    full_name: nombreCompleto || "Cliente Devolución", 
-                    bank: banco, 
-                    account_number: numeroCuenta, 
-                    account_type: "AHORRO", 
-                    cci: cci || "" 
-                }
-            })
-        });
-
-        // --- LECTURA A PRUEBA DE FALLOS CON VARIABLE ÚNICA ---
-        const textData = await response.text(); 
-        let tumipayData;
-        try {
-            tumipayData = JSON.parse(textData); 
-        } catch (err) {
-            console.error("❌ TumiPay devolvió HTML en lugar de JSON. Contenido:", textData);
-            return res.status(502).json({ error: "Fallo en los servidores de TumiPay (HTML recibido)" });
-        }
-
-        if (response.ok) {
-            return res.json({
-                exito: true,
-                mensaje: "Reembolso encolado en TumiPay",
-                datos_payout: tumipayData
-            });
-        } else {
-            console.error("❌ Error en Payout devuelto por TumiPay:", tumipayData);
-            return res.status(400).json({ error: "TumiPay rechazó la operación", detalle: tumipayData });
-        }
-
-    } catch (error) {
-        console.error("❌ Error crítico en conexión TumiPay Payout:", error);
-        return res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
-
-// ==========================================================================
-// WEBHOOK EXCLUSIVO TUMIPAY (PUNTO DE AUDITORÍA)
-// ==========================================================================
-
-app.post('/api/tumipay/webhook', async (req, res) => {
-    try {
-        const data = req.body;
-        
-        console.log("\n=======================================================");
-        console.log("🔔 [TumiPay Webhook] Nueva notificación entrante");
-        console.log("Payload recibido:", JSON.stringify(data, null, 2));
-
-        const estadoTransaccion = data.status || data.transaction_status || 'DESCONOCIDO';
-        const referencia = data.reference || 'Sin Referencia';
-
-        if (estadoTransaccion.toUpperCase() === 'APPROVED' || estadoTransaccion.toUpperCase() === 'SUCCESS') {
-            console.log(`✅ [LUXNOVA DIGITAL S.A.C.] Transacción APROBADA. Referencia: ${referencia}`);
-            
-            if (referencia.includes('ORDEN')) {
-                // Mensaje neutro, sin mencionar hardware
-                console.log(`--> [Sistema] Procesando pedido y verificando disponibilidad en almacén...`);
-            } else if (referencia.includes('REEMBOLSO')) {
-                console.log(`--> [Sistema] Reembolso de dinero depositado exitosamente en la cuenta del cliente.`);
-            }
-            
-        } else if (estadoTransaccion.toUpperCase() === 'REJECTED' || estadoTransaccion.toUpperCase() === 'FAILED') {
-            console.log(`❌ [LUXNOVA DIGITAL S.A.C.] Transacción RECHAZADA. Referencia: ${referencia}`);
-            console.log(`--> [Sistema] Revirtiendo operación y notificando a soporte...`);
-        }
-
-        console.log("=======================================================\n");
-
-        return res.status(200).json({ 
-            received: true, 
-            message: "Notificación procesada correctamente por LUXNOVA DIGITAL S.A.C." 
-        });
-
-    } catch (error) {
-        console.error("❌ Error crítico procesando el Webhook de TumiPay:", error);
-        return res.status(500).send("Error interno en el servidor");
     }
 });
 
