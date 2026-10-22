@@ -187,7 +187,9 @@ app.post('/generar-pago-directo', async (req, res) => {
             return res.json({
                 exito: true,
                 id_pago: data.id,
-                // Le pasamos al frontend el link directo del ticket con el código CIP
+                // Extraemos la información vital del pago para mandarla cruda al frontend
+                cip: data.barcode?.content || data.transaction_details?.payment_method_reference_id || 'PROCESANDO',
+                vencimiento: data.date_of_expiration,
                 ticket_url: data.transaction_details.external_resource_url 
             });
         } else {
