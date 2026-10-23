@@ -218,6 +218,77 @@ app.post('/generar-pago-directo', async (req, res) => {
     }
 });
 
+// ==========================================================================
+// NUEVA RUTA: RECIBIR WEBHOOK DE MERCADO PAGO Y REENVIAR A CAMPOSOL
+// ==========================================================================
+app.post('/webhook-mp', async (req, res) => {
+    try {
+        const { type, data } = req.body;
+
+        // Mercado Pago envía muchos tipos de avisos, solo nos importan los de pagos ('payment')
+        if (type === 'payment' && data && data.id) {
+            
+            console.log(`[Luxnova Webhook] Recibido aviso de pago ID: ${data.id}. Consultando detalles...`);
+
+            // 1. Consultar a Mercado Pago el estado real del pago
+            const responseMP = await fetch(`https://api.mercadopago.com/v1/payments/${data.id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`
+                }
+            });
+
+            if (!responseMP.ok) {
+                console.error("No se pudo obtener el detalle del pago de Mercado Pago");
+                return res.status(200).send("OK"); // Respondemos 200 a MP para que deje de molestar
+            }
+
+            const pagoDetalle = await responseMP.json();
+
+            // 2. Extraer los datos vitales
+            const estado = pagoDetalle.status; // Esperamos 'approved'
+            const id_carrito = pagoDetalle.external_reference; // Esperamos 'CMP-...'
+            const monto = pagoDetalle.transaction_amount;
+
+            // 3. Si el pago está aprobado y tiene la referencia de Camposol (empieza con CMP)
+            if (estado === 'approved' && id_carrito && id_carrito.startsWith('CMP-')) {
+                
+                console.log(`[Luxnova Webhook] Pago ${data.id} aprobado. Reenviando a Camposol (Carrito: ${id_carrito}, Monto: ${monto})`);
+
+                // 4. EL PUENTE: Enviar los datos al servidor de Camposol en Render
+                // REEMPLAZA ESTA URL POR LA URL REAL DE TU SERVIDOR DE CAMPOSOL EN RENDER
+                const URL_CAMPOSOL = 'https://camposol-backend.onrender.com/api/webhook-luxnova'; 
+                
+                const responseCamposol = await fetch(URL_CAMPOSOL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_carrito: id_carrito,
+                        estado: 'PAGADO', // Le decimos a Camposol que ya está pagado
+                        monto: monto,
+                        origen: 'luxnovadig.com' // Validado por Camposol
+                    })
+                });
+
+                if (!responseCamposol.ok) {
+                    console.error("[Luxnova Webhook] Error: Camposol rechazó el aviso.");
+                } else {
+                    console.log("[Luxnova Webhook] Éxito: Camposol recibió el aviso y acreditó el saldo.");
+                }
+            } else {
+                 console.log(`[Luxnova Webhook] Pago ignorado (Estado: ${estado}, Ref: ${id_carrito})`);
+            }
+        }
+        
+        // SIEMPRE debemos responder 200 OK a Mercado Pago rápidamente
+        res.status(200).send("OK");
+
+    } catch (error) {
+        console.error("Error crítico en Webhook de Luxnova:", error);
+        res.status(500).send("Error interno");
+    }
+});
+
 // ==========================================
 // ENCENDIDO DEL MOTOR
 // ==========================================
