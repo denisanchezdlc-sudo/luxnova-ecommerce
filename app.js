@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 // Configuraciones de seguridad y lectura de datos
 app.use(cors());
 app.use(express.json()); // Vital para leer los JSON que envían las webs y Mercado Pago
+app.use(express.urlencoded({ extended: true }));
 
 // 1. Mostrar la Vitrina Corporativa al público
 app.use(express.static('public'));
