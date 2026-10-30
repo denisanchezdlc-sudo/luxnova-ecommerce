@@ -133,7 +133,7 @@ app.post('/procesar-pago', async (req, res) => {
 });
 
 // ==========================================================================
-// PROCESAMIENTO API DIRECTO PARA PAGOEFECTIVO (FORMATO EXACTO A LA IMAGEN)
+// PROCESAMIENTO API DIRECTO PARA PAGOEFECTIVO (CORREGIDO IDEMPOTENCIA)
 // ==========================================================================
 app.post('/generar-pago-directo', async (req, res) => {
     try {
@@ -148,6 +148,9 @@ app.post('/generar-pago-directo', async (req, res) => {
         const nombreProducto = producto || "Producto - Top";
         const montoNumerico = parseFloat(monto);
 
+        // SOLUCIÓN: Generamos una llave de idempotencia 100% única por cada clic
+        const llaveIdempotencia = `${id_carrito}-${Date.now()}`;
+
         console.log(`[API Directa] Generando ticket en Mercado Pago por S/ ${montoNumerico}`);
 
         // Llamada directa a v1/payments (Genera el ticket de PagoEfectivo al instante)
@@ -156,7 +159,7 @@ app.post('/generar-pago-directo', async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`, 
                 'Content-Type': 'application/json',
-                'X-Idempotency-Key': id_carrito // Evita pagos duplicados
+                'X-Idempotency-Key': llaveIdempotencia // <-- ESCUDO ANTI-BLOQUEOS APLICADO
             },
             body: JSON.stringify({
                 transaction_amount: montoNumerico,
