@@ -133,20 +133,19 @@ app.post('/procesar-pago', async (req, res) => {
 });
 
 // ==========================================================================
-// PROCESAMIENTO API DIRECTO PARA PAGOEFECTIVO (DNI DINÁMICO PARA PRODUCCIÓN)
+// PROCESAMIENTO API DIRECTO PARA PAGOEFECTIVO (DNI FANTASMA CORREGIDO)
 // ==========================================================================
 app.post('/generar-pago-directo', async (req, res) => {
     try {
-        // 1. Recibimos los datos del frontend
+        // 1. Recibimos los datos del frontend (sin DNI)
         const { monto, clienteEmail, origen, id_carrito, producto, nombre, apellido } = req.body;
         
-        // 2. VALIDACIÓN ESTRICTA (Sin asustar al usuario pidiendo DNI)
+        // 2. VALIDACIÓN ESTRICTA (Corregida: sin verificar 'dni')
         if (!monto || !clienteEmail) {
             return res.status(400).json({ error: "Faltan parámetros requeridos" });
         }
 
-        // 3. EL TRUCO NINJA: Generamos un DNI aleatorio de 8 dígitos para satisfacer a Mercado Pago
-        // Esto crea un número entre 10000000 y 99999999 que MP aceptará como válido en producción.
+        // 3. EL TRUCO NINJA: Generamos el DNI aleatorio de 8 dígitos aquí
         const dniFantasma = Math.floor(10000000 + Math.random() * 90000000).toString();
 
         const webOrigen = origen || 'luxnovadig.com';
@@ -154,7 +153,8 @@ app.post('/generar-pago-directo', async (req, res) => {
         const montoNumerico = parseFloat(monto);
         const llaveIdempotencia = `${id_carrito}-${Date.now()}`;
 
-        console.log(`[API Directa] Generando ticket en MP por S/ ${montoNumerico} para DNI: ${dni}`);
+        // CORRECCIÓN CLAVE: Usamos 'dniFantasma' en el log, no 'dni' (que no existe y causaba el ReferenceError)
+        console.log(`[API Directa] Generando ticket en MP por S/ ${montoNumerico} para DNI Fantasma: ${dniFantasma}`);
 
         const response = await fetch('https://api.mercadopago.com/v1/payments', {
             method: 'POST',
@@ -174,7 +174,7 @@ app.post('/generar-pago-directo', async (req, res) => {
                     items: [{
                         id: "LX-ACC-01",                     
                         title: nombreProducto, 
-                        description: "Abono de saldo para plataforma", 
+                        description: "Abono", 
                         category_id: "electronics",          
                         quantity: 1,
                         unit_price: montoNumerico
@@ -182,12 +182,12 @@ app.post('/generar-pago-directo', async (req, res) => {
                 },
                 notification_url: `https://${webOrigen}/webhook-mp`, 
                 
-                // 3. AQUÍ INYECTAMOS LOS DATOS REALES DEL CLIENTE
+                // AQUÍ INYECTAMOS LOS DATOS Y EL DNI FANTASMA
                 payer: {
                     email: clienteEmail,
                     first_name: nombre || "Usuario", 
                     last_name: apellido || "Camposol",     
-                    identification: { type: "DNI", number: dni } // <-- DNI REAL INYECTADO
+                    identification: { type: "DNI", number: dniFantasma }
                 },
                 metadata: {
                     origen_web: webOrigen, 
